@@ -1,7 +1,6 @@
 package gr.redpepper.footballrunningtime;
 
 import android.app.Activity;
-import android.content.Context;
 import android.widget.TextView;
 
 import java.util.Timer;
@@ -22,8 +21,6 @@ public class MyChronometer {
     private int Milliseconds;
     private int Seconds;
 
-    private Context context;
-
     private Activity activity;
 
     public MyChronometer(int speed, TextView textview, Activity activity) {
@@ -38,11 +35,11 @@ public class MyChronometer {
 
         this.Seconds = 0;
 
-        if(mTimer == null){
+        if(this.mTimer == null){
 
-            mTimer = new Timer();
+            this.mTimer = new Timer(true);
 
-            mTimer.scheduleAtFixedRate(timerTask,0,this.speed);
+            this.mTimer.scheduleAtFixedRate(timerTask,0,this.speed);
 
         }
 
@@ -50,20 +47,24 @@ public class MyChronometer {
 
     public void Pause(){
 
-        if(mTimer != null) {
+        if(this.mTimer != null) {
 
-            mTimer.cancel();
+            this.mTimer.cancel();
 
-            mTimer = null;
+            this.mTimer.purge();
+
+            this.mTimer = null;
         }
 
     }
 
     public void Resume(){
 
-        if(mTimer == null){
+        if( this.mTimer == null){
 
-            mTimer.scheduleAtFixedRate(timerTask,0,this.speed);
+            this.mTimer = new Timer(true);
+
+            this.mTimer.scheduleAtFixedRate(timerTask,0,this.speed);
 
         }
 
@@ -72,11 +73,13 @@ public class MyChronometer {
 
     public void Reset(){
 
-        if(mTimer != null){
+        if( this.mTimer != null){
 
-            mTimer.cancel();
+            this.mTimer.cancel();
 
-            mTimer = null;
+            this.mTimer.purge();
+
+            this.mTimer = null;
         }
 
         Milliseconds = 0;
@@ -106,14 +109,6 @@ public class MyChronometer {
                 Millis = Integer.toString(Milliseconds % 1000 / 10);
             }
 
-            /*
-            if (Seconds < 10) {
-                Sec = "0" + Seconds;
-            } else {
-                Sec = Integer.toString(Seconds);
-            }
-
-            */
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -128,4 +123,8 @@ public class MyChronometer {
 
         }
     };
+
+    public int getMilliseconds() {
+        return Milliseconds;
+    }
 }

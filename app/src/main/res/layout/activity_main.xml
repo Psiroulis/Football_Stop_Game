@@ -37,14 +37,12 @@
         android:id="@+id/shoot_button"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:textOn=""
-        android:textOff=""
+        android:textOn="ON"
+        android:textOff="OFF"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/chrono"
         android:layout_marginTop="40dp"
-        android:checked="true"
-        android:visibility="gone"
-        android:background="@drawable/ball"/>
+        android:checked="false"/>
 
 
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -17,6 +18,8 @@ public class MainActivity extends Activity {
     private Button startReset_btn;
 
     private MyChronometer chronometer;
+
+    private int speed = 1;
 
 
     @Override
@@ -36,14 +39,33 @@ public class MainActivity extends Activity {
 
         startReset_btn = findViewById(R.id.startmatch_button);
 
-        chronometer = new MyChronometer(10,timeText,this);
+        chronometer = new MyChronometer(speed,timeText,this);
 
         startReset_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                shoot_btn.setVisibility(View.VISIBLE);
+
                 chronometer.Start();
 
+            }
+        });
+
+        shoot_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // The toggle is On
+
+                    chronometer.Pause();
+
+//                    /Toast.makeText(MainActivity.this,"The milli is"+chronometer.getMilliseconds(),Toast.LENGTH_LONG).show();
+
+                } else {
+                    // The toggle is Off
+
+                    chronometer.Resume();
+                }
             }
         });
 
