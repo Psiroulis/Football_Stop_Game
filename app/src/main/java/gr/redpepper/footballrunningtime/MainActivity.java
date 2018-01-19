@@ -7,7 +7,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import java.util.Timer;
 
 public class MainActivity extends Activity {
 
@@ -59,7 +62,15 @@ public class MainActivity extends Activity {
 
                     chronometer.Pause();
 
-//                    /Toast.makeText(MainActivity.this,"The milli is"+chronometer.getMilliseconds(),Toast.LENGTH_LONG).show();
+                    if((chronometer.getMilliseconds() >=0 && chronometer.getMilliseconds()<=9) ||
+                            (chronometer.getMilliseconds() >=997 && chronometer.getMilliseconds()<=999) ){
+
+                        Toast.makeText(MainActivity.this,"The milli is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
+
+                        chronometer.FixedZero();
+                    }
+
+
 
                 } else {
                     // The toggle is Off

@@ -1,7 +1,10 @@
 package gr.redpepper.footballrunningtime;
 
 import android.app.Activity;
+import android.os.Handler;
+import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -27,6 +30,7 @@ public class MyChronometer {
         this.speed = speed;
         this.textview = textview;
         this.activity = activity;
+
     }
 
     public void Start(){
@@ -37,9 +41,14 @@ public class MyChronometer {
 
         if(this.mTimer == null){
 
-            this.mTimer = new Timer(true);
+            this.mTimer = new Timer("new1",true);
 
-            this.mTimer.scheduleAtFixedRate(timerTask,0,this.speed);
+            this.mTimer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    calculate();
+                }
+            }, 0, this.speed);
 
         }
 
@@ -56,15 +65,22 @@ public class MyChronometer {
             this.mTimer = null;
         }
 
+
     }
 
     public void Resume(){
 
         if( this.mTimer == null){
 
-            this.mTimer = new Timer(true);
+            this.mTimer = new Timer("new",true);
 
-            this.mTimer.scheduleAtFixedRate(timerTask,0,this.speed);
+            this.mTimer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    calculate();
+                }
+            }, 0, this.speed);
+
 
         }
 
@@ -89,21 +105,18 @@ public class MyChronometer {
         textview.setText("00:00:00");
     }
 
-    private TimerTask timerTask = new TimerTask() {
+    private void calculate()
+    {
+        final String Millis;
 
-        String Millis;
+        if(Milliseconds == 1000){
 
-        @Override
-        public void run() {
+            Milliseconds = 0;
 
-            if(Milliseconds == 1000){
+            Seconds ++;
+        }
 
-                Milliseconds = 0;
-
-                Seconds ++;
-            }
-
-            if ((Milliseconds % 1000 / 10) < 10) {
+        if ((Milliseconds % 1000 / 10) < 10) {
                 Millis = "0" + Milliseconds % 1000 / 10;
             } else {
                 Millis = Integer.toString(Milliseconds % 1000 / 10);
@@ -121,8 +134,23 @@ public class MyChronometer {
 
             Milliseconds++;
 
-        }
+
     };
+
+    public void FixedZero(){
+
+        Handler handler = new Handler();
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                textview.setText("00:" +String.format("%02d",Seconds) + ":00");
+            }
+        },70);
+
+
+        Milliseconds  = 0;
+    }
 
     public int getMilliseconds() {
         return Milliseconds;
