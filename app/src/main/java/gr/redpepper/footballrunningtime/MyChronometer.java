@@ -2,9 +2,10 @@ package gr.redpepper.footballrunningtime;
 
 import android.app.Activity;
 import android.os.Handler;
-import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -26,29 +27,36 @@ public class MyChronometer {
 
     private Activity activity;
 
-    public MyChronometer(int speed, TextView textview, Activity activity) {
+    private ToggleButton toggleButton;
+
+    private Button button;
+
+    public MyChronometer(int speed, TextView textview, Activity activity, ToggleButton toggleButton, Button button) {
         this.speed = speed;
         this.textview = textview;
         this.activity = activity;
-
+        this.toggleButton = toggleButton;
+        this.button = button;
     }
 
     public void Start(){
 
-        this.Milliseconds = 0;
+        Milliseconds = 0;
 
-        this.Seconds = 0;
+        Seconds = 0;
 
-        if(this.mTimer == null){
+        if(mTimer == null){
 
-            this.mTimer = new Timer("new1",true);
+            mTimer = new Timer("new1",true);
 
-            this.mTimer.scheduleAtFixedRate(new TimerTask() {
+            mTimer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
+
                     calculate();
+
                 }
-            }, 0, this.speed);
+            }, 0, speed);
 
         }
 
@@ -56,13 +64,13 @@ public class MyChronometer {
 
     public void Pause(){
 
-        if(this.mTimer != null) {
+        if(mTimer != null) {
 
-            this.mTimer.cancel();
+            mTimer.cancel();
 
-            this.mTimer.purge();
+            mTimer.purge();
 
-            this.mTimer = null;
+            mTimer = null;
         }
 
 
@@ -70,16 +78,18 @@ public class MyChronometer {
 
     public void Resume(){
 
-        if( this.mTimer == null){
+        if( mTimer == null){
 
-            this.mTimer = new Timer("new",true);
+            mTimer = new Timer("new",true);
 
-            this.mTimer.scheduleAtFixedRate(new TimerTask() {
+            mTimer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
+
                     calculate();
+
                 }
-            }, 0, this.speed);
+            }, 0, speed);
 
 
         }
@@ -89,13 +99,13 @@ public class MyChronometer {
 
     public void Reset(){
 
-        if( this.mTimer != null){
+        if( mTimer != null){
 
-            this.mTimer.cancel();
+            mTimer.cancel();
 
-            this.mTimer.purge();
+            mTimer.purge();
 
-            this.mTimer = null;
+            mTimer = null;
         }
 
         Milliseconds = 0;
@@ -109,14 +119,51 @@ public class MyChronometer {
     {
         final String Millis;
 
-        if(Milliseconds == 1000){
+        if(Seconds == 45){
+
+            mTimer.cancel();
+
+            mTimer.purge();
+
+            mTimer = null;
 
             Milliseconds = 0;
 
-            Seconds ++;
-        }
+            Seconds = 0;
 
-        if ((Milliseconds % 1000 / 10) < 10) {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    Handler handler = new Handler();
+
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            textview.setText("00:45:00");
+
+                            button.setVisibility(View.VISIBLE);
+
+                            toggleButton.setVisibility(View.GONE);
+
+                        }
+                    },70);
+
+                }
+            });
+
+        }else {
+
+
+            if (Milliseconds == 1000) {
+
+                Milliseconds = 0;
+
+                Seconds++;
+            }
+
+            if ((Milliseconds % 1000 / 10) < 10) {
                 Millis = "0" + Milliseconds % 1000 / 10;
             } else {
                 Millis = Integer.toString(Milliseconds % 1000 / 10);
@@ -126,7 +173,7 @@ public class MyChronometer {
                 @Override
                 public void run() {
 
-                    textview.setText("00:" +String.format("%02d",Seconds) + ":" + Millis);
+                    textview.setText("00:" + String.format("%02d", Seconds) + ":" + Millis);
 
                 }
 
@@ -134,8 +181,8 @@ public class MyChronometer {
 
             Milliseconds++;
 
-
-    };
+        }
+    }
 
     public void FixedZero(){
 

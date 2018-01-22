@@ -2,7 +2,8 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:background="@drawable/background">
 
     <TextView
         android:id="@+id/goals"
@@ -12,7 +13,8 @@
         android:layout_alignParentTop="true"
         android:layout_margin="20dp"
         android:textSize="30sp"
-        android:text="Goals:0"/>
+        android:text="Goals:0"
+        android:textColor="#FFF"/>
 
     <TextView
         android:id="@+id/chrono"
@@ -21,7 +23,8 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:textSize="50sp"
-        android:text="00:00:00"/>
+        android:text="00:00:00"
+        android:textColor="#fff"/>
 
     <Button
         android:id="@+id/startmatch_button"
@@ -37,12 +40,15 @@
         android:id="@+id/shoot_button"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:textOn="ON"
-        android:textOff="OFF"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/chrono"
         android:layout_marginTop="40dp"
-        android:checked="false"/>
+        android:checked="false"
+        android:background="@drawable/ball"
+        android:textOff=""
+        android:textOn=""
+        android:visibility="gone"
+        />
 
 
 
