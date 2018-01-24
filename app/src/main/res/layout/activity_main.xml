@@ -47,9 +47,19 @@
         android:background="@drawable/ball"
         android:textOff=""
         android:textOn=""
-        android:visibility="gone"
-        />
+        android:visibility="gone"/>
 
+    <TextView
+        android:id="@+id/messagesText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="GOAL!!!"
+        android:textColor="#FFF"
+        android:textSize="50sp"
+        android:layout_below="@id/goals"
+        android:layout_margin="20dp"
+        android:visibility="gone"/>
 
 
 </RelativeLayout>

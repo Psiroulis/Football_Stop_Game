@@ -1,6 +1,7 @@
 package gr.redpepper.footballrunningtime;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -28,6 +29,8 @@ public class MainActivity extends Activity {
 
     private int goals = 0;
 
+    private TextView messages;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -50,9 +53,13 @@ public class MainActivity extends Activity {
 
         chronometer = new MyChronometer(speed,timeText,this,shoot_btn,startReset_btn);
 
+        messages = findViewById(R.id.messagesText);
+
         startReset_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                messages.setVisibility(View.GONE);
 
                 shoot_btn.setVisibility(View.VISIBLE);
 
@@ -91,7 +98,7 @@ public class MainActivity extends Activity {
 
                     Log.d("blepo",""+chronometer.getMilliseconds());
 
-                    if( (chronometer.getMilliseconds() >=0 && chronometer.getMilliseconds()<=9) ||
+                    /*if( (chronometer.getMilliseconds() >=0 && chronometer.getMilliseconds()<=9) ||
 
                             (chronometer.getMilliseconds() >=997 && chronometer.getMilliseconds()<=999) ||
 
@@ -102,20 +109,45 @@ public class MainActivity extends Activity {
 
                         goalsText.setText("Goals:"+goals);
 
+                        chronometer.FixedZero();*/
+
+                    if(chronometer.getMilliseconds() >= 0 && chronometer.getMilliseconds() <= 9){
+
+                        //Toast.makeText(MainActivity.this,"Goal The milli is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
+                        goals ++;
+
+                        goalsText.setText("Goals:"+goals);
+
                         chronometer.FixedZero();
+
+                        messages.setText("GOALLLLL!!!");
+
+                        messages.setTextColor(Color.parseColor("#FF0000"));
+
+                        messages.setVisibility(View.VISIBLE);
+
+
                     }else if((chronometer.getMilliseconds() >= 990 && chronometer.getMilliseconds() < 997) ||
-                                (chronometer.getMilliseconds() >9 && chronometer.getMilliseconds()<12)){
+                                (chronometer.getMilliseconds() >9 && chronometer.getMilliseconds()<18)){
 
                         Toast.makeText(MainActivity.this,"OUCH the millios is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
+
                     }else if(chronometer.getMilliseconds() >= 480 && chronometer.getMilliseconds() <= 520){
 
                         Toast.makeText(MainActivity.this,"OnwGoal the millios is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
+
+                    }else if(chronometer.getMilliseconds() == 1000){
+
+                        Toast.makeText(MainActivity.this,"OUCH the millios is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
+
                     }
 
 
 
                 } else {
                     // The toggle is Off
+
+                    messages.setVisibility(View.GONE);
 
                     chronometer.Resume();
                 }
