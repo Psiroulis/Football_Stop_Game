@@ -41,6 +41,8 @@ public class MainActivity extends Activity {
 
     private Button Pena_Left,Pena_Center,Pena_Right;
 
+    private TextView postText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -75,6 +77,7 @@ public class MainActivity extends Activity {
 
         Pena_Right = findViewById(R.id.right_penantly);
 
+        postText = findViewById(R.id.posts);
 
 
         startReset_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -89,6 +92,10 @@ public class MainActivity extends Activity {
 
                     rival_goals = 0;
 
+                    posts = 0;
+
+                    postText.setText("Posts: "+ posts);
+
                     chronometer.Start();
 
                     shoot_btn.setVisibility(View.VISIBLE);
@@ -101,6 +108,10 @@ public class MainActivity extends Activity {
 
                 }else{
                     //off Start Seconf Half
+
+                    posts = 0;
+
+                    postText.setText("Posts: "+ posts);
 
                     messages.setVisibility(View.GONE);
 
@@ -120,38 +131,42 @@ public class MainActivity extends Activity {
 
                     chronometer.Pause();
 
-                    //penaldy check
-                    if (posts == 3) {
-
-                        posts = 0;
-
-                        Random rand = new Random();
-
-                        keeperside = rand.nextInt(3);
-
-                        timeText.setVisibility(View.GONE);
-
-                        penalty_Layout.setVisibility(View.VISIBLE);
-
-                    }else{
-
-                        checkGoal();
-
-                    }
+                    checkGoal();
 
 
                     Log.d("blepo",""+chronometer.getMilliseconds());
-
-
-
-
 
                 } else {
                     // The toggle is Off
 
                     messages.setVisibility(View.GONE);
 
-                    chronometer.Resume();
+                    if (posts == 3) {
+
+                        posts = 0;
+
+                        postText.setText("Posts: "+ posts);
+
+                        Random rand = new Random();
+
+                        keeperside = rand.nextInt(3);
+
+                        Log.d("blepo","To Random Tou keeper-> "+keeperside);
+
+                        timeText.setVisibility(View.GONE);
+
+                        shoot_btn.setVisibility(View.GONE);
+
+                        penalty_Layout.setVisibility(View.VISIBLE);
+
+                        shoot_btn.setChecked(true);
+
+                    }else{
+
+                        chronometer.Resume();
+
+                    }
+
                 }
             }
         });
@@ -186,6 +201,39 @@ public class MainActivity extends Activity {
             }
         });
 
+        Pena_Left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                int choosenSide = 0;
+
+                shootPenalty(choosenSide);
+
+            }
+        });
+
+        Pena_Center.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                int choosenSide = 1;
+
+                shootPenalty(choosenSide);
+
+            }
+        });
+
+        Pena_Right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                int choosenSide = 2;
+
+                shootPenalty(choosenSide);
+
+            }
+        });
+
     }
 
     private void checkGoal(){
@@ -205,7 +253,7 @@ public class MainActivity extends Activity {
             messages.setVisibility(View.VISIBLE);
 
 
-        }else if((chronometer.getMilliseconds() >= 990 && chronometer.getMilliseconds() <= 998) ||
+        }else if((chronometer.getMilliseconds() >= 990 && chronometer.getMilliseconds() <= 999) ||
                 (chronometer.getMilliseconds() >9 && chronometer.getMilliseconds()<=18)){
 
             //Toast.makeText(MainActivity.this,"OUCH the millios is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
@@ -217,6 +265,8 @@ public class MainActivity extends Activity {
             messages.setVisibility(View.VISIBLE);
 
             posts ++;
+
+            postText.setText("Posts: "+ posts);
 
         }else if(chronometer.getMilliseconds() >= 480 && chronometer.getMilliseconds() <= 520){
 
@@ -233,29 +283,61 @@ public class MainActivity extends Activity {
 
             posts = 0;
 
+            postText.setText("Posts: "+ posts);
+
         }else if(chronometer.getMilliseconds() == 1000){
 
             //Toast.makeText(MainActivity.this,"OUCH the millios is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
 
-            messages.setText("OUCH!");
+            messages.setText("HIT THE POST !!!");
 
             messages.setTextColor(Color.parseColor("#0000FF"));
 
             messages.setVisibility(View.VISIBLE);
 
             posts ++;
+
+            postText.setText("Posts: "+ posts);
         }
     }
 
     private void shootPenalty(int Side){
 
-        if(keeperside == Side){
+        if(keeperside != Side){
 
             player_goals ++;
+
+            goalsText.setText("Goals: "+player_goals);
+
+            messages.setText("Goallll!!!");
+
+            messages.setTextColor(Color.parseColor("#FF0000"));
+
+            messages.setVisibility(View.VISIBLE);
+
+            penalty_Layout.setVisibility(View.GONE);
+
+            timeText.setVisibility(View.VISIBLE);
+
+            shoot_btn.setVisibility(View.VISIBLE);
+
+        }else{
+
+            messages.setText("Keeper Saves :(");
+
+            messages.setTextColor(Color.parseColor("#FF0000"));
+
+            messages.setVisibility(View.VISIBLE);
+
+            penalty_Layout.setVisibility(View.GONE);
+
+            timeText.setVisibility(View.VISIBLE);
+
+            shoot_btn.setVisibility(View.VISIBLE);
 
         }
 
     }
 
-    //todo:add penalty buttons actions
+
 }

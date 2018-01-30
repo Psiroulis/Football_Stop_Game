@@ -27,16 +27,16 @@ public class MyChronometer {
 
     private Activity activity;
 
-    private ToggleButton toggleButton;
+    private ToggleButton toggleButtonshoot;
 
-    private Button button;
+    private Button tooglebuttonstart;
 
-    public MyChronometer(int speed, TextView textview, Activity activity, ToggleButton toggleButton, Button button) {
+    public MyChronometer(int speed, TextView textview, Activity activity, ToggleButton shoot, ToggleButton start) {
         this.speed = speed;
         this.textview = textview;
         this.activity = activity;
-        this.toggleButton = toggleButton;
-        this.button = button;
+        this.toggleButtonshoot = shoot;
+        this.tooglebuttonstart = start;
     }
 
     public void Start(){
@@ -121,6 +121,13 @@ public class MyChronometer {
 
         if(Seconds == 45){
 
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    toggleButtonshoot.setVisibility(View.GONE);
+                }
+            });
+
             mTimer.cancel();
 
             mTimer.purge();
@@ -143,10 +150,7 @@ public class MyChronometer {
 
                             textview.setText("00:45:00");
 
-                            button.setVisibility(View.VISIBLE);
-
-                            toggleButton.setVisibility(View.GONE);
-
+                            tooglebuttonstart.setVisibility(View.VISIBLE);
                         }
                     },70);
 
