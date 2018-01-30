@@ -9,27 +9,37 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import java.util.Random;
 
 public class MainActivity extends Activity {
 
     private ToggleButton shoot_btn;
 
-    private TextView goalsText,timeText;
+    private TextView goalsText,timeText,away_goals;
 
-    private Button startReset_btn;
+    private ToggleButton startReset_btn;
 
     private MyChronometer chronometer;
 
     private int speed = 1;
 
-    private int halftime = 1;
+    private int player_goals = 0;
 
-    private int goals = 0;
+    private int rival_goals = 0;
 
     private TextView messages;
+
+    private int posts = 0;
+
+    private int keeperside = 0;
+
+    private LinearLayout penalty_Layout;
+
+    private Button Pena_Left,Pena_Center,Pena_Right;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,37 +65,51 @@ public class MainActivity extends Activity {
 
         messages = findViewById(R.id.messagesText);
 
-        startReset_btn.setOnClickListener(new View.OnClickListener() {
+        away_goals = findViewById(R.id.away_goals);
+
+        penalty_Layout = findViewById(R.id.penantly_layout);
+
+        Pena_Left = findViewById(R.id.left_penantly);
+
+        Pena_Center = findViewById(R.id.center_penantly);
+
+        Pena_Right = findViewById(R.id.right_penantly);
+
+
+
+        startReset_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if(isChecked){
+                    //on Start New Game
 
-                messages.setVisibility(View.GONE);
+                    messages.setVisibility(View.GONE);
 
-                shoot_btn.setVisibility(View.VISIBLE);
+                    player_goals = 0;
 
-                chronometer.Start();
+                    rival_goals = 0;
 
-                startReset_btn.setVisibility(View.GONE);
+                    chronometer.Start();
 
-                if(halftime == 1){
+                    shoot_btn.setVisibility(View.VISIBLE);
 
-                    goalsText.setText("Goals:0");
+                    goalsText.setText("Home: " + player_goals);
 
-                    halftime =2;
+                    away_goals.setText("Away: " + rival_goals);
 
-                    startReset_btn.setText("Start Second Half");
+                    startReset_btn.setVisibility(View.GONE);
 
+                }else{
+                    //off Start Seconf Half
 
-                }else if (halftime == 2){
+                    messages.setVisibility(View.GONE);
 
-                    halftime = 1;
+                    chronometer.Start();
 
-                    startReset_btn.setText("Start New Game");
+                    shoot_btn.setVisibility(View.VISIBLE);
 
-                    goals = 0;
-
+                    startReset_btn.setVisibility(View.GONE);
                 }
-
             }
         });
 
@@ -96,51 +120,29 @@ public class MainActivity extends Activity {
 
                     chronometer.Pause();
 
-                    Log.d("blepo",""+chronometer.getMilliseconds());
+                    //penaldy check
+                    if (posts == 3) {
 
-                    /*if( (chronometer.getMilliseconds() >=0 && chronometer.getMilliseconds()<=9) ||
+                        posts = 0;
 
-                            (chronometer.getMilliseconds() >=997 && chronometer.getMilliseconds()<=999) ||
+                        Random rand = new Random();
 
-                            chronometer.getMilliseconds() == 1000 ){
+                        keeperside = rand.nextInt(3);
 
-                        //Toast.makeText(MainActivity.this,"Goal The milli is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
-                        goals ++;
+                        timeText.setVisibility(View.GONE);
 
-                        goalsText.setText("Goals:"+goals);
+                        penalty_Layout.setVisibility(View.VISIBLE);
 
-                        chronometer.FixedZero();*/
+                    }else{
 
-                    if(chronometer.getMilliseconds() >= 0 && chronometer.getMilliseconds() <= 9){
-
-                        //Toast.makeText(MainActivity.this,"Goal The milli is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
-                        goals ++;
-
-                        goalsText.setText("Goals:"+goals);
-
-                        chronometer.FixedZero();
-
-                        messages.setText("GOALLLLL!!!");
-
-                        messages.setTextColor(Color.parseColor("#FF0000"));
-
-                        messages.setVisibility(View.VISIBLE);
-
-
-                    }else if((chronometer.getMilliseconds() >= 990 && chronometer.getMilliseconds() < 997) ||
-                                (chronometer.getMilliseconds() >9 && chronometer.getMilliseconds()<18)){
-
-                        Toast.makeText(MainActivity.this,"OUCH the millios is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
-
-                    }else if(chronometer.getMilliseconds() >= 480 && chronometer.getMilliseconds() <= 520){
-
-                        Toast.makeText(MainActivity.this,"OnwGoal the millios is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
-
-                    }else if(chronometer.getMilliseconds() == 1000){
-
-                        Toast.makeText(MainActivity.this,"OUCH the millios is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
+                        checkGoal();
 
                     }
+
+
+                    Log.d("blepo",""+chronometer.getMilliseconds());
+
+
 
 
 
@@ -184,6 +186,76 @@ public class MainActivity extends Activity {
             }
         });
 
+    }
+
+    private void checkGoal(){
+        if(chronometer.getMilliseconds() >= 0 && chronometer.getMilliseconds() <= 9){
+
+            //Toast.makeText(MainActivity.this,"Goal The milli is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
+            player_goals++;
+
+            goalsText.setText("Home: "+player_goals);
+
+            chronometer.FixedZero();
+
+            messages.setText("GOALLLLL!!!");
+
+            messages.setTextColor(Color.parseColor("#FF0000"));
+
+            messages.setVisibility(View.VISIBLE);
+
+
+        }else if((chronometer.getMilliseconds() >= 990 && chronometer.getMilliseconds() <= 998) ||
+                (chronometer.getMilliseconds() >9 && chronometer.getMilliseconds()<=18)){
+
+            //Toast.makeText(MainActivity.this,"OUCH the millios is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
+
+            messages.setText("HIT THE POST !!!");
+
+            messages.setTextColor(Color.parseColor("#0000FF"));
+
+            messages.setVisibility(View.VISIBLE);
+
+            posts ++;
+
+        }else if(chronometer.getMilliseconds() >= 480 && chronometer.getMilliseconds() <= 520){
+
+            //Toast.makeText(MainActivity.this,"OnwGoal the millios is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
+            messages.setText("OWN GOAL :(");
+
+            messages.setTextColor(Color.parseColor("#0000FF"));
+
+            messages.setVisibility(View.VISIBLE);
+
+            rival_goals ++;
+
+            away_goals.setText("Away: " + rival_goals);
+
+            posts = 0;
+
+        }else if(chronometer.getMilliseconds() == 1000){
+
+            //Toast.makeText(MainActivity.this,"OUCH the millios is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
+
+            messages.setText("OUCH!");
+
+            messages.setTextColor(Color.parseColor("#0000FF"));
+
+            messages.setVisibility(View.VISIBLE);
+
+            posts ++;
+        }
+    }
+
+    private void shootPenalty(int Side){
+
+        if(keeperside == Side){
+
+            player_goals ++;
+
+        }
 
     }
+
+    //todo:add penalty buttons actions
 }

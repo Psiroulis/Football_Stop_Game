@@ -5,16 +5,28 @@
     android:layout_width="match_parent"
     android:background="@drawable/background">
 
+
     <TextView
-        android:id="@+id/goals"
+        android:id="@+id/away_goals"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         android:layout_margin="20dp"
         android:textSize="30sp"
-        android:text="Goals:0"
-        android:textColor="#FFF"/>
+        android:text="Away:0"
+        android:textColor="#FF0000"
+        android:layout_alignParentRight="true"/>
+    <TextView
+        android:id="@+id/goals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="20dp"
+        android:textSize="30sp"
+        android:text="Home:0"
+        android:textColor="#FF0000"/>
 
     <TextView
         android:id="@+id/chrono"
@@ -26,14 +38,16 @@
         android:text="00:00:00"
         android:textColor="#fff"/>
 
-    <Button
+    <ToggleButton
         android:id="@+id/startmatch_button"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="10dp"
         android:layout_alignParentBottom="true"
         android:text="Start New Game"
-        android:checked="true"
+        android:checked="false"
+        android:textOff="Start NEw Game"
+        android:textOn="Start Second Half"
         />
 
     <ToggleButton
@@ -60,6 +74,46 @@
         android:layout_below="@id/goals"
         android:layout_margin="20dp"
         android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/penantly_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/posts"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone">
+
+
+        <Button
+            android:id="@+id/left_penantly"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:text="Left"/>
+
+        <Button
+            android:id="@+id/center_penantly"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:text="Center"/>
+
+        <Button
+            android:id="@+id/right_penantly"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:text="Right"/>
+
+    </LinearLayout>
 
 
 </RelativeLayout>
