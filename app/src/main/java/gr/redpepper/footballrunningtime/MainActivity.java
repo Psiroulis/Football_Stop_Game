@@ -1,6 +1,9 @@
 package gr.redpepper.footballrunningtime;
 
+
+import android.animation.IntEvaluator;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,48 +12,33 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
+
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import java.util.Random;
-
 public class MainActivity extends Activity {
 
-    private ToggleButton shoot_btn;
-
-    private TextView goalsText,timeText,away_goals;
-
-    private ToggleButton startReset_btn;
-
-    private MyChronometer chronometer;
-
-    private int speed = 1;
-
-    private int player_goals = 0;
-
-    private int rival_goals = 0;
-
-    private TextView messages;
-
-    private int posts = 0;
-
-    private int keeperside = 0;
-
-    private LinearLayout penalty_Layout;
-
-    private Button Pena_Left,Pena_Center,Pena_Right;
-
-    private TextView postText;
-
     ImageView vertical_abll,horizontal_ball;
-
+    private ToggleButton shoot_btn;
+    private TextView goalsText,timeText,away_goals;
+    private ToggleButton startReset_btn;
+    private MyChronometer chronometer;
+    private int speed = 1;
+    private int player_goals = 0;
+    private int rival_goals = 0;
+    private TextView messages;
+    private int posts = 0;
+    private RelativeLayout penalty_Layout;
+    private TextView postText;
     private ObjectAnimator ver_animator;
 
     private ObjectAnimator hor_animator;
+
+    private  ToggleButton Penalty_Stop_But;
 
 
 
@@ -66,36 +54,11 @@ public class MainActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        goalsText = findViewById(R.id.goals);
-
-        timeText = findViewById(R.id.chrono);
-
-        shoot_btn = findViewById(R.id.shoot_button);
-
-        startReset_btn = findViewById(R.id.startmatch_button);
-
-        chronometer = new MyChronometer(speed,timeText,this,shoot_btn,startReset_btn);
-
-        messages = findViewById(R.id.messagesText);
-
-        away_goals = findViewById(R.id.away_goals);
-
-        penalty_Layout = findViewById(R.id.penantly_layout);
-
-        Pena_Left = findViewById(R.id.left_penantly);
-
-        Pena_Center = findViewById(R.id.center_penantly);
-
-        Pena_Right = findViewById(R.id.right_penantly);
-
-        postText = findViewById(R.id.posts);
-
-        vertical_abll = findViewById(R.id.ver_ball);
-
-        horizontal_ball = findViewById(R.id.hor_ball);
+        findtheviews();
 
 
-        stopbut.setOnClickListener(new View.OnClickListener() {
+
+        /*stopbut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -110,6 +73,58 @@ public class MainActivity extends Activity {
 
                 Log.d("blepo",""+hor_ball_positions);
                 ver_animator.start();
+            }
+        });*/
+
+        Penalty_Stop_But.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                int verticalposition = 0;
+                int horizontalposition = 0;
+
+                if(isChecked){
+                    //on
+
+                    ver_animator.cancel();
+
+                    verticalposition = (Integer) ver_animator.getAnimatedValue();
+
+                    ver_animator.removeAllListeners();
+
+                    ver_animator = null;
+
+                    hor_animator.start();
+                }else{
+                    //off
+
+                    hor_animator.cancel();
+
+                    horizontalposition = (Integer) hor_animator.getAnimatedValue();
+
+                    hor_animator.removeAllListeners();
+
+                    hor_animator = null;
+
+                    penalty_Layout.setVisibility(View.GONE);
+
+                    if( (verticalposition >=175 && verticalposition <= 185) && (horizontalposition >=175 && horizontalposition <= 185)){
+
+                        messages.setText("Goall!!!");
+
+                        messages.setVisibility(View.VISIBLE);
+                    }else{
+
+                        messages.setText("Keeper Saves");
+
+                        messages.setVisibility(View.VISIBLE);
+
+                    }
+
+                    timeText.setVisibility(View.VISIBLE);
+
+                    shoot_btn.setVisibility(View.VISIBLE);
+
+                }
             }
         });
 
@@ -167,7 +182,6 @@ public class MainActivity extends Activity {
 
                     checkGoal();
 
-
                     Log.d("blepo",""+chronometer.getMilliseconds());
 
                 } else {
@@ -181,12 +195,6 @@ public class MainActivity extends Activity {
 
                         postText.setText("Posts: "+ posts);
 
-                        Random rand = new Random();
-
-                        keeperside = rand.nextInt(3);
-
-                        Log.d("blepo","To Random Tou keeper-> "+keeperside);
-
                         timeText.setVisibility(View.GONE);
 
                         shoot_btn.setVisibility(View.GONE);
@@ -194,6 +202,10 @@ public class MainActivity extends Activity {
                         penalty_Layout.setVisibility(View.VISIBLE);
 
                         shoot_btn.setChecked(true);
+
+                        InitializeAnimations();
+
+                        ver_animator.start();
 
                     }else{
 
@@ -206,6 +218,7 @@ public class MainActivity extends Activity {
         });
 
         shoot_btn.setOnTouchListener(new View.OnTouchListener() {
+
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
 
@@ -232,39 +245,6 @@ public class MainActivity extends Activity {
                 }
 
                 return false;
-            }
-        });
-
-        Pena_Left.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                int choosenSide = 0;
-
-                shootPenalty(choosenSide);
-
-            }
-        });
-
-        Pena_Center.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                int choosenSide = 1;
-
-                shootPenalty(choosenSide);
-
-            }
-        });
-
-        Pena_Right.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                int choosenSide = 2;
-
-                shootPenalty(choosenSide);
-
             }
         });
 
@@ -350,43 +330,82 @@ public class MainActivity extends Activity {
 
     }
 
-    private void shootPenalty(int Side){
+    private void InitializeAnimations(){
 
-        if(keeperside != Side){
+        ver_animator = new ObjectAnimator();
 
-            player_goals ++;
+        ver_animator.setIntValues(0,getResources().getDimensionPixelSize(R.dimen.animation_size));
 
-            goalsText.setText("Goals: "+player_goals);
+        ver_animator.setDuration(3000);
 
-            messages.setText("Goallll!!!");
+        ver_animator.setRepeatMode(ValueAnimator.REVERSE);
 
-            messages.setTextColor(Color.parseColor("#FF0000"));
+        ver_animator.setRepeatCount(ValueAnimator.INFINITE);
 
-            messages.setVisibility(View.VISIBLE);
+        ver_animator.setEvaluator(new IntEvaluator());
 
-            penalty_Layout.setVisibility(View.GONE);
+        ver_animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
 
-            timeText.setVisibility(View.VISIBLE);
+                vertical_abll.setTranslationY((Integer) ver_animator.getAnimatedValue());
 
-            shoot_btn.setVisibility(View.VISIBLE);
+            }
+        });
 
-        }else{
+        ver_animator.setTarget(vertical_abll);
 
-            messages.setText("Keeper Saves :(");
+        hor_animator = new ObjectAnimator();
 
-            messages.setTextColor(Color.parseColor("#FF0000"));
+        hor_animator.setIntValues(0,getResources().getDimensionPixelSize(R.dimen.animation_size));
 
-            messages.setVisibility(View.VISIBLE);
+        hor_animator.setDuration(3000);
 
-            penalty_Layout.setVisibility(View.GONE);
+        hor_animator.setRepeatMode(ValueAnimator.REVERSE);
 
-            timeText.setVisibility(View.VISIBLE);
+        hor_animator.setRepeatCount(ValueAnimator.INFINITE);
 
-            shoot_btn.setVisibility(View.VISIBLE);
+        hor_animator.setEvaluator(new IntEvaluator());
 
-        }
+        hor_animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+
+                horizontal_ball.setTranslationX((Integer) hor_animator.getAnimatedValue());
+
+            }
+        });
+
+        hor_animator.setTarget(horizontal_ball);
+
+
+
 
     }
 
+    private void findtheviews(){
+        goalsText = findViewById(R.id.goals);
 
+        timeText = findViewById(R.id.chrono);
+
+        shoot_btn = findViewById(R.id.shoot_button);
+
+        startReset_btn = findViewById(R.id.startmatch_button);
+
+        chronometer = new MyChronometer(speed,timeText,this,shoot_btn,startReset_btn);
+
+        messages = findViewById(R.id.messagesText);
+
+        away_goals = findViewById(R.id.away_goals);
+
+        penalty_Layout = findViewById(R.id.penalty_layout);
+
+        postText = findViewById(R.id.posts);
+
+        vertical_abll = findViewById(R.id.ver_ball);
+
+        horizontal_ball = findViewById(R.id.hor_ball);
+
+        Penalty_Stop_But = findViewById(R.id.penalty_stop);
+    }
 }
