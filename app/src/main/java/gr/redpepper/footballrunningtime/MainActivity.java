@@ -1,14 +1,17 @@
 package gr.redpepper.footballrunningtime;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -42,6 +45,14 @@ public class MainActivity extends Activity {
     private Button Pena_Left,Pena_Center,Pena_Right;
 
     private TextView postText;
+
+    ImageView vertical_abll,horizontal_ball;
+
+    private ObjectAnimator ver_animator;
+
+    private ObjectAnimator hor_animator;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +89,29 @@ public class MainActivity extends Activity {
         Pena_Right = findViewById(R.id.right_penantly);
 
         postText = findViewById(R.id.posts);
+
+        vertical_abll = findViewById(R.id.ver_ball);
+
+        horizontal_ball = findViewById(R.id.hor_ball);
+
+
+        stopbut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                hor_animator.cancel();
+
+                float hor_ball_position = (float) hor_animator.getAnimatedFraction();
+
+                Log.d("blepo",""+hor_ball_position);
+
+
+                int hor_ball_positions =  (Integer) hor_animator.getAnimatedValue();
+
+                Log.d("blepo",""+hor_ball_positions);
+                ver_animator.start();
+            }
+        });
 
 
         startReset_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -237,68 +271,83 @@ public class MainActivity extends Activity {
     }
 
     private void checkGoal(){
-        if(chronometer.getMilliseconds() >= 0 && chronometer.getMilliseconds() <= 9){
 
-            //Toast.makeText(MainActivity.this,"Goal The milli is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
-            player_goals++;
+        Handler handler = new Handler();
 
-            goalsText.setText("Home: "+player_goals);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
-            chronometer.FixedZero();
+                Log.d("blepo","timertext"+timeText.getText().toString());
 
-            messages.setText("GOALLLLL!!!");
+                if(chronometer.getMilliseconds() >= 0 && chronometer.getMilliseconds() <= 9){
 
-            messages.setTextColor(Color.parseColor("#FF0000"));
+                    //Toast.makeText(MainActivity.this,"Goal The milli is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
+                    player_goals++;
 
-            messages.setVisibility(View.VISIBLE);
+                    goalsText.setText("Home: "+player_goals);
+
+                    chronometer.FixedZero();
+
+                    messages.setText("GOALLLLL!!!");
+
+                    messages.setTextColor(Color.parseColor("#FF0000"));
+
+                    messages.setVisibility(View.VISIBLE);
 
 
-        }else if((chronometer.getMilliseconds() >= 990 && chronometer.getMilliseconds() <= 999) ||
-                (chronometer.getMilliseconds() >9 && chronometer.getMilliseconds()<=18)){
+                }else if((chronometer.getMilliseconds() >= 990 && chronometer.getMilliseconds() <= 999) ||
+                        (chronometer.getMilliseconds() >9 && chronometer.getMilliseconds()<=18)){
 
-            //Toast.makeText(MainActivity.this,"OUCH the millios is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this,"OUCH the millios is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
 
-            messages.setText("HIT THE POST !!!");
+                    messages.setText("HIT THE POST !!!");
 
-            messages.setTextColor(Color.parseColor("#0000FF"));
+                    messages.setTextColor(Color.parseColor("#0000FF"));
 
-            messages.setVisibility(View.VISIBLE);
+                    messages.setVisibility(View.VISIBLE);
 
-            posts ++;
+                    posts ++;
 
-            postText.setText("Posts: "+ posts);
+                    postText.setText("Posts: "+ posts);
 
-        }else if(chronometer.getMilliseconds() >= 480 && chronometer.getMilliseconds() <= 520){
+                }else if(chronometer.getMilliseconds() >= 480 && chronometer.getMilliseconds() <= 520){
 
-            //Toast.makeText(MainActivity.this,"OnwGoal the millios is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
-            messages.setText("OWN GOAL :(");
+                    //Toast.makeText(MainActivity.this,"OnwGoal the millios is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
+                    messages.setText("OWN GOAL :(");
 
-            messages.setTextColor(Color.parseColor("#0000FF"));
+                    messages.setTextColor(Color.parseColor("#0000FF"));
 
-            messages.setVisibility(View.VISIBLE);
+                    messages.setVisibility(View.VISIBLE);
 
-            rival_goals ++;
+                    rival_goals ++;
 
-            away_goals.setText("Away: " + rival_goals);
+                    away_goals.setText("Away: " + rival_goals);
 
-            posts = 0;
+                    posts = 0;
 
-            postText.setText("Posts: "+ posts);
+                    postText.setText("Posts: "+ posts);
 
-        }else if(chronometer.getMilliseconds() == 1000){
+                }else if(chronometer.getMilliseconds() == 1000){
 
-            //Toast.makeText(MainActivity.this,"OUCH the millios is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this,"OUCH the millios is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
 
-            messages.setText("HIT THE POST !!!");
+                    messages.setText("HIT THE POST !!!");
 
-            messages.setTextColor(Color.parseColor("#0000FF"));
+                    messages.setTextColor(Color.parseColor("#0000FF"));
 
-            messages.setVisibility(View.VISIBLE);
+                    messages.setVisibility(View.VISIBLE);
 
-            posts ++;
+                    posts ++;
 
-            postText.setText("Posts: "+ posts);
-        }
+                    postText.setText("Posts: "+ posts);
+                }
+
+
+            }
+        },20);
+
+
     }
 
     private void shootPenalty(int Side){
