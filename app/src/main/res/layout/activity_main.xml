@@ -118,7 +118,9 @@
                 android:layout_height="20dp"
                 android:background="@drawable/circle"
                 android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"/>
+
+                android:layout_marginLeft="0dip"
+                />
 
         </RelativeLayout>
 

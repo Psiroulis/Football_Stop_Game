@@ -1,6 +1,8 @@
 package gr.redpepper.footballrunningtime;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.IntEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -12,35 +14,33 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 public class MainActivity extends Activity {
 
-    ImageView vertical_abll,horizontal_ball;
+    ImageView vertical_abll, horizontal_ball;
     private ToggleButton shoot_btn;
-    private TextView goalsText,timeText,away_goals;
+    private TextView goalsText, timeText, away_goals;
     private ToggleButton startReset_btn;
     private MyChronometer chronometer;
     private int speed = 1;
     private int player_goals = 0;
     private int rival_goals = 0;
     private TextView messages;
-    private int posts = 0;
+    private int posts = 3;
     private RelativeLayout penalty_Layout;
     private TextView postText;
     private ObjectAnimator ver_animator;
 
     private ObjectAnimator hor_animator;
 
-    private  ToggleButton Penalty_Stop_But;
+    private ToggleButton Penalty_Stop_But;
 
-
+    private int verticalValues,horizontalValues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,83 +56,10 @@ public class MainActivity extends Activity {
 
         findtheviews();
 
-
-
-        /*stopbut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                hor_animator.cancel();
-
-                float hor_ball_position = (float) hor_animator.getAnimatedFraction();
-
-                Log.d("blepo",""+hor_ball_position);
-
-
-                int hor_ball_positions =  (Integer) hor_animator.getAnimatedValue();
-
-                Log.d("blepo",""+hor_ball_positions);
-                ver_animator.start();
-            }
-        });*/
-
-        Penalty_Stop_But.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                int verticalposition = 0;
-                int horizontalposition = 0;
-
-                if(isChecked){
-                    //on
-
-                    ver_animator.cancel();
-
-                    verticalposition = (Integer) ver_animator.getAnimatedValue();
-
-                    ver_animator.removeAllListeners();
-
-                    ver_animator = null;
-
-                    hor_animator.start();
-                }else{
-                    //off
-
-                    hor_animator.cancel();
-
-                    horizontalposition = (Integer) hor_animator.getAnimatedValue();
-
-                    hor_animator.removeAllListeners();
-
-                    hor_animator = null;
-
-                    penalty_Layout.setVisibility(View.GONE);
-
-                    if( (verticalposition >=175 && verticalposition <= 185) && (horizontalposition >=175 && horizontalposition <= 185)){
-
-                        messages.setText("Goall!!!");
-
-                        messages.setVisibility(View.VISIBLE);
-                    }else{
-
-                        messages.setText("Keeper Saves");
-
-                        messages.setVisibility(View.VISIBLE);
-
-                    }
-
-                    timeText.setVisibility(View.VISIBLE);
-
-                    shoot_btn.setVisibility(View.VISIBLE);
-
-                }
-            }
-        });
-
-
         startReset_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     //on Start New Game
 
                     messages.setVisibility(View.GONE);
@@ -141,9 +68,9 @@ public class MainActivity extends Activity {
 
                     rival_goals = 0;
 
-                    posts = 0;
+                    //posts = 0;
 
-                    postText.setText("Posts: "+ posts);
+                    postText.setText("Posts: " + posts);
 
                     chronometer.Start();
 
@@ -155,12 +82,12 @@ public class MainActivity extends Activity {
 
                     startReset_btn.setVisibility(View.GONE);
 
-                }else{
+                } else {
                     //off Start Seconf Half
 
-                    posts = 0;
+                    //posts = 0;
 
-                    postText.setText("Posts: "+ posts);
+                    postText.setText("Posts: " + posts);
 
                     messages.setVisibility(View.GONE);
 
@@ -182,7 +109,7 @@ public class MainActivity extends Activity {
 
                     checkGoal();
 
-                    Log.d("blepo",""+chronometer.getMilliseconds());
+                    Log.d("blepo", "" + chronometer.getMilliseconds());
 
                 } else {
                     // The toggle is Off
@@ -191,9 +118,9 @@ public class MainActivity extends Activity {
 
                     if (posts == 3) {
 
-                        posts = 0;
+                        //posts = 0;
 
-                        postText.setText("Posts: "+ posts);
+                        postText.setText("Posts: " + posts);
 
                         timeText.setVisibility(View.GONE);
 
@@ -207,7 +134,7 @@ public class MainActivity extends Activity {
 
                         ver_animator.start();
 
-                    }else{
+                    } else {
 
                         chronometer.Resume();
 
@@ -222,7 +149,7 @@ public class MainActivity extends Activity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
 
-                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
 
                     float x = (float) 0.9;
 
@@ -232,7 +159,7 @@ public class MainActivity extends Activity {
                     shoot_btn.setScaleY(y);
                     shoot_btn.setBackgroundResource(R.drawable.ball);
 
-                }else if(motionEvent.getAction() == MotionEvent.ACTION_UP){
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
 
                     float x = (float) 1;
 
@@ -250,7 +177,7 @@ public class MainActivity extends Activity {
 
     }
 
-    private void checkGoal(){
+    private void checkGoal() {
 
         Handler handler = new Handler();
 
@@ -258,14 +185,14 @@ public class MainActivity extends Activity {
             @Override
             public void run() {
 
-                Log.d("blepo","timertext"+timeText.getText().toString());
+                Log.d("blepo", "timertext" + timeText.getText().toString());
 
-                if(chronometer.getMilliseconds() >= 0 && chronometer.getMilliseconds() <= 9){
+                if (chronometer.getMilliseconds() >= 0 && chronometer.getMilliseconds() <= 9) {
 
                     //Toast.makeText(MainActivity.this,"Goal The milli is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
                     player_goals++;
 
-                    goalsText.setText("Home: "+player_goals);
+                    goalsText.setText("Home: " + player_goals);
 
                     chronometer.FixedZero();
 
@@ -276,8 +203,8 @@ public class MainActivity extends Activity {
                     messages.setVisibility(View.VISIBLE);
 
 
-                }else if((chronometer.getMilliseconds() >= 990 && chronometer.getMilliseconds() <= 999) ||
-                        (chronometer.getMilliseconds() >9 && chronometer.getMilliseconds()<=18)){
+                } else if ((chronometer.getMilliseconds() >= 990 && chronometer.getMilliseconds() <= 999) ||
+                        (chronometer.getMilliseconds() > 9 && chronometer.getMilliseconds() <= 18)) {
 
                     //Toast.makeText(MainActivity.this,"OUCH the millios is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
 
@@ -287,11 +214,11 @@ public class MainActivity extends Activity {
 
                     messages.setVisibility(View.VISIBLE);
 
-                    posts ++;
+                    posts++;
 
-                    postText.setText("Posts: "+ posts);
+                    postText.setText("Posts: " + posts);
 
-                }else if(chronometer.getMilliseconds() >= 480 && chronometer.getMilliseconds() <= 520){
+                } else if (chronometer.getMilliseconds() >= 480 && chronometer.getMilliseconds() <= 520) {
 
                     //Toast.makeText(MainActivity.this,"OnwGoal the millios is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
                     messages.setText("OWN GOAL :(");
@@ -300,15 +227,15 @@ public class MainActivity extends Activity {
 
                     messages.setVisibility(View.VISIBLE);
 
-                    rival_goals ++;
+                    rival_goals++;
 
                     away_goals.setText("Away: " + rival_goals);
 
                     posts = 0;
 
-                    postText.setText("Posts: "+ posts);
+                    postText.setText("Posts: " + posts);
 
-                }else if(chronometer.getMilliseconds() == 1000){
+                } else if (chronometer.getMilliseconds() == 1000) {
 
                     //Toast.makeText(MainActivity.this,"OUCH the millios is"+chronometer.getMilliseconds(),Toast.LENGTH_SHORT).show();
 
@@ -318,25 +245,25 @@ public class MainActivity extends Activity {
 
                     messages.setVisibility(View.VISIBLE);
 
-                    posts ++;
+                    posts++;
 
-                    postText.setText("Posts: "+ posts);
+                    postText.setText("Posts: " + posts);
                 }
 
 
             }
-        },20);
+        }, 20);
 
 
     }
 
-    private void InitializeAnimations(){
+    private void InitializeAnimations() {
 
         ver_animator = new ObjectAnimator();
 
-        ver_animator.setIntValues(0,getResources().getDimensionPixelSize(R.dimen.animation_size));
+        ver_animator.setIntValues(0, getResources().getDimensionPixelSize(R.dimen.animation_size));
 
-        ver_animator.setDuration(3000);
+        ver_animator.setDuration(5000);
 
         ver_animator.setRepeatMode(ValueAnimator.REVERSE);
 
@@ -349,17 +276,36 @@ public class MainActivity extends Activity {
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
 
                 vertical_abll.setTranslationY((Integer) ver_animator.getAnimatedValue());
+            }
+        });
+
+
+        ver_animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+
+                verticalValues = (Integer) ver_animator.getAnimatedValue();
+
+                ver_animator.removeAllListeners();
+
+                ver_animator.setDuration(0);
+
+                ((ValueAnimator) ver_animator).reverse();
 
             }
+
+
         });
 
         ver_animator.setTarget(vertical_abll);
 
+
         hor_animator = new ObjectAnimator();
 
-        hor_animator.setIntValues(0,getResources().getDimensionPixelSize(R.dimen.animation_size));
+        hor_animator.setIntValues(0, getResources().getDimensionPixelSize(R.dimen.animation_size));
 
-        hor_animator.setDuration(3000);
+        hor_animator.setDuration(5000);
 
         hor_animator.setRepeatMode(ValueAnimator.REVERSE);
 
@@ -376,14 +322,27 @@ public class MainActivity extends Activity {
             }
         });
 
+        hor_animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+
+                horizontalValues = (Integer) hor_animator.getAnimatedValue();
+
+                hor_animator.removeAllListeners();
+
+                hor_animator.setDuration(0);
+
+                ((ValueAnimator) hor_animator).reverse();
+            }
+        });
+
         hor_animator.setTarget(horizontal_ball);
-
-
 
 
     }
 
-    private void findtheviews(){
+    private void findtheviews() {
         goalsText = findViewById(R.id.goals);
 
         timeText = findViewById(R.id.chrono);
@@ -392,7 +351,7 @@ public class MainActivity extends Activity {
 
         startReset_btn = findViewById(R.id.startmatch_button);
 
-        chronometer = new MyChronometer(speed,timeText,this,shoot_btn,startReset_btn);
+        chronometer = new MyChronometer(speed, timeText, this, shoot_btn, startReset_btn);
 
         messages = findViewById(R.id.messagesText);
 
@@ -407,5 +366,51 @@ public class MainActivity extends Activity {
         horizontal_ball = findViewById(R.id.hor_ball);
 
         Penalty_Stop_But = findViewById(R.id.penalty_stop);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Penalty_Stop_But.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+
+                if (isChecked) {
+                    //on
+
+                    ver_animator.cancel();
+
+                    hor_animator.start();
+
+                } else {
+                    //off
+
+                    hor_animator.cancel();
+
+                    penalty_Layout.setVisibility(View.GONE);
+
+                    if( (verticalValues >= 258 && verticalValues <= 284) && (horizontalValues >= 258 && horizontalValues <= 284) ){
+
+                        messages.setText("Goall!!!");
+
+                        messages.setVisibility(View.VISIBLE);
+
+                    }else{
+
+                        messages.setText("Keeper Saves");
+
+                        messages.setVisibility(View.VISIBLE);
+
+                    }
+
+                    timeText.setVisibility(View.VISIBLE);
+
+                    shoot_btn.setVisibility(View.VISIBLE);
+
+                }
+
+            }
+        });
     }
 }
