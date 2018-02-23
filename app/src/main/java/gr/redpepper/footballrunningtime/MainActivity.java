@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
     private int player_goals = 0;
     private int rival_goals = 0;
     private TextView messages;
-    private int posts = 3;
+    private int posts = 0;
     private RelativeLayout penalty_Layout;
     private TextView postText;
     private ObjectAnimator ver_animator;
@@ -41,6 +41,8 @@ public class MainActivity extends Activity {
     private ToggleButton Penalty_Stop_But;
 
     private int verticalValues,horizontalValues;
+
+    private int penaltySpeed = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,7 @@ public class MainActivity extends Activity {
 
                     rival_goals = 0;
 
-                    //posts = 0;
+                    posts = 0;
 
                     postText.setText("Posts: " + posts);
 
@@ -85,7 +87,7 @@ public class MainActivity extends Activity {
                 } else {
                     //off Start Seconf Half
 
-                    //posts = 0;
+                    posts = 0;
 
                     postText.setText("Posts: " + posts);
 
@@ -118,7 +120,7 @@ public class MainActivity extends Activity {
 
                     if (posts == 3) {
 
-                        //posts = 0;
+                        posts = 0;
 
                         postText.setText("Posts: " + posts);
 
@@ -130,7 +132,7 @@ public class MainActivity extends Activity {
 
                         shoot_btn.setChecked(true);
 
-                        InitializeAnimations();
+
 
                         ver_animator.start();
 
@@ -263,7 +265,7 @@ public class MainActivity extends Activity {
 
         ver_animator.setIntValues(0, getResources().getDimensionPixelSize(R.dimen.animation_size));
 
-        ver_animator.setDuration(5000);
+        ver_animator.setDuration(penaltySpeed);
 
         ver_animator.setRepeatMode(ValueAnimator.REVERSE);
 
@@ -276,6 +278,7 @@ public class MainActivity extends Activity {
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
 
                 vertical_abll.setTranslationY((Integer) ver_animator.getAnimatedValue());
+
             }
         });
 
@@ -283,15 +286,8 @@ public class MainActivity extends Activity {
         ver_animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
 
                 verticalValues = (Integer) ver_animator.getAnimatedValue();
-
-                ver_animator.removeAllListeners();
-
-                ver_animator.setDuration(0);
-
-                ((ValueAnimator) ver_animator).reverse();
 
             }
 
@@ -305,7 +301,7 @@ public class MainActivity extends Activity {
 
         hor_animator.setIntValues(0, getResources().getDimensionPixelSize(R.dimen.animation_size));
 
-        hor_animator.setDuration(5000);
+        hor_animator.setDuration(penaltySpeed);
 
         hor_animator.setRepeatMode(ValueAnimator.REVERSE);
 
@@ -329,11 +325,6 @@ public class MainActivity extends Activity {
 
                 horizontalValues = (Integer) hor_animator.getAnimatedValue();
 
-                hor_animator.removeAllListeners();
-
-                hor_animator.setDuration(0);
-
-                ((ValueAnimator) hor_animator).reverse();
             }
         });
 
@@ -372,6 +363,8 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
+        InitializeAnimations();
+
         Penalty_Stop_But.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -389,6 +382,8 @@ public class MainActivity extends Activity {
                     hor_animator.cancel();
 
                     penalty_Layout.setVisibility(View.GONE);
+
+                    Log.d("blepo","verval"+verticalValues+"horval"+horizontalValues);
 
                     if( (verticalValues >= 258 && verticalValues <= 284) && (horizontalValues >= 258 && horizontalValues <= 284) ){
 
@@ -408,6 +403,9 @@ public class MainActivity extends Activity {
 
                     shoot_btn.setVisibility(View.VISIBLE);
 
+                    vertical_abll.setTranslationY(0);
+
+                    horizontal_ball.setTranslationX(0);
                 }
 
             }
