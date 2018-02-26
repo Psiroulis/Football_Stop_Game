@@ -157,5 +157,61 @@
         android:background="#000"
         android:padding="10dp"/>
 
+    <RelativeLayout
+        android:id="@+id/penaltyLayout"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:background="#ce008fbf">
+
+        <RelativeLayout
+            android:id="@+id/verticalPenaltyLine"
+            android:layout_width="30dip"
+            android:layout_height="200dip"
+            android:background="#d3000000"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
+
+            <ImageView
+                android:id="@+id/ver_ball"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/circle"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"/>
+
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/horizontalPenaltyLine"
+            android:layout_width="200dip"
+            android:layout_height="30dip"
+            android:background="#d3000000"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
+
+            <ImageView
+                android:id="@+id/hor_ball"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/circle"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="0dip"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="#8e00ff00"/>
+
+
+    </RelativeLayout>
+
 
 </RelativeLayout>
