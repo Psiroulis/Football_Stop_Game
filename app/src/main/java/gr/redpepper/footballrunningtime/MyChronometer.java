@@ -1,59 +1,61 @@
 package gr.redpepper.footballrunningtime;
 
 import android.app.Activity;
-import android.os.Handler;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 /**
- * Created by Δημήτρης on 18/1/2018.
+ * Created by psirogiannisdimitris on 25/02/2018.
  */
 
 public class MyChronometer {
 
+    private int milliseconds = 0;
+
+    private int seconds = 0;
+
+    private Timer timer = null;
+
     private int speed;
-    private TextView textview;
 
-    private Timer mTimer = null;
-
-    private int Milliseconds;
-    private int Seconds;
+    private TextView textView;
 
     private Activity activity;
 
-    private ToggleButton toggleButtonshoot;
+    private boolean changeHalfe;
 
-    private Button tooglebuttonstart;
-
-    public MyChronometer(int speed, TextView textview, Activity activity, ToggleButton shoot, ToggleButton start) {
+    public MyChronometer(int speed, TextView textView, Activity activity) {
         this.speed = speed;
-        this.textview = textview;
+        this.textView = textView;
         this.activity = activity;
-        this.toggleButtonshoot = shoot;
-        this.tooglebuttonstart = start;
+        this.changeHalfe = false;
     }
 
-    public void Start(){
 
-        Milliseconds = 0;
+    public void StartFirstHalf() {
 
-        Seconds = 0;
+        if (timer == null) {
 
-        if(mTimer == null){
+            timer = new Timer("new1",true);
 
-            mTimer = new Timer("new1",true);
-
-            mTimer.scheduleAtFixedRate(new TimerTask() {
+            timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
 
-                    calculate();
+                    if (getSeconds() == 45) {
+
+                        Pause();
+
+                        changeHalfe = true;
+
+                    } else {
+
+                        CountingTime();
+
+                    }
+
 
                 }
             }, 0, speed);
@@ -62,148 +64,122 @@ public class MyChronometer {
 
     }
 
-    public void Pause(){
 
-        if(mTimer != null) {
+    public void StartSecondHalf() {
 
-            mTimer.cancel();
+        if (timer == null) {
 
-            mTimer.purge();
+            timer = new Timer("new1",true);
 
-            mTimer = null;
-        }
-
-
-    }
-
-    public void Resume(){
-
-        if( mTimer == null){
-
-            mTimer = new Timer("new",true);
-
-            mTimer.scheduleAtFixedRate(new TimerTask() {
+            timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
 
-                    calculate();
+                    if (getSeconds() == 90) {
+
+                        Reset();
+
+                        changeHalfe = false;
+
+                    } else {
+
+                        CountingTime();
+
+                    }
+
 
                 }
             }, 0, speed);
 
-
         }
-
 
     }
 
-    public void Reset(){
+    public void Pause() {
 
-        if( mTimer != null){
+        if (timer != null) {
 
-            mTimer.cancel();
+            timer.cancel();
 
-            mTimer.purge();
+            timer.purge();
 
-            mTimer = null;
-        }
-
-        Milliseconds = 0;
-
-        Seconds = 0;
-
-        textview.setText("00:00:00");
-    }
-
-    private void calculate()
-    {
-        final String Millis;
-
-        if(Seconds == 45){
-
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    toggleButtonshoot.setVisibility(View.GONE);
-                }
-            });
-
-            mTimer.cancel();
-
-            mTimer.purge();
-
-            mTimer = null;
-
-            Milliseconds = 0;
-
-            Seconds = 0;
-
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-
-                    Handler handler = new Handler();
-
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            textview.setText("00:45:00");
-
-                            tooglebuttonstart.setVisibility(View.VISIBLE);
-                        }
-                    },70);
-
-                }
-            });
-
-        }else {
-
-
-            if (Milliseconds == 1000) {
-
-                Milliseconds = 0;
-
-                Seconds++;
-            }
-
-            if ((Milliseconds % 1000 / 10) < 10) {
-                Millis = "0" + Milliseconds % 1000 / 10;
-            } else {
-                Millis = Integer.toString(Milliseconds % 1000 / 10);
-            }
-
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-
-                    textview.setText("00:" + String.format("%02d", Seconds) + ":" + Millis);
-
-                }
-
-            });
-
-            Milliseconds++;
+            timer = null;
 
         }
+
     }
 
-    public void FixedZero(){
+    public void Reset() {
 
-        Handler handler = new Handler();
+        Pause();
 
-        handler.postDelayed(new Runnable() {
+        milliseconds = 0;
+
+        seconds = 0;
+
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                textview.setText("00:" +String.format("%02d",Seconds) + ":00");
+                textView.setText("00:00:00");
             }
-        },70);
-
-
-        Milliseconds  = 0;
+        });
     }
 
-    public int getMilliseconds() {
-        return Milliseconds;
+
+    public int getSeconds() {
+        return seconds;
+    }
+
+    public int getMillis() {
+        return milliseconds;
+    }
+
+    public boolean ChangeHalf() {
+        return changeHalfe;
+    }
+
+    private void CountingTime(){
+
+        if (milliseconds == 1000) {
+
+            seconds++;
+
+            milliseconds = 0;
+
+        }
+
+        milliseconds++;
+
+
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                String millis;
+
+                String secondis;
+
+                if ((getMillis() % 1000 / 10) < 10) {
+
+                    millis = "0" + (getMillis() % 1000 / 10);
+
+                } else {
+
+                    millis = "" + (getMillis() % 1000 / 10);
+
+                }
+
+                if (getSeconds() >= 0 && getSeconds() < 10) {
+
+                    secondis = "0" + seconds;
+                } else {
+                    secondis = "" + seconds;
+                }
+
+                textView.setText("00:" + secondis + ":" + millis);
+
+            }
+        });
+
     }
 }
