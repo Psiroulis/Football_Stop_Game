@@ -148,9 +148,6 @@ public class MyChronometer {
 
         }
 
-        milliseconds++;
-
-
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -180,6 +177,8 @@ public class MyChronometer {
 
             }
         });
+
+        milliseconds++;
 
     }
 }

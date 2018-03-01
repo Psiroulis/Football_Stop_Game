@@ -1,9 +1,16 @@
 package gr.redpepper.footballrunningtime;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.IntEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.RectF;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
@@ -11,6 +18,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MatchActivity extends Activity {
 
@@ -40,15 +50,34 @@ public class MatchActivity extends Activity {
 
     private TextView posts;
 
-    private int timerSpeed = 2;
+    private int timerSpeed = 1;
 
     private int playerGoals = 0;
 
     private int opponentsGoals = 0;
 
-    private int postCounter = 0;
+    private int postCounter = 3;
+
+    //Penalty Variables
+    private ImageView vertical_abll, horizontal_ball;
+
+    private ToggleButton Penalty_Stop_But;
+
+    private RelativeLayout penalty_Layout;
+
+    private ObjectAnimator ver_animator;
+
+    private ObjectAnimator hor_animator;
+
+    private int verticalValues,horizontalValues;
 
     private int penaltySpeed;
+
+    private RelativeLayout verpenlay;
+
+    private int test = 0;
+
+    Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +116,7 @@ public class MatchActivity extends Activity {
 
                 clockLayout.setVisibility(View.VISIBLE);
 
-                postCounter = 0;
+                //postCounter = 0;
 
 
                 if (!chronometer.ChangeHalf()) {
@@ -125,54 +154,64 @@ public class MatchActivity extends Activity {
 
                     messagesLayout.setVisibility(View.GONE);
 
-                    if(!chronometer.ChangeHalf()){
+                    if(postCounter == 3){
 
-                        chronometer.StartFirstHalf();
+                        //postCounter = 0;
+
+                        posts.setText("" + postCounter);
+
+                        clock.setVisibility(View.GONE);
+
+                        shootBall.setVisibility(View.GONE);
+
+                        penalty_Layout.setVisibility(View.VISIBLE);
+
+                        shootBall.setChecked(true);
+
+                        test = 0;
+
+                        ver_animator.start();
+
+                        timer = new Timer();
+
+                        timer.scheduleAtFixedRate(new TimerTask() {
+                            @Override
+                            public void run() {
+
+                                if(test == 2500){
+
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ver_animator.cancel();
+                                        }
+                                    });
+
+
+                                }
+
+                                test++;
+                            }
+                        },0,1);
 
                     }else{
 
-                        chronometer.StartSecondHalf();
+                        if(!chronometer.ChangeHalf()){
 
+                            chronometer.StartFirstHalf();
+
+                        }else{
+
+                            chronometer.StartSecondHalf();
+
+                        }
                     }
 
                 }
             }
         });
 
-
-        //Change Ball Button Size When Is Pressed
-        /*shootBall.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-
-                    float x = (float) 0.9;
-
-                    float y = (float) 0.9;
-
-                    shootBall.setScaleX(x);
-                    shootBall.setScaleY(y);
-                    shootBall.setBackgroundResource(R.drawable.ball);
-
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-
-                    float x = (float) 1;
-
-                    float y = (float) 1;
-
-                    shootBall.setScaleX(x);
-                    shootBall.setScaleY(y);
-                    shootBall.setBackgroundResource(R.drawable.ball);
-
-                }
-
-                return false;
-            }
-        });*/
-
-
+        
     }
 
     private void FindTheViews() {
@@ -188,17 +227,24 @@ public class MatchActivity extends Activity {
         startPlay = findViewById(R.id.startPlayingButton);
         clockLayout = findViewById(R.id.timerLayout);
         posts = findViewById(R.id.posts);
+        vertical_abll = findViewById(R.id.ver_ball);
+        horizontal_ball = findViewById(R.id.hor_ball);
+        Penalty_Stop_But = findViewById(R.id.penalty_stop);
+        penalty_Layout = findViewById(R.id.penaltyLayout);
+        verpenlay = findViewById(R.id.vertrel);
     }
 
     //Check if is goal or post when shoot happens
     private void CheckGoal() {
 
+
+        Log.d("blepo", ""+chronometer.getMillis());
         if (chronometer.getMillis() >= 0 && chronometer.getMillis() <= 9) {
 
             //It's a Goal
             playerGoals ++;
 
-            playerScore.setText(""+playerGoals);
+            playerScore.setText(String.valueOf(playerGoals));
 
             messages.setText("GOALLLLL!!!");
 
@@ -214,7 +260,7 @@ public class MatchActivity extends Activity {
 
             postCounter ++;
 
-            posts.setText(""+postCounter);
+            posts.setText(String.valueOf(postCounter));
 
             messages.setText("HIT THE POST !!!");
 
@@ -232,7 +278,7 @@ public class MatchActivity extends Activity {
 
             postCounter = 0;
 
-            posts.setText(""+postCounter);
+            posts.setText(String.valueOf(postCounter));
 
             messages.setText("OWN GOAL :(");
 
@@ -245,7 +291,7 @@ public class MatchActivity extends Activity {
             //It's a Goal
             playerGoals ++;
 
-            playerScore.setText(""+playerGoals);
+            playerScore.setText(String.valueOf(playerGoals));
 
             messages.setText("GOALLLLL!!!");
 
@@ -257,9 +303,146 @@ public class MatchActivity extends Activity {
 
     }
 
+    //initialize Penalty animations
+    private void InitializeAnimations() {
+
+        ver_animator = new ObjectAnimator();
+
+        ver_animator.setIntValues(0, getResources().getDimensionPixelSize(R.dimen.animation_size));
+
+        ver_animator.setDuration(penaltySpeed);
+
+        ver_animator.setRepeatMode(ValueAnimator.REVERSE);
+
+        ver_animator.setRepeatCount(ValueAnimator.INFINITE);
+
+        ver_animator.setEvaluator(new IntEvaluator());
 
 
 
+
+        ver_animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+
+                vertical_abll.setTranslationY((Integer) ver_animator.getAnimatedValue());
+
+            }
+        });
+
+
+        ver_animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+
+                verticalValues = (Integer) ver_animator.getAnimatedValue();
+
+
+
+            }
+
+
+        });
+
+        ver_animator.setTarget(vertical_abll);
+
+
+        hor_animator = new ObjectAnimator();
+
+        hor_animator.setIntValues(0, getResources().getDimensionPixelSize(R.dimen.animation_size));
+
+        hor_animator.setDuration(penaltySpeed);
+
+        hor_animator.setRepeatMode(ValueAnimator.REVERSE);
+
+        hor_animator.setRepeatCount(ValueAnimator.INFINITE);
+
+        hor_animator.setEvaluator(new IntEvaluator());
+
+        hor_animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+
+                horizontal_ball.setTranslationX((Integer) hor_animator.getAnimatedValue());
+
+
+
+            }
+        });
+
+        hor_animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+
+                horizontalValues = (Integer) hor_animator.getAnimatedValue();
+
+            }
+        });
+
+        hor_animator.setTarget(horizontal_ball);
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        InitializeAnimations();
+
+        Penalty_Stop_But.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+
+                if (isChecked) {
+                    //on
+
+                    ver_animator.cancel();
+
+                    hor_animator.start();
+
+                } else {
+                    //off
+
+                    hor_animator.cancel();
+
+                    penalty_Layout.setVisibility(View.GONE);
+
+
+
+                    if( (verticalValues >= 258 && verticalValues <= 284) && (horizontalValues >= 258 && horizontalValues <= 284) ){
+
+                        messages.setText("Goall!!!");
+
+                        messagesLayout.setVisibility(View.VISIBLE);
+
+                    }else{
+
+                        messages.setText("Keeper Saves");
+
+                        messagesLayout.setVisibility(View.VISIBLE);
+
+                    }
+
+                    clock.setVisibility(View.VISIBLE);
+
+                    shootBall.setVisibility(View.VISIBLE);
+
+                    vertical_abll.setTranslationY(0);
+
+                    horizontal_ball.setTranslationX(0);
+                }
+
+            }
+        });
+    }
+
+    public static RectF calculeRectOnScreen(View view) {
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        return new RectF(location[0], location[1], location[0] + view.getMeasuredWidth(), location[1] + view.getMeasuredHeight());
+    }
 }
 
 

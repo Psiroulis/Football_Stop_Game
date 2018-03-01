@@ -79,7 +79,7 @@ public class MainActivity extends Activity {
            public void onClick(View view) {
                Intent intent = new Intent(MainActivity.this,MatchActivity.class);
                intent.putExtra("opponentScore",3);
-               intent.putExtra("penaltySpeed",1000);
+               intent.putExtra("penaltySpeed",5000);
                intent.putExtra("playerFlag",R.drawable.grflag);
                intent.putExtra("opponentFlag",R.drawable.gerflag);
                startActivity(intent);

@@ -160,16 +160,88 @@
     <RelativeLayout
         android:id="@+id/penaltyLayout"
         android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="#333333"
+        android:visibility="gone">
+
+        <ToggleButton
+            android:id="@+id/penalty_stop"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:textOff="Stop Ver"
+            android:textOn="Stop Hor"/>
+
+        <RelativeLayout
+            android:id="@+id/horrel"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:background="#8000"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
+
+            <ImageView
+                android:id="@+id/hor_ball"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/circle"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="0dip"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/vertrel"
+            android:layout_width="30dp"
+            android:layout_height="200dp"
+            android:background="#8000"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
+
+            <ImageView
+                android:id="@+id/ver_ball"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/circle"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="#8eff0000"/>
+
+    </RelativeLayout>
+
+
+
+
+
+
+
+
+
+    <!--<RelativeLayout
+        android:id="@+id/penaltyLayout"
+        android:layout_width="250dp"
+        android:layout_height="300dp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:background="#ce008fbf">
+        android:background="#ce008fbf"
+        android:visibility="gone">
 
         <RelativeLayout
             android:id="@+id/verticalPenaltyLine"
             android:layout_width="30dip"
             android:layout_height="200dip"
-            android:background="#d3000000"
+            android:background="#8000"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true">
 
@@ -189,7 +261,7 @@
             android:id="@+id/horizontalPenaltyLine"
             android:layout_width="200dip"
             android:layout_height="30dip"
-            android:background="#d3000000"
+            android:background="#8000"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true">
 
@@ -208,10 +280,19 @@
             android:layout_height="30dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:background="#8e00ff00"/>
+            android:background="#7000ff00" />
+
+        <ToggleButton
+            android:id="@+id/penalty_stop"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:textOff="Stop Ver"
+            android:textOn="Stop Hor"/>
 
 
-    </RelativeLayout>
+    </RelativeLayout>-->
 
 
 </RelativeLayout>
