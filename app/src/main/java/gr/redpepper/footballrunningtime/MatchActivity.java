@@ -2,13 +2,11 @@ package gr.redpepper.footballrunningtime;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.IntEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.RectF;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,9 +16,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MatchActivity extends Activity {
 
@@ -65,19 +60,13 @@ public class MatchActivity extends Activity {
 
     private RelativeLayout penalty_Layout;
 
-    private ObjectAnimator ver_animator;
+    private ValueAnimator ver_animator;
 
-    private ObjectAnimator hor_animator;
-
-    private int verticalValues,horizontalValues;
+    private ValueAnimator hor_animator;
 
     private int penaltySpeed;
 
-    private RelativeLayout verpenlay;
-
-    private int test = 0;
-
-    Timer timer;
+    private RelativeLayout verpenlay,horpenlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +86,7 @@ public class MatchActivity extends Activity {
 
         opponentsGoals = intent.getIntExtra("opponentScore", 0);
 
-        penaltySpeed = intent.getIntExtra("penaltySpeed", 1000);
+        penaltySpeed = intent.getIntExtra("penaltySpeed", 100);
 
         playerFlag.setImageResource(intent.getIntExtra("playerFlag", 0));
 
@@ -168,31 +157,7 @@ public class MatchActivity extends Activity {
 
                         shootBall.setChecked(true);
 
-                        test = 0;
-
                         ver_animator.start();
-
-                        timer = new Timer();
-
-                        timer.scheduleAtFixedRate(new TimerTask() {
-                            @Override
-                            public void run() {
-
-                                if(test == 2500){
-
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            ver_animator.cancel();
-                                        }
-                                    });
-
-
-                                }
-
-                                test++;
-                            }
-                        },0,1);
 
                     }else{
 
@@ -232,6 +197,7 @@ public class MatchActivity extends Activity {
         Penalty_Stop_But = findViewById(R.id.penalty_stop);
         penalty_Layout = findViewById(R.id.penaltyLayout);
         verpenlay = findViewById(R.id.vertrel);
+        horpenlay = findViewById(R.id.horrel);
     }
 
     //Check if is goal or post when shoot happens
@@ -306,82 +272,107 @@ public class MatchActivity extends Activity {
     //initialize Penalty animations
     private void InitializeAnimations() {
 
-        ver_animator = new ObjectAnimator();
 
-        ver_animator.setIntValues(0, getResources().getDimensionPixelSize(R.dimen.animation_size));
-
-        ver_animator.setDuration(penaltySpeed);
-
-        ver_animator.setRepeatMode(ValueAnimator.REVERSE);
-
-        ver_animator.setRepeatCount(ValueAnimator.INFINITE);
-
-        ver_animator.setEvaluator(new IntEvaluator());
-
-
-
-
-        ver_animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        vertical_abll.post(new Runnable() {
             @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+            public void run() {
 
-                vertical_abll.setTranslationY((Integer) ver_animator.getAnimatedValue());
+                //Log.d("blepo","Device Density: " + getResources().getDisplayMetrics().density);
 
+                //Log.d("blepo","RelHeight: "+verpenlay.getHeight());
+
+                //Log.d("blepo","BallHeight: "+vertical_abll.getHeight());
+
+                float diff = Float.valueOf(verpenlay.getHeight() -  vertical_abll.getHeight());
+
+                //Log.d("blepo","Distance to Run The ball: "+ diff);
+
+
+                int diff2 = verpenlay.getHeight() -  vertical_abll.getHeight();
+
+                ver_animator = ObjectAnimator.ofFloat(vertical_abll,"translationY",diff);
+
+
+                ver_animator.setDuration((diff2 * 1000) / penaltySpeed);
+
+                ver_animator.setRepeatMode(ValueAnimator.REVERSE);
+
+                ver_animator.setRepeatCount(ValueAnimator.INFINITE);
+
+                ver_animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+
+                        //Log.d("blepo","The Animated Values"+valueAnimator.getAnimatedValue("translationY"));
+
+
+
+                    }
+                });
+
+                ver_animator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+
+                        Log.d("blepo","To teliko Y: "+ (vertical_abll.getY()/getResources().getDisplayMetrics().density) );
+                    }
+
+
+                });
             }
         });
 
-
-        ver_animator.addListener(new AnimatorListenerAdapter() {
+        horizontal_ball.post(new Runnable() {
             @Override
-            public void onAnimationEnd(Animator animation) {
+            public void run() {
 
-                verticalValues = (Integer) ver_animator.getAnimatedValue();
+                //Log.d("blepo","Device Density: " + getResources().getDisplayMetrics().density);
+
+                //Log.d("blepo","RelHeight: "+horpenlay.getHeight());
+
+                //Log.d("blepo","BallHeight: "+horizontal_ball.getHeight());
+
+                float diff = Float.valueOf(horpenlay.getWidth() -  horizontal_ball.getWidth());
+
+               //Log.d("blepo","Distance to Run The ball: "+ diff);
 
 
+                int diff2 = horpenlay.getWidth() -  horizontal_ball.getWidth();
+
+                hor_animator = ObjectAnimator.ofFloat(horizontal_ball,"translationX",diff);
+
+
+                hor_animator.setDuration((diff2 * 1000) / penaltySpeed);
+
+                hor_animator.setRepeatMode(ValueAnimator.REVERSE);
+
+                hor_animator.setRepeatCount(ValueAnimator.INFINITE);
+
+                hor_animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+
+                        //Log.d("blepo","The Animated Values"+valueAnimator.getAnimatedValue("translationX"));
+
+
+
+                    }
+                });
+
+                hor_animator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+
+                        Log.d("blepo","To teliko Y: "+ (horizontal_ball.getX()/getResources().getDisplayMetrics().density) );
+                    }
+
+
+                });
 
             }
-
-
         });
-
-        ver_animator.setTarget(vertical_abll);
-
-
-        hor_animator = new ObjectAnimator();
-
-        hor_animator.setIntValues(0, getResources().getDimensionPixelSize(R.dimen.animation_size));
-
-        hor_animator.setDuration(penaltySpeed);
-
-        hor_animator.setRepeatMode(ValueAnimator.REVERSE);
-
-        hor_animator.setRepeatCount(ValueAnimator.INFINITE);
-
-        hor_animator.setEvaluator(new IntEvaluator());
-
-        hor_animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-
-                horizontal_ball.setTranslationX((Integer) hor_animator.getAnimatedValue());
-
-
-
-            }
-        });
-
-        hor_animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-
-                horizontalValues = (Integer) hor_animator.getAnimatedValue();
-
-            }
-        });
-
-        hor_animator.setTarget(horizontal_ball);
-
 
     }
 
@@ -407,11 +398,10 @@ public class MatchActivity extends Activity {
 
                     hor_animator.cancel();
 
-                    penalty_Layout.setVisibility(View.GONE);
+                    penalty_Layout.setVisibility(View.INVISIBLE);
 
 
-
-                    if( (verticalValues >= 258 && verticalValues <= 284) && (horizontalValues >= 258 && horizontalValues <= 284) ){
+                    /*if( (verTime >= 1295 && verTime <= 1395) && (horTime >= 1295 && horTime <= 1395) ){
 
                         messages.setText("Goall!!!");
 
@@ -423,7 +413,7 @@ public class MatchActivity extends Activity {
 
                         messagesLayout.setVisibility(View.VISIBLE);
 
-                    }
+                    }*/
 
                     clock.setVisibility(View.VISIBLE);
 
@@ -438,11 +428,7 @@ public class MatchActivity extends Activity {
         });
     }
 
-    public static RectF calculeRectOnScreen(View view) {
-        int[] location = new int[2];
-        view.getLocationOnScreen(location);
-        return new RectF(location[0], location[1], location[0] + view.getMeasuredWidth(), location[1] + view.getMeasuredHeight());
-    }
+
 }
 
 
