@@ -2,14 +2,18 @@ package gr.redpepper.footballrunningtime;
 
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
 
 public class MainActivity extends Activity {
+
+    private Button singlePlayer_Button;
+
+    private Button multyPlayer_Button;
+
+    private Button exit_Button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,58 +27,52 @@ public class MainActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        TextView text = findViewById(R.id.testtext);
+        findTheViews();
 
-        Button start = findViewById(R.id.startbut);
+    }
 
-        Button stop = findViewById(R.id.stopbut);
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-        Button reset = findViewById(R.id.resetbut);
-
-        final MyChronometer chrono = new MyChronometer(1,text,this);
-
-
-       /*start.setOnClickListener(new View.OnClickListener() {
+        singlePlayer_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-                if(!chrono.ChangeHalf()){
-
-                    chrono.StartFirstHalf();
-
-                }else{
-
-                    chrono.StartSecondHalf();
-
-                }
-
-
-
 
             }
         });
 
-        stop.setOnClickListener(new View.OnClickListener() {
+        multyPlayer_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                chrono.Pause();
-
-                Log.d("blepo","millis=" + chrono.getMillis());
 
             }
         });
 
-        reset.setOnClickListener(new View.OnClickListener() {
+        exit_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                chrono.Reset();
-            }
-        });*/
+                MainActivity.this.finish();
 
-       start.setOnClickListener(new View.OnClickListener() {
+            }
+        });
+    }
+
+
+
+    private void findTheViews(){
+
+        singlePlayer_Button = findViewById(R.id.singlePlayerButton);
+
+        multyPlayer_Button = findViewById(R.id.multyPlayerButton);
+
+        exit_Button = findViewById(R.id.exitButton);
+
+    }
+}
+
+/*start.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
                Intent intent = new Intent(MainActivity.this,MatchActivity.class);
@@ -86,7 +84,5 @@ public class MainActivity extends Activity {
                MainActivity.this.finish();
 
            }
-       });
-    }
-}
+       });*/
 

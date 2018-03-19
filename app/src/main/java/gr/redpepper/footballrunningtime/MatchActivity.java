@@ -341,8 +341,6 @@ public class MatchActivity extends Activity {
                 int diff2 = horpenlay.getWidth() -  horizontal_ball.getWidth();
 
                 hor_animator = ObjectAnimator.ofFloat(horizontal_ball,"translationX",diff);
-
-
                 hor_animator.setDuration((diff2 * 1000) / penaltySpeed);
 
                 hor_animator.setRepeatMode(ValueAnimator.REVERSE);
