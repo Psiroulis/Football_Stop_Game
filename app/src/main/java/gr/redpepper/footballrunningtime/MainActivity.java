@@ -2,10 +2,15 @@ package gr.redpepper.footballrunningtime;
 
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+
+import java.util.List;
 
 public class MainActivity extends Activity {
 
@@ -15,6 +20,7 @@ public class MainActivity extends Activity {
 
     private Button exit_Button;
 
+    private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -29,6 +35,7 @@ public class MainActivity extends Activity {
 
         findTheViews();
 
+        context = this;
     }
 
     @Override
@@ -38,6 +45,10 @@ public class MainActivity extends Activity {
         singlePlayer_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Intent intent = new Intent(MainActivity.this, SinglePlayerMenu.class);
+
+                startActivity(intent);
 
             }
         });
@@ -57,6 +68,43 @@ public class MainActivity extends Activity {
 
             }
         });
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+               //TeamsDatabase db = Room.databaseBuilder(getApplicationContext(), TeamsDatabase.class,"teamsDatabase").build();
+
+                TeamsDatabase db = TeamsDatabase.getInstance(context);
+
+                TeamsDao tdao = db.teamsDao();
+
+                List<TeamsEntity> allTeams = tdao.getAll();
+
+                for (int i = 0; i< allTeams.size(); i++){
+
+                    Log.d("blepo",""+allTeams.get(i).getName());
+
+                }
+
+                db.close();
+
+                CupDatabase db2 = CupDatabase.getInstance(context);
+
+                CupDao cDao = db2.cupDao();
+
+                List<CupEntity> allCups = cDao.getAll();
+
+                for (int x = 0; x<allCups.size(); x++){
+
+                    Log.d("blepo",""+allCups.get(x).getName());
+                }
+
+                db2.close();
+
+
+            }
+        }).start();
     }
 
 

@@ -21,7 +21,8 @@
         <activity
             android:name=".MatchActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".SinglePlayerMenu"></activity>
+        <activity android:name=".SinglePlayerMenu" />
+        <activity android:name=".TeamSelection"></activity>
     </application>
 
 </manifest>

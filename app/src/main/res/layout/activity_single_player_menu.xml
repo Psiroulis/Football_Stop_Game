@@ -1,9 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="gr.redpepper.footballrunningtime.SinglePlayerMenu">
+    android:orientation="vertical"
+    android:background="#fff">
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/EuroCupButton"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:text="Euro"/>
+
+    <Button
+        android:id="@+id/CopaAmericaButton"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:text="Copa America"/>
+
+    <Button
+        android:id="@+id/CopaAfricaButton"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:text="Copa Africa"/>
+
+    <Button
+        android:id="@+id/WorldCupButton"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:text="World Cup"/>
+
+
+</LinearLayout>
