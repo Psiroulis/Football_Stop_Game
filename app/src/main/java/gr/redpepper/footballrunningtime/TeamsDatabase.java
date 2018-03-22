@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
  * Created by psirogiannisdimitris on 21/03/2018.
  */
 
-@Database(entities = {TeamsEntity.class} , version = 1)
+@Database(entities = {TeamsEntity.class,CupEntity.class} , version = 1)
 public abstract class TeamsDatabase extends RoomDatabase {
 
     public abstract TeamsDao teamsDao();
@@ -44,6 +44,8 @@ public abstract class TeamsDatabase extends RoomDatabase {
                             public void run() {
 
                                 getInstance(context).teamsDao().insertAll(TeamsEntity.populateData());
+
+                                getInstance(context).teamsDao().insertAll(CupEntity.populateData());
 
                             }
                         });

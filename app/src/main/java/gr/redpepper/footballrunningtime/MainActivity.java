@@ -87,20 +87,17 @@ public class MainActivity extends Activity {
 
                 }
 
-                db.close();
+                List<CupEntity> allCups = tdao.getAllCups();
 
-                CupDatabase db2 = CupDatabase.getInstance(context);
+                for (int i = 0; i< allCups.size(); i++){
 
-                CupDao cDao = db2.cupDao();
+                    Log.d("blepo",""+allCups.get(i).getName());
 
-                List<CupEntity> allCups = cDao.getAll();
-
-                for (int x = 0; x<allCups.size(); x++){
-
-                    Log.d("blepo",""+allCups.get(x).getName());
                 }
 
-                db2.close();
+                db.close();
+
+
 
 
             }

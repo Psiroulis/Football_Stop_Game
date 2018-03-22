@@ -27,4 +27,17 @@ public interface TeamsDao {
 
     @Query("DELETE FROM TeamsEntity")
     void emptyTable();
+
+    @Query("SELECT * FROM CupEntity")
+    List<CupEntity> getAllCups();
+
+    @Query("SELECT * FROM CupEntity WHERE uid = :Uid")
+    CupEntity findByIdCup(int Uid);
+
+    @Insert
+    void insertAll(CupEntity... cups);
+
+    @Query("DELETE FROM CupEntity")
+    void emptyTableCup();
+
 }
