@@ -93,7 +93,30 @@ public class TeamsEntity {
                 new TeamsEntity("Switzerland", 75, 1,1),
                 new TeamsEntity("Iceland", 68, 1,1),
                 new TeamsEntity("Albania", 65, 1,1),
-
+                //Copa America Teams
+                new TeamsEntity("Brazil", 95, 0,2),
+                new TeamsEntity("Argentina", 98, 0,2),
+                new TeamsEntity("Chile", 80, 0,2),
+                new TeamsEntity("Uruguay", 85, 0,2),
+                new TeamsEntity("Mexico", 80, 1,2),
+                new TeamsEntity("Colombia", 75, 1,2),
+                new TeamsEntity("USA", 75, 1,2),
+                new TeamsEntity("Paraguay", 73, 1,2),
+                //Copa Africa TEams
+                new TeamsEntity("Nigeria",80 ,0 ,3),
+                new TeamsEntity("Egypt",85 , 0,3),
+                new TeamsEntity("Coite de Voire",88 ,0 ,3),
+                new TeamsEntity("Cameroon",88 ,0 ,3),
+                new TeamsEntity("Marocco", 80, 1,3),
+                new TeamsEntity("Tunisia",70 ,1 ,3),
+                new TeamsEntity("Zambia",73 ,1 ,3),
+                new TeamsEntity("Ghana",90 ,1 ,3),
+                //World Cup Locked Teams
+                new TeamsEntity("Australia",70 ,1 ,0),
+                new TeamsEntity("China",60 ,1 ,0),
+                new TeamsEntity("Korea",65 ,1 ,0),
+                new TeamsEntity("Canada",50 ,1 ,0),
+                new TeamsEntity("Japan",73 ,1 ,0),
 
         };
     }
