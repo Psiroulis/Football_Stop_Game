@@ -1,13 +1,19 @@
 package gr.redpepper.footballrunningtime;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
 public class TeamSelection extends AppCompatActivity {
 
     private int Cup;
+
+    ViewPager viewpager;
+
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +30,9 @@ public class TeamSelection extends AppCompatActivity {
 
         FindTheViews();
 
+        viewpager = (ViewPager) findViewById(R.id.viewpager);
+
+        viewpager.setAdapter(new PagerAdapter(context));
 
     }
 
