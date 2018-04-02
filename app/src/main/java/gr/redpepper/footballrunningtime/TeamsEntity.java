@@ -62,7 +62,7 @@ public class TeamsEntity {
         this.name = name;
     }
 
-    public void setOverall(int overall) {
+    /*public void setOverall(int overall) {
         this.overall = overall;
     }
 
@@ -72,7 +72,7 @@ public class TeamsEntity {
 
     public void setCup(int cup) {
         this.cup = cup;
-    }
+    }*/
 
     public static TeamsEntity[] populateData() {
         return new TeamsEntity[]{

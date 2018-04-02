@@ -2,12 +2,15 @@ package gr.redpepper.footballrunningtime;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.WindowManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TeamSelection extends AppCompatActivity {
 
@@ -16,6 +19,10 @@ public class TeamSelection extends AppCompatActivity {
     private ViewPager viewpager;
 
     private Context context;
+
+    private ArrayList<Team> allTeamsOfCup;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +34,6 @@ public class TeamSelection extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         context = this;
-
-        Intent intent = getIntent();
-
-        Cup = intent.getIntExtra("choosenCup",0);
 
         FindTheViews();
 
@@ -47,9 +50,65 @@ public class TeamSelection extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Intent intent = getIntent();
+
+        Cup = intent.getIntExtra("choosenCup",0);
+
+        new GetAllTeamsOfCup().execute(Cup);
+
+    }
+
     private void FindTheViews(){
 
         viewpager = findViewById(R.id.viewpager);
 
+    }
+
+    private class GetAllTeamsOfCup extends AsyncTask<Integer,String,String>{
+
+        ArrayList<Team> allteams =new ArrayList<>();
+
+        @Override
+        protected String doInBackground(Integer... integers) {
+
+            TeamsDatabase db = TeamsDatabase.getInstance(context);
+
+            TeamsDao tdao = db.teamsDao();
+
+            List<TeamsEntity> allTeams = tdao.getCupsTeams(integers[0]);
+
+            for (int i = 0; i< allTeams.size(); i++){
+
+                TeamsEntity entity = allTeams.get(i);
+
+                Team oneteam = new Team(entity.getUid(),entity.getName(),entity.getLocked(),entity.getCup());
+
+                allteams.add(oneteam);
+
+            }
+
+            db.close();
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            allTeamsOfCup = allteams;
+
+            for (int i = 0; i<allTeamsOfCup.size(); i++){
+
+                Team team = allTeamsOfCup.get(i);
+
+                Log.d("blepo","di"+team.getId()+"name"+team.getName()+"locked"+team.getLocked());
+            }
+
+        }
     }
 }
