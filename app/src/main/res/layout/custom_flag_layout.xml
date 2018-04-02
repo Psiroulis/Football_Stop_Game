@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -9,7 +8,15 @@
     android:id="@+id/flagImage"
     android:layout_width="match_parent"
     android:layout_height="250dip"
-    android:src="@drawable/gerflag"
-    android:layout_margin="20dip"/>
+    android:layout_margin="20dip"
+    android:layout_alignParentTop="true"/>
+
+    <Button
+        android:id="@+id/SelectTeamButton"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:text="Select"
+        android:layout_below="@+id/flagImage"
+        android:layout_margin="20dip"/>
 
 </RelativeLayout>
