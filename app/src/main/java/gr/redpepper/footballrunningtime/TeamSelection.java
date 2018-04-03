@@ -1,18 +1,17 @@
 package gr.redpepper.footballrunningtime;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.WindowManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TeamSelection extends AppCompatActivity {
+public class TeamSelection extends Activity {
 
     private int Cup;
 
@@ -37,17 +36,6 @@ public class TeamSelection extends AppCompatActivity {
 
         FindTheViews();
 
-
-        ArrayList<Integer> teamFlags = new ArrayList<>();
-
-        teamFlags.add(R.drawable.gerflag);
-
-        teamFlags.add(R.drawable.grflag);
-
-        PagerAdapter adapter = new PagerAdapter(context,teamFlags);
-
-        viewpager.setAdapter(adapter);
-
     }
 
     @Override
@@ -70,7 +58,7 @@ public class TeamSelection extends AppCompatActivity {
 
     private class GetAllTeamsOfCup extends AsyncTask<Integer,String,String>{
 
-        ArrayList<Team> allteams =new ArrayList<>();
+        ArrayList<Team> allteams = new ArrayList<>();
 
         @Override
         protected String doInBackground(Integer... integers) {
@@ -100,15 +88,9 @@ public class TeamSelection extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            allTeamsOfCup = allteams;
+            PagerAdapter adapter = new PagerAdapter(context,allteams);
 
-            for (int i = 0; i<allTeamsOfCup.size(); i++){
-
-                Team team = allTeamsOfCup.get(i);
-
-                Log.d("blepo","di"+team.getId()+"name"+team.getName()+"locked"+team.getLocked());
-            }
-
+            viewpager.setAdapter(adapter);
         }
     }
 }
