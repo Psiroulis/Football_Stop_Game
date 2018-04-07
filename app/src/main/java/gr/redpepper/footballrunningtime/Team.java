@@ -10,11 +10,14 @@ public class Team {
 
     private int cup;
 
-    public Team(int id, String name, int locked, int cup) {
+    private int overall;
+
+    public Team(int id, String name, int locked, int cup, int overall) {
         this.id = id;
         this.name = name;
         this.locked = locked;
         this.cup = cup;
+        this.overall = overall;
     }
 
     public int getId() {
@@ -33,4 +36,5 @@ public class Team {
         return cup;
     }
 
+    public int getOveral(){return overall;}
 }

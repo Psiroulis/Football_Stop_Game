@@ -2,6 +2,7 @@ package gr.redpepper.footballrunningtime;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -57,17 +59,34 @@ public class PagerAdapter extends android.support.v4.view.PagerAdapter {
 
         Button button = view.findViewById(R.id.SelectTeamButton);
 
-        Team team = teams.get(position);
+        final Team team = teams.get(position);
+
+        TextView teamOveral = view.findViewById(R.id.overalText);
 
         teamName.setText(team.getName());
 
         teamFlag.setBackgroundResource(GetTeamDrawable(team.getName()));
+
+        teamOveral.setText("Overal: "+team.getOveral());
 
         if(team.getLocked() == 0){
 
             button.setText("Select");
 
             lock.setVisibility(View.GONE);
+
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent intent = new Intent(context,PasheOf16.class);
+
+                    intent.putExtra("selected_team_id",team.getId());
+
+                    context.startActivity(intent);
+
+                }
+            });
 
         }else{
 
@@ -76,6 +95,15 @@ public class PagerAdapter extends android.support.v4.view.PagerAdapter {
             teamFlag.setAlpha(0.6f);
 
             lock.setVisibility(View.VISIBLE);
+
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Toast.makeText(context,"einai lock",Toast.LENGTH_SHORT).show();
+
+                }
+            });
 
         }
 
@@ -101,5 +129,7 @@ public class PagerAdapter extends android.support.v4.view.PagerAdapter {
         return context.getResources().getIdentifier( teamName.toLowerCase() , "drawable", context.getPackageName());
 
     }
+
+
 }
 

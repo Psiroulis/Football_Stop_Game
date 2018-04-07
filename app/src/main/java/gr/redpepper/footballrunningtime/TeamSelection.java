@@ -60,6 +60,8 @@ public class TeamSelection extends Activity {
 
         ArrayList<Team> allteams = new ArrayList<>();
 
+        Intent intent;
+
         @Override
         protected String doInBackground(Integer... integers) {
 
@@ -73,10 +75,9 @@ public class TeamSelection extends Activity {
 
                 TeamsEntity entity = allTeams.get(i);
 
-                Team oneteam = new Team(entity.getUid(),entity.getName(),entity.getLocked(),entity.getCup());
+                Team oneteam = new Team(entity.getUid(),entity.getName(),entity.getLocked(),entity.getCup(),entity.getOverall());
 
                 allteams.add(oneteam);
-
             }
 
             db.close();

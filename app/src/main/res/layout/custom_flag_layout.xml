@@ -34,12 +34,23 @@
         android:src="@drawable/lock"
         android:visibility="gone"/>
 
+    <TextView
+        android:id="@+id/overalText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="Overal: 98%"
+        android:layout_below="@id/flagImage"
+        android:layout_marginTop="20dip"
+        android:textSize="20sp"
+        android:textColor="#fff" />
+
     <Button
         android:id="@+id/SelectTeamButton"
         android:layout_width="match_parent"
         android:layout_height="50dip"
         android:text="Select"
-        android:layout_below="@+id/flagImage"
+        android:layout_below="@+id/overalText"
         android:layout_margin="20dip"/>
 
 </RelativeLayout>
