@@ -40,4 +40,6 @@ public interface TeamsDao {
     @Query("DELETE FROM CupEntity")
     void emptyTableCup();
 
+    @Query("SELECT * FROM TeamsEntity WHERE uid != :Uid")
+    List<TeamsEntity> getAllExceptSelected(int Uid);
 }

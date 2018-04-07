@@ -1,15 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-<ImageView
-    android:id="@+id/flagImage"
-    android:layout_width="match_parent"
-    android:layout_height="250dip"
-    android:src="@drawable/gerflag"
-    android:layout_margin="20dip"/>
+    <TextView
+        android:id="@+id/teamNametxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dip"
+        android:layout_centerHorizontal="true"
+        android:text="Team name"
+        android:textColor="#fff"
+        android:textSize="25sp"/>
+
+    <ImageView
+        android:id="@+id/flagImage"
+        android:layout_width="250dip"
+        android:layout_height="250dip"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dip"
+        android:layout_below="@+id/teamNametxt"/>
+
+    <ImageView
+        android:id="@+id/lock"
+        android:layout_width="250dip"
+        android:layout_height="250dip"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dip"
+        android:layout_below="@+id/teamNametxt"
+        android:src="@drawable/lock"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/overalText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="Overal: 98%"
+        android:layout_below="@id/flagImage"
+        android:layout_marginTop="20dip"
+        android:textSize="20sp"
+        android:textColor="#fff" />
+
+    <Button
+        android:id="@+id/SelectTeamButton"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:text="Select"
+        android:layout_below="@+id/overalText"
+        android:layout_margin="20dip"/>
 
 </RelativeLayout>

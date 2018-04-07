@@ -62,7 +62,7 @@ public class TeamsEntity {
         this.name = name;
     }
 
-    public void setOverall(int overall) {
+    /*public void setOverall(int overall) {
         this.overall = overall;
     }
 
@@ -72,7 +72,7 @@ public class TeamsEntity {
 
     public void setCup(int cup) {
         this.cup = cup;
-    }
+    }*/
 
     public static TeamsEntity[] populateData() {
         return new TeamsEntity[]{
@@ -85,14 +85,14 @@ public class TeamsEntity {
                 new TeamsEntity("Netherlands", 88, 1,1),
                 new TeamsEntity("Germany", 98, 1,1),
                 new TeamsEntity("Portugal", 85, 1,1),
-                new TeamsEntity("Belgium", 85, 1,1),
+                new TeamsEntity("belgium", 85, 1,1),
                 new TeamsEntity("Turkey", 73, 1,1),
                 new TeamsEntity("Sweden", 80, 1,1),
                 new TeamsEntity("Denmark", 75, 1,1),
                 new TeamsEntity("Croatia", 81, 1,1),
                 new TeamsEntity("Switzerland", 75, 1,1),
                 new TeamsEntity("Iceland", 68, 1,1),
-                new TeamsEntity("Albania", 65, 1,1),
+                new TeamsEntity("albania", 65, 1,1),
                 //Copa America Teams
                 new TeamsEntity("Brazil", 95, 0,2),
                 new TeamsEntity("Argentina", 98, 0,2),

@@ -5,12 +5,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-
-import java.util.List;
 
 public class MainActivity extends Activity {
 
@@ -69,7 +66,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        new Thread(new Runnable() {
+        /*new Thread(new Runnable() {
             @Override
             public void run() {
 
@@ -101,7 +98,7 @@ public class MainActivity extends Activity {
 
 
             }
-        }).start();
+        }).start();*/
     }
 
 
@@ -123,8 +120,8 @@ public class MainActivity extends Activity {
                Intent intent = new Intent(MainActivity.this,MatchActivity.class);
                intent.putExtra("opponentScore",3);
                intent.putExtra("penaltySpeed",300);
-               intent.putExtra("playerFlag",R.drawable.grflag);
-               intent.putExtra("opponentFlag",R.drawable.gerflag);
+               intent.putExtra("playerFlag",R.drawable.greece);
+               intent.putExtra("opponentFlag",R.drawable.germany);
                startActivity(intent);
                MainActivity.this.finish();
 
