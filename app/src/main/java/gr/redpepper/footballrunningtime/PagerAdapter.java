@@ -81,6 +81,7 @@ public class PagerAdapter extends android.support.v4.view.PagerAdapter {
 
                     Intent intent = new Intent(context,PasheOf16.class);
 
+                    intent.putExtra("cup",team.getCup());
                     intent.putExtra("selected_team_id",team.getId());
 
                     context.startActivity(intent);

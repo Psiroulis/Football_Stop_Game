@@ -21,6 +21,8 @@ public class PasheOf16 extends AppCompatActivity {
 
     ArrayList<Team> allOtherTeams;
 
+    private int Cup;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,14 +44,7 @@ public class PasheOf16 extends AppCompatActivity {
 
         selectedTeamId = intent.getIntExtra("selected_team_id",0);
 
-
-
-
-
-
-
-
-
+        Cup = intent.getIntExtra("cup",0);
 
     }
 
@@ -71,7 +66,7 @@ public class PasheOf16 extends AppCompatActivity {
 
             TeamsDao tdao = db.teamsDao();
 
-            List<TeamsEntity> allTeams = tdao.getAllExceptSelected(selectedTeamId);
+            List<TeamsEntity> allTeams = tdao.getAllExceptSelected(selectedTeamId,Cup);
 
             for (int i = 0; i< allTeams.size(); i++){
 
@@ -117,7 +112,12 @@ public class PasheOf16 extends AppCompatActivity {
 
                 }
 
-                check.add(ra);
+                if(ra != selectedTeamId){
+
+                    check.add(ra);
+
+                }
+
 
                 Log.d("blepo","TO random: " +ra);
             }
