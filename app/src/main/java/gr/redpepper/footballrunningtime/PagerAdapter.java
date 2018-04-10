@@ -45,7 +45,7 @@ public class PagerAdapter extends android.support.v4.view.PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(final ViewGroup container, int position) {
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -81,7 +81,10 @@ public class PagerAdapter extends android.support.v4.view.PagerAdapter {
 
                     Intent intent = new Intent(context,PasheOf16.class);
 
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                     intent.putExtra("cup",team.getCup());
+
                     intent.putExtra("selected_team_id",team.getId());
 
                     context.startActivity(intent);
