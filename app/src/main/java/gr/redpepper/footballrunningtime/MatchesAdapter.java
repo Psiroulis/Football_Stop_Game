@@ -87,7 +87,15 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MyViewHo
 
     private Integer GetTeamDrawable(String teamName){
 
-        return context.getResources().getIdentifier( teamName.toLowerCase() , "drawable", context.getPackageName());
+        String name = teamName;
+
+        if(name.contains(" ")){
+
+            name = name.replace(" ","_");
+
+        }
+
+        return context.getResources().getIdentifier( name.toLowerCase() , "drawable", context.getPackageName());
 
     }
 

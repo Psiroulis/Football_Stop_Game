@@ -86,12 +86,12 @@ public class SinglePlayerMenu extends Activity {
                 GoToTeamSelection(1);
 
                 break;
-            case "africa":
+            case "america":
 
                 GoToTeamSelection(2);
 
                 break;
-            case "america":
+            case "africa":
 
                 GoToTeamSelection(3);
 

@@ -130,7 +130,15 @@ public class PagerAdapter extends android.support.v4.view.PagerAdapter {
 
     private Integer GetTeamDrawable(String teamName){
 
-        return context.getResources().getIdentifier( teamName.toLowerCase() , "drawable", context.getPackageName());
+        String name = teamName;
+
+        if(name.contains(" ")){
+
+            name = name.replace(" ","_");
+
+        }
+
+        return context.getResources().getIdentifier( name.toLowerCase() , "drawable", context.getPackageName());
 
     }
 
