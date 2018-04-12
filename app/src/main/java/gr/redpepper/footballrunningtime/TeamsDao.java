@@ -42,4 +42,7 @@ public interface TeamsDao {
 
     @Query("SELECT * FROM TeamsEntity WHERE uid != :Uid AND cup = :cup")
     List<TeamsEntity> getAllExceptSelected(int Uid,int cup);
+
+    @Query("SELECT * FROM TeamsEntity WHERE worldcup = 1")
+    List<TeamsEntity> getAllWorldCupTeams();
 }

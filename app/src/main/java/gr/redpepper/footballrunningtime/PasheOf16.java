@@ -46,8 +46,6 @@ public class PasheOf16 extends Activity {
 
         list = findViewById(R.id.pa16recview);
 
-
-
     }
 
     @Override
@@ -73,8 +71,6 @@ public class PasheOf16 extends Activity {
 
         new GetAllTeamsOfCup().execute();
 
-
-
     }
 
 
@@ -87,7 +83,19 @@ public class PasheOf16 extends Activity {
 
             TeamsDao tdao = db.teamsDao();
 
-            List<TeamsEntity> teams = tdao.getCupsTeams(Cup);
+            List<TeamsEntity> teams;
+
+            if(Cup == 4){
+
+                teams = tdao.getAllWorldCupTeams();
+
+            }else{
+
+                teams = tdao.getCupsTeams(Cup);
+
+            }
+
+
 
             for (int i = 0; i< teams.size(); i++){
 
@@ -132,10 +140,6 @@ public class PasheOf16 extends Activity {
             mAdapter.notifyDataSetChanged();
 
         }
-
-
-
-
 
     }
 

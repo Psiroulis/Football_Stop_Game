@@ -69,7 +69,17 @@ public class TeamSelection extends Activity {
 
             TeamsDao tdao = db.teamsDao();
 
-            List<TeamsEntity> allTeams = tdao.getCupsTeams(integers[0]);
+            List<TeamsEntity> allTeams;
+
+            if(Cup == 4){
+
+                allTeams = tdao.getAllWorldCupTeams();
+
+            }else{
+
+                allTeams = tdao.getCupsTeams(integers[0]);
+
+            }
 
             for (int i = 0; i< allTeams.size(); i++){
 
