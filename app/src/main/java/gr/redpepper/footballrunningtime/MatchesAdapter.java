@@ -26,7 +26,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MyViewHo
         public TextView firstTeamName,secondTeamName;
         public ImageView firstTeamFlag,secondTeamFlag;
 
-        public MyViewHolder(View view) {
+         MyViewHolder(View view) {
             super(view);
 
             firstTeamFlag = view.findViewById(R.id.firstTeamFlag);
@@ -37,7 +37,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MyViewHo
         }
     }
 
-    public MatchesAdapter(Context context, ArrayList<ArrayList<Team>> teams,int selectedTeamId) {
+     MatchesAdapter(Context context, ArrayList<ArrayList<Team>> teams,int selectedTeamId) {
         this.context = context;
         this.teams = teams;
         this.selectedTeamId = selectedTeamId;

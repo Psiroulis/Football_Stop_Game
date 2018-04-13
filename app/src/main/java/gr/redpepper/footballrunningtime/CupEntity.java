@@ -45,9 +45,9 @@ public class CupEntity {
         return locked;
     }
 
-    public void setLocked(int locked) {
+   /* public void setLocked(int locked) {
         this.locked = locked;
-    }
+    }*/
 
     public static CupEntity[] populateData(){
 

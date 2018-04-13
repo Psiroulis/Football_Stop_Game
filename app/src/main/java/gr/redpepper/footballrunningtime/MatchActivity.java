@@ -283,7 +283,7 @@ public class MatchActivity extends Activity {
 
                 //Log.d("blepo","BallHeight: "+vertical_abll.getHeight());
 
-                float diff = Float.valueOf(verpenlay.getHeight() -  vertical_abll.getHeight());
+                float diff = (float) (verpenlay.getHeight() - vertical_abll.getHeight());
 
                 //Log.d("blepo","Distance to Run The ball: "+ diff);
 

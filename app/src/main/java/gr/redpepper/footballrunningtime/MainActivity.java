@@ -2,7 +2,6 @@ package gr.redpepper.footballrunningtime;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +16,7 @@ public class MainActivity extends Activity {
 
     private Button exit_Button;
 
-    private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -32,7 +31,7 @@ public class MainActivity extends Activity {
 
         findTheViews();
 
-        context = this;
+
     }
 
     @Override
