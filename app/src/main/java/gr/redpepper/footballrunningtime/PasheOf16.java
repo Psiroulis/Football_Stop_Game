@@ -9,7 +9,10 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,6 +34,8 @@ public class PasheOf16 extends Activity {
 
     private MatchesAdapter mAdapter;
 
+    private Button startMatchButton;
+
 
 
     @Override
@@ -46,6 +51,7 @@ public class PasheOf16 extends Activity {
 
         list = findViewById(R.id.pa16recview);
 
+        startMatchButton = findViewById(R.id.start16MatchBut);
     }
 
     @Override
@@ -70,6 +76,37 @@ public class PasheOf16 extends Activity {
         list.setAdapter(mAdapter);
 
         new GetAllTeamsOfCup().execute();
+
+        startMatchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                int oponentID = 0;
+
+                for (int i = 0; i<matches.size(); i++){
+
+                    Team one = matches.get(i).get(0);
+
+                    Team two = matches.get(i).get(1);
+
+                    if(one.getId() == selectedTeamId || two.getId() == selectedTeamId){
+
+                        if(one.getId() == selectedTeamId){
+
+                            oponentID = two.getId();
+
+                        }else{
+
+                            oponentID = one.getId();
+                        }
+
+                    }
+                }
+
+                //todo: start match for 16 with teams and opponent
+                Log.d("blepo","my team:"+selectedTeamId+"opponetn"+ oponentID);
+            }
+        });
 
     }
 
@@ -138,6 +175,8 @@ public class PasheOf16 extends Activity {
             }
 
             mAdapter.notifyDataSetChanged();
+
+            startMatchButton.setVisibility(View.VISIBLE);
 
         }
 

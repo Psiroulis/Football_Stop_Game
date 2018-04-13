@@ -12,4 +12,11 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:scrollbars="vertical"/>
+    <Button
+        android:id="@+id/start16MatchBut"
+        android:layout_width="match_parent"
+        android:layout_height="40dip"
+        android:layout_alignParentBottom="true"
+        android:text="Start Match"
+        android:visibility="gone"/>
 </RelativeLayout>
