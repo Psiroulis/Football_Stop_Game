@@ -99,7 +99,7 @@ public class TeamSelection extends Activity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            PagerAdapter adapter = new PagerAdapter(context,allteams);
+            PagerAdapter adapter = new PagerAdapter(context,allteams,Cup);
 
             viewpager.setAdapter(adapter);
         }

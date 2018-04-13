@@ -22,11 +22,15 @@ public class PagerAdapter extends android.support.v4.view.PagerAdapter {
 
     private ArrayList<Team> teams;
 
-    public PagerAdapter(Context context,  ArrayList<Team> teams) {
+    private int choosenCup;
+
+    public PagerAdapter(Context context,  ArrayList<Team> teams, int choosenCup) {
 
         this.context = context;
 
         this.teams = teams;
+
+        this.choosenCup = choosenCup;
 
     }
 
@@ -83,7 +87,9 @@ public class PagerAdapter extends android.support.v4.view.PagerAdapter {
 
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                    intent.putExtra("cup",team.getCup());
+                    //intent.putExtra("cup",team.getCup());
+
+                    intent.putExtra("cup",choosenCup);
 
                     intent.putExtra("selected_team_id",team.getId());
 
