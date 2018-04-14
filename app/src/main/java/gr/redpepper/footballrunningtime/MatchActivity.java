@@ -5,9 +5,11 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,6 +20,8 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 public class MatchActivity extends Activity {
+
+    //views
 
     private ImageView playerFlag;
 
@@ -31,29 +35,15 @@ public class MatchActivity extends Activity {
 
     private RelativeLayout clockLayout;
 
-    private RelativeLayout messagesLayout;
-
-    private TextView messages;
-
     private TextView clock;
 
     private ToggleButton shootBall;
 
     private ToggleButton startPlay;
 
-    private MyChronometer chronometer;
-
     private TextView posts;
 
-    private int timerSpeed = 1;
-
-    private int playerGoals = 0;
-
-    private int opponentsGoals = 0;
-
-    private int postCounter = 3;
-
-    //Penalty Variables
+    //Penalty Variables and views
     private ImageView vertical_abll, horizontal_ball;
 
     private ToggleButton Penalty_Stop_But;
@@ -64,13 +54,25 @@ public class MatchActivity extends Activity {
 
     private ValueAnimator hor_animator;
 
-    private int penaltySpeed;
+    private int penaltySpeed = 100;
 
     private RelativeLayout verpenlay,horpenlay;
 
+    private int timerSpeed = 1;
+
+    private Context context;
+
+    private int playerTeamId;
+
+    private int opponentTeamId;
+
+    private TheMatch match;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_match);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -78,47 +80,42 @@ public class MatchActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        context = this;
+
         FindTheViews();
 
         //Get Match Info From Intent
 
         Intent intent = getIntent();
 
-        opponentsGoals = intent.getIntExtra("opponentScore", 0);
+        playerTeamId = intent.getIntExtra("playerteamid",0);
 
-        penaltySpeed = intent.getIntExtra("penaltySpeed", 100);
+        opponentTeamId = intent.getIntExtra("opponentteamid",0);
 
-        playerFlag.setImageResource(intent.getIntExtra("playerFlag", 0));
+    }
 
-        opponentFlag.setImageResource(intent.getIntExtra("opponentFlag", 0));
 
-        chronometer = new MyChronometer(timerSpeed, clock, this);
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        new GetTeamsInfo().execute();
+
+        InitializeAnimations();
 
         //Play Button functionality
         startPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                messagesLayout.setVisibility(View.GONE);
-
                 startPlay.setVisibility(View.GONE);
 
                 clockLayout.setVisibility(View.VISIBLE);
 
-                //postCounter = 0;
-
-
-                if (!chronometer.ChangeHalf()) {
-
-                    chronometer.StartFirstHalf();
-
-                } else {
-
-                    chronometer.StartSecondHalf();
-
-                }
-
                 shootBall.setVisibility(View.VISIBLE);
+
+                match.RunTheTimer();
 
             }
         });
@@ -131,23 +128,40 @@ public class MatchActivity extends Activity {
                 //shooting
                 if (isChecked) {
 
-                    messagesLayout.setVisibility(View.GONE);
+                    int goalChecker = match.Shoot();
 
-                    chronometer.Pause();
+                    if(goalChecker == 0){
 
-                    CheckGoal();
+                        posts.setText(String.valueOf(match.getPosts()));
+
+                        //Toast.makeText(context,"Hit The Post",Toast.LENGTH_SHORT).show();
+
+                    }else if(goalChecker == 1){
+
+                        playerScore.setText(String.valueOf(match.getPlayerGoals()));
+
+                        //Toast.makeText(context,"Gooooaall",Toast.LENGTH_SHORT).show();
+
+                    }else if(goalChecker == 2){
+
+                        //Toast.makeText(context,"Missed",Toast.LENGTH_SHORT).show();
+
+                    }else if(goalChecker == 3){
+
+                        opponentScore.setText(String.valueOf(match.getOpponentGoals()));
+
+                        //Toast.makeText(context,"Own Goal :(",Toast.LENGTH_SHORT).show();
+                    }
 
                 }
                 //Restart the chronometer
                 else {
 
-                    messagesLayout.setVisibility(View.GONE);
+                    if(match.getPosts() == 3){
 
-                    if(postCounter == 3){
+                        match.setPosts(0);
 
-                        //postCounter = 0;
-
-                        posts.setText("" + postCounter);
+                        posts.setText("0");
 
                         clock.setVisibility(View.GONE);
 
@@ -161,22 +175,131 @@ public class MatchActivity extends Activity {
 
                     }else{
 
-                        if(!chronometer.ChangeHalf()){
+                        match.RunTheTimer();
 
-                            chronometer.StartFirstHalf();
-
-                        }else{
-
-                            chronometer.StartSecondHalf();
-
-                        }
                     }
 
                 }
             }
         });
 
-        
+        Penalty_Stop_But.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+
+                if (isChecked) {
+                    //on
+
+                    ver_animator.cancel();
+
+                    hor_animator.start();
+
+                } else {
+                    //off
+
+                    hor_animator.cancel();
+
+
+                    Handler handler = new Handler();
+
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            penalty_Layout.setVisibility(View.INVISIBLE);
+
+                            clock.setVisibility(View.VISIBLE);
+
+                            shootBall.setVisibility(View.VISIBLE);
+
+                            vertical_abll.setTranslationY(0);
+
+                            horizontal_ball.setTranslationX(0);
+
+
+                        }
+                    },1400);
+
+                    /*if( (verTime >= 1295 && verTime <= 1395) && (horTime >= 1295 && horTime <= 1395) ){
+
+                        messages.setText("Goall!!!");
+
+                        messagesLayout.setVisibility(View.VISIBLE);
+
+                    }else{
+
+                        messages.setText("Keeper Saves");
+
+                        messagesLayout.setVisibility(View.VISIBLE);
+
+                    }*/
+
+
+                }
+
+            }
+        });
+
+
+    }
+
+
+    private class GetTeamsInfo extends AsyncTask<String,String,String>{
+
+        Team playerTeam , opponentTeam;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            TeamsDatabase db = TeamsDatabase.getInstance(context);
+
+            TeamsDao tdao = db.teamsDao();
+
+            TeamsEntity pt = tdao.findById(playerTeamId);
+
+            TeamsEntity ot = tdao.findById(opponentTeamId);
+
+            playerTeam = new Team(pt.getUid(),pt.getName(),pt.getLocked(),pt.getCup(),pt.getOverall());
+
+            opponentTeam = new Team(ot.getUid(),ot.getName(),ot.getLocked(),ot.getCup(),ot.getOverall());
+
+            db.close();
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            playerFlag.setBackgroundResource(GetTeamDrawable(playerTeam.getName()));
+
+            opponentFlag.setBackgroundResource(GetTeamDrawable(opponentTeam.getName()));
+
+            MyChronometer chronometer = new MyChronometer(timerSpeed,clock,MatchActivity.this);
+
+            match = new TheMatch(chronometer,0);
+
+        }
+    }
+
+    private Integer GetTeamDrawable(String teamName){
+
+        String name = teamName;
+
+        if(name.contains(" ")){
+
+            name = name.replace(" ","_");
+
+        }
+
+        return context.getResources().getIdentifier( name.toLowerCase() , "drawable", context.getPackageName());
+
     }
 
     private void FindTheViews() {
@@ -185,8 +308,6 @@ public class MatchActivity extends Activity {
         playerScore = findViewById(R.id.playerScore);
         opponentScore = findViewById(R.id.opponentScore);
         currentHalf = findViewById(R.id.currentHalf);
-        messagesLayout = findViewById(R.id.messagesLayout);
-        messages = findViewById(R.id.messagesText);
         clock = findViewById(R.id.timerText);
         shootBall = findViewById(R.id.shootButton);
         startPlay = findViewById(R.id.startPlayingButton);
@@ -198,75 +319,6 @@ public class MatchActivity extends Activity {
         penalty_Layout = findViewById(R.id.penaltyLayout);
         verpenlay = findViewById(R.id.vertrel);
         horpenlay = findViewById(R.id.horrel);
-    }
-
-    //Check if is goal or post when shoot happens
-    private void CheckGoal() {
-
-
-        Log.d("blepo", ""+chronometer.getMillis());
-        if (chronometer.getMillis() >= 0 && chronometer.getMillis() <= 9) {
-
-            //It's a Goal
-            playerGoals ++;
-
-            playerScore.setText(String.valueOf(playerGoals));
-
-            messages.setText("GOALLLLL!!!");
-
-            messages.setTextColor(Color.parseColor("#ff5544"));
-
-            messagesLayout.setVisibility(View.VISIBLE);
-
-
-        } else if ((chronometer.getMillis() >= 990 && chronometer.getMillis() <= 999) ||
-                (chronometer.getMillis() > 9 && chronometer.getMillis() <= 18)) {
-
-            //It's a post
-
-            postCounter ++;
-
-            posts.setText(String.valueOf(postCounter));
-
-            messages.setText("HIT THE POST !!!");
-
-            messages.setTextColor(Color.parseColor("#0000FF"));
-
-            messagesLayout.setVisibility(View.VISIBLE);
-
-        } else if (chronometer.getMillis() >= 480 && chronometer.getMillis() <= 520) {
-
-            //It' a onw goal
-
-            opponentsGoals++;
-
-            opponentScore.setText(""+opponentsGoals);
-
-            postCounter = 0;
-
-            posts.setText(String.valueOf(postCounter));
-
-            messages.setText("OWN GOAL :(");
-
-            messages.setTextColor(Color.parseColor("#0000FF"));
-
-            messagesLayout.setVisibility(View.VISIBLE);
-
-        } else if (chronometer.getMillis() == 1000) {
-
-            //It's a Goal
-            playerGoals ++;
-
-            playerScore.setText(String.valueOf(playerGoals));
-
-            messages.setText("GOALLLLL!!!");
-
-            messages.setTextColor(Color.parseColor("#FF0000"));
-
-            messagesLayout.setVisibility(View.VISIBLE);
-        }
-
-
     }
 
     //initialize Penalty animations
@@ -335,7 +387,7 @@ public class MatchActivity extends Activity {
 
                 float diff = Float.valueOf(horpenlay.getWidth() -  horizontal_ball.getWidth());
 
-               //Log.d("blepo","Distance to Run The ball: "+ diff);
+                //Log.d("blepo","Distance to Run The ball: "+ diff);
 
 
                 int diff2 = horpenlay.getWidth() -  horizontal_ball.getWidth();
@@ -373,60 +425,6 @@ public class MatchActivity extends Activity {
         });
 
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        InitializeAnimations();
-
-        Penalty_Stop_But.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-
-                if (isChecked) {
-                    //on
-
-                    ver_animator.cancel();
-
-                    hor_animator.start();
-
-                } else {
-                    //off
-
-                    hor_animator.cancel();
-
-                    penalty_Layout.setVisibility(View.INVISIBLE);
-
-
-                    /*if( (verTime >= 1295 && verTime <= 1395) && (horTime >= 1295 && horTime <= 1395) ){
-
-                        messages.setText("Goall!!!");
-
-                        messagesLayout.setVisibility(View.VISIBLE);
-
-                    }else{
-
-                        messages.setText("Keeper Saves");
-
-                        messagesLayout.setVisibility(View.VISIBLE);
-
-                    }*/
-
-                    clock.setVisibility(View.VISIBLE);
-
-                    shootBall.setVisibility(View.VISIBLE);
-
-                    vertical_abll.setTranslationY(0);
-
-                    horizontal_ball.setTranslationX(0);
-                }
-
-            }
-        });
-    }
-
-
 }
 
 

@@ -9,7 +9,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -103,8 +102,11 @@ public class PasheOf16 extends Activity {
                     }
                 }
 
-                //todo: start match for 16 with teams and opponent
-                Log.d("blepo","my team:"+selectedTeamId+"opponetn"+ oponentID);
+                Intent intent = new Intent(PasheOf16.this,MatchActivity.class);
+                intent.putExtra("playerteamid",selectedTeamId);
+                intent.putExtra("opponentteamid",oponentID);
+
+                startActivity(intent);
             }
         });
 
