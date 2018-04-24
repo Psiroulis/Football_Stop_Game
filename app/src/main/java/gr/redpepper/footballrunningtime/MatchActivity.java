@@ -19,6 +19,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.util.ArrayList;
+
 public class MatchActivity extends Activity {
 
     //views
@@ -91,6 +93,24 @@ public class MatchActivity extends Activity {
         playerTeamId = intent.getIntExtra("playerteamid",0);
 
         opponentTeamId = intent.getIntExtra("opponentteamid",0);
+
+        ArrayList<ArrayList<Team>> matches = new ArrayList<>();
+
+        matches = (ArrayList<ArrayList<Team>>) intent.getSerializableExtra("matches");
+
+        if(matches != null){
+
+            for (int i = 0; i<matches.size(); i++){
+
+                Log.d("blepo",matches.get(i).get(0).getName()+" - "+matches.get(i).get(1).getName());
+
+            }
+
+        }else{
+
+            Log.d("blepo","einai null");
+
+        }
 
     }
 

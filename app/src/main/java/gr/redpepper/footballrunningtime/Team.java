@@ -1,6 +1,8 @@
 package gr.redpepper.footballrunningtime;
 
-public class Team {
+import java.io.Serializable;
+
+public class Team implements Serializable{
 
     private int id;
 
