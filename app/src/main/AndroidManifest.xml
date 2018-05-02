@@ -27,8 +27,10 @@
         <activity
             android:name=".TeamSelection"
             android:screenOrientation="portrait" />
-        <activity android:name=".PasheOf16"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".PasheOf16"
+            android:screenOrientation="portrait" />
+        <activity android:name=".PasheOf8"></activity>
     </application>
 
 </manifest>

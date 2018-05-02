@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/pa8recview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:scrollbars="vertical"
+        android:layout_margin="5dip"/>
+    <Button
+        android:id="@+id/start8MatchBut"
+        android:layout_width="match_parent"
+        android:layout_height="40dip"
+        android:layout_alignParentBottom="true"
+        android:text="Start Match"
+        android:visibility="gone"/>
+</RelativeLayout>

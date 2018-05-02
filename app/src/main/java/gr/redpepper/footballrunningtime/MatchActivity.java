@@ -70,6 +70,8 @@ public class MatchActivity extends Activity {
 
     private TheMatch match;
 
+    ArrayList<ArrayList<Team>> matches;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -94,7 +96,7 @@ public class MatchActivity extends Activity {
 
         opponentTeamId = intent.getIntExtra("opponentteamid",0);
 
-        ArrayList<ArrayList<Team>> matches = new ArrayList<>();
+        matches = new ArrayList<>();
 
         matches = (ArrayList<ArrayList<Team>>) intent.getSerializableExtra("matches");
 
@@ -261,6 +263,21 @@ public class MatchActivity extends Activity {
         });
 
 
+
+        //test Code
+        posts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(MatchActivity.this,PasheOf8.class);
+                intent.putExtra("playerteamid",playerTeamId);
+                intent.putExtra("matches",matches);
+                intent.putExtra("selected_team_id",playerTeamId);
+
+                startActivity(intent);
+
+            }
+        });
     }
 
 
