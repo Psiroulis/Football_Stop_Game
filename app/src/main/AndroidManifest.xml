@@ -30,7 +30,8 @@
         <activity
             android:name=".PasheOf16"
             android:screenOrientation="portrait" />
-        <activity android:name=".PasheOf8"></activity>
+        <activity android:name=".PasheOf8" />
+        <activity android:name=".PhaseOf4"></activity>
     </application>
 
 </manifest>
