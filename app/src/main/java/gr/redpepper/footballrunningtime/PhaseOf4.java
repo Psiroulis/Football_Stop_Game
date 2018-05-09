@@ -101,7 +101,7 @@ public class PhaseOf4 extends Activity {
 
         Collections.shuffle(matchPairs);
 
-        for (int i = 0; i < 3; i++){
+        for (int i = 0; i < matchPairs.size(); i++){
 
             teamsToMakeCouples.add(matchPairs.get(i).get(0));
 
@@ -130,6 +130,17 @@ public class PhaseOf4 extends Activity {
         }
 
         mAdapter.notifyDataSetChanged();
+
+        startMatchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PhaseOf4.this,Final.class);
+                intent.putExtra("selected_team_id",selectedTeamId);
+                intent.putExtra("matches",match_4_Pairs);
+
+                startActivity(intent);
+            }
+        });
 
         startMatchButton.setVisibility(View.VISIBLE);
 
