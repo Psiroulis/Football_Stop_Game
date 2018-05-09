@@ -69,7 +69,7 @@ public class Final extends Activity {
 
         selectedTeamId = intent.getIntExtra("selected_team_id",0);
 
-        //Cup = intent.getIntExtra("cup",0);
+        //Cup = intent.getIntExtra("choosenCup",0);
 
         mAdapter = new MatchesAdapter(context,match_final_Pairs,selectedTeamId);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());

@@ -19,10 +19,6 @@ public class TeamSelection extends Activity {
 
     private Context context;
 
-    private ArrayList<Team> allTeamsOfCup;
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,8 +55,6 @@ public class TeamSelection extends Activity {
     private class GetAllTeamsOfCup extends AsyncTask<Integer,String,String>{
 
         ArrayList<Team> allteams = new ArrayList<>();
-
-        Intent intent;
 
         @Override
         protected String doInBackground(Integer... integers) {

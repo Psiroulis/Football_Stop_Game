@@ -452,7 +452,7 @@ public class MatchActivity extends Activity {
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
 
-                        Log.d("blepo","To teliko Y: "+ (horizontal_ball.getX()/getResources().getDisplayMetrics().density) );
+                        Log.d("blepo","To teliko X: "+ (horizontal_ball.getX()/getResources().getDisplayMetrics().density) );
                     }
 
 

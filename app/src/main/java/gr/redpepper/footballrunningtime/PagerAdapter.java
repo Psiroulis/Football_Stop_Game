@@ -89,7 +89,7 @@ public class PagerAdapter extends android.support.v4.view.PagerAdapter {
 
                     //intent.putExtra("cup",team.getCup());
 
-                    intent.putExtra("cup",choosenCup);
+                    intent.putExtra("choosenCup",choosenCup);
 
                     intent.putExtra("selected_team_id",team.getId());
 

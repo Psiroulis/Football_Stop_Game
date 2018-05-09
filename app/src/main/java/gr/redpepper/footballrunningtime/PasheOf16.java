@@ -61,7 +61,7 @@ public class PasheOf16 extends Activity {
 
         selectedTeamId = intent.getIntExtra("selected_team_id",0);
 
-        Cup = intent.getIntExtra("cup",0);
+        Cup = intent.getIntExtra("choosenCup",0);
 
         allCupsTeams = new ArrayList<>();
 
