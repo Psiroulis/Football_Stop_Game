@@ -127,7 +127,16 @@ public class PasheOf8 extends Activity {
 
         mAdapter.notifyDataSetChanged();
 
+        startMatchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PasheOf8.this,PhaseOf4.class);
+                intent.putExtra("playerteamid",selectedTeamId);
+                intent.putExtra("matches",match_8_Pairs);
+            }
+        });
         startMatchButton.setVisibility(View.VISIBLE);
+
 
     }
 

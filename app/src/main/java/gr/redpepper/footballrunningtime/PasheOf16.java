@@ -50,7 +50,7 @@ public class PasheOf16 extends Activity {
 
         list = findViewById(R.id.pa16recview);
 
-        startMatchButton = findViewById(R.id.start16MatchBut);
+        startMatchButton = findViewById(R.id.start16button);
     }
 
     @Override
