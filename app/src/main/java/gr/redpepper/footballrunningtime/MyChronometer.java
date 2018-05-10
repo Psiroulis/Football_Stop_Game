@@ -1,6 +1,9 @@
 package gr.redpepper.footballrunningtime;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.widget.TextView;
 
 import java.util.Timer;
@@ -26,7 +29,10 @@ public class MyChronometer {
 
     private boolean changeHalfe;
 
-    public MyChronometer(int speed, TextView textView, Activity activity) {
+    private Context context;
+
+    public MyChronometer(Context context,int speed, TextView textView, Activity activity) {
+        this.context = context;
         this.speed = speed;
         this.textView = textView;
         this.activity = activity;
@@ -49,6 +55,11 @@ public class MyChronometer {
                         Pause();
 
                         changeHalfe = true;
+
+                        Intent intent = new Intent();
+                        intent.setAction("gr.redpepper.footballrunningtime.Timenotification");
+                        intent.putExtra("data","halftime");
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
 
                     } else {
 
@@ -80,6 +91,11 @@ public class MyChronometer {
                         Reset();
 
                         changeHalfe = false;
+
+                        Intent intent = new Intent();
+                        intent.setAction("gr.redpepper.footballrunningtime.Timenotification");
+                        intent.putExtra("data","end");
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
 
                     } else {
 

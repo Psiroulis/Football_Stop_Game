@@ -5,18 +5,21 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
@@ -72,6 +75,8 @@ public class MatchActivity extends Activity {
 
     ArrayList<ArrayList<Team>> matches;
 
+    private float yval,xval;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -100,19 +105,7 @@ public class MatchActivity extends Activity {
 
         matches = (ArrayList<ArrayList<Team>>) intent.getSerializableExtra("matches");
 
-        if(matches != null){
-
-            for (int i = 0; i<matches.size(); i++){
-
-                Log.d("blepo",matches.get(i).get(0).getName()+" - "+matches.get(i).get(1).getName());
-
-            }
-
-        }else{
-
-            Log.d("blepo","einai null");
-
-        }
+        LocalBroadcastManager.getInstance(context).registerReceiver(mMessageReceiver,new IntentFilter("gr.redpepper.footballrunningtime.Timenotification"));
 
     }
 
@@ -242,20 +235,20 @@ public class MatchActivity extends Activity {
                         }
                     },1400);
 
-                    /*if( (verTime >= 1295 && verTime <= 1395) && (horTime >= 1295 && horTime <= 1395) ){
+                    if(yval >= 80 && yval <=100 && xval >= 80 && xval <=100){
 
-                        messages.setText("Goall!!!");
+                        Toast.makeText(context,"Goal From PEnalty",Toast.LENGTH_SHORT).show();
 
-                        messagesLayout.setVisibility(View.VISIBLE);
+                        match.setPlayerGoals(match.getPlayerGoals()+1);
+
+                        playerScore.setText(String.valueOf(match.getPlayerGoals()));
+
+
 
                     }else{
 
-                        messages.setText("Keeper Saves");
-
-                        messagesLayout.setVisibility(View.VISIBLE);
-
-                    }*/
-
+                        Toast.makeText(context,"Keeper Saves Penalty",Toast.LENGTH_SHORT).show();
+                    }
 
                 }
 
@@ -318,9 +311,33 @@ public class MatchActivity extends Activity {
 
             opponentFlag.setBackgroundResource(GetTeamDrawable(opponentTeam.getName()));
 
-            MyChronometer chronometer = new MyChronometer(timerSpeed,clock,MatchActivity.this);
+            MyChronometer chronometer = new MyChronometer(context,timerSpeed,clock,MatchActivity.this);
 
             match = new TheMatch(chronometer,0);
+
+            if(opponentTeam.getOveral() >= 50 && opponentTeam.getOveral() <= 60){
+
+                match.setOpponentGoals(3);
+
+            }else if(opponentTeam.getOveral() > 60 && opponentTeam.getOveral() <= 70){
+
+                match.setOpponentGoals(4);
+
+            }else if(opponentTeam.getOveral() > 70 && opponentTeam.getOveral() <= 80){
+
+                match.setOpponentGoals(5);
+
+            }else if(opponentTeam.getOveral() > 80 && opponentTeam.getOveral() <= 90){
+
+                match.setOpponentGoals(6);
+
+            }else if(opponentTeam.getOveral() > 90 && opponentTeam.getOveral()<=100){
+
+                match.setOpponentGoals(7);
+
+            }
+
+            opponentScore.setText(String.valueOf(match.getOpponentGoals()));
 
         }
     }
@@ -388,23 +405,23 @@ public class MatchActivity extends Activity {
 
                 ver_animator.setRepeatCount(ValueAnimator.INFINITE);
 
-                ver_animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+               /* ver_animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
 
                         //Log.d("blepo","The Animated Values"+valueAnimator.getAnimatedValue("translationY"));
 
-
-
                     }
-                });
+                });*/
 
                 ver_animator.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
 
-                        Log.d("blepo","To teliko Y: "+ (vertical_abll.getY()/getResources().getDisplayMetrics().density) );
+                        yval = vertical_abll.getY()/getResources().getDisplayMetrics().density;
+
+                        //Log.d("blepo","To teliko Y: "+ (vertical_abll.getY()/getResources().getDisplayMetrics().density) );
                     }
 
 
@@ -436,23 +453,23 @@ public class MatchActivity extends Activity {
 
                 hor_animator.setRepeatCount(ValueAnimator.INFINITE);
 
-                hor_animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                /*hor_animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
 
                         //Log.d("blepo","The Animated Values"+valueAnimator.getAnimatedValue("translationX"));
 
-
-
                     }
-                });
+                });*/
 
                 hor_animator.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
 
-                        Log.d("blepo","To teliko X: "+ (horizontal_ball.getX()/getResources().getDisplayMetrics().density) );
+                        xval = horizontal_ball.getX()/getResources().getDisplayMetrics().density;
+
+                        //Log.d("blepo","To teliko X: "+ (horizontal_ball.getX()/getResources().getDisplayMetrics().density) );
                     }
 
 
@@ -462,6 +479,43 @@ public class MatchActivity extends Activity {
         });
 
     }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+
+            shootBall.setVisibility(View.GONE);
+
+            shootBall.setChecked(false);
+
+            String message = intent.getStringExtra("data");
+
+            if(message.equalsIgnoreCase("halftime")){
+
+                startPlay.setVisibility(View.VISIBLE);
+
+                Toast.makeText(context,"imixrono",Toast.LENGTH_SHORT).show();
+
+            }else if(message.equalsIgnoreCase("end")){
+
+                Toast.makeText(context,"telos",Toast.LENGTH_SHORT).show();
+
+                //todo:check the final score and proceed
+            }
+
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
+
+    }
+
+    @Override
+    public void onBackPressed() {}
 }
 
 
