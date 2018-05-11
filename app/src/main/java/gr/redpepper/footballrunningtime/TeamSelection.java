@@ -40,19 +40,19 @@ public class TeamSelection extends Activity {
 
         Intent intent = getIntent();
 
-        Cup = intent.getIntExtra("choosenCup",0);
+        Cup = intent.getIntExtra("choosenCup", 0);
 
         new GetAllTeamsOfCup().execute(Cup);
 
     }
 
-    private void FindTheViews(){
+    private void FindTheViews() {
 
         viewpager = findViewById(R.id.viewpager);
 
     }
 
-    private class GetAllTeamsOfCup extends AsyncTask<Integer,String,String>{
+    private class GetAllTeamsOfCup extends AsyncTask<Integer, String, String> {
 
         ArrayList<Team> allteams = new ArrayList<>();
 
@@ -65,21 +65,21 @@ public class TeamSelection extends Activity {
 
             List<TeamsEntity> allTeams;
 
-            if(Cup == 4){
+            if (Cup == 4) {
 
                 allTeams = tdao.getAllWorldCupTeams();
 
-            }else{
+            } else {
 
                 allTeams = tdao.getCupsTeams(integers[0]);
 
             }
 
-            for (int i = 0; i< allTeams.size(); i++){
+            for (int i = 0; i < allTeams.size(); i++) {
 
                 TeamsEntity entity = allTeams.get(i);
 
-                Team oneteam = new Team(entity.getUid(),entity.getName(),entity.getLocked(),entity.getCup(),entity.getOverall());
+                Team oneteam = new Team(entity.getUid(), entity.getName(), entity.getLocked(), entity.getCup(), entity.getOverall());
 
                 allteams.add(oneteam);
             }
@@ -93,7 +93,7 @@ public class TeamSelection extends Activity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            PagerAdapter adapter = new PagerAdapter(context,allteams,Cup);
+            PagerAdapter adapter = new PagerAdapter(context, allteams, Cup);
 
             viewpager.setAdapter(adapter);
         }

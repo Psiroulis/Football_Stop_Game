@@ -67,9 +67,9 @@ public class Final extends Activity {
 
         matchPairs = (ArrayList<ArrayList<Team>>) intent.getSerializableExtra("matches");
 
-        selectedTeamId = intent.getIntExtra("selected_team_id",0);
+        selectedTeamId = intent.getIntExtra("playerTeamId",0);
 
-        //Cup = intent.getIntExtra("choosenCup",0);
+        Cup = intent.getIntExtra("choosenCup",0);
 
         mAdapter = new MatchesAdapter(context,match_final_Pairs,selectedTeamId);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -126,6 +126,46 @@ public class Final extends Activity {
         }
 
         mAdapter.notifyDataSetChanged();
+
+        startMatchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                int oponentID = 0;
+
+                for (int i = 0; i<match_final_Pairs.size(); i++){
+
+                    Team one = match_final_Pairs.get(i).get(0);
+
+                    Team two = match_final_Pairs.get(i).get(1);
+
+                    if(one.getId() == selectedTeamId || two.getId() == selectedTeamId){
+
+                        if(one.getId() == selectedTeamId){
+
+                            oponentID = two.getId();
+
+                        }else{
+
+                            oponentID = one.getId();
+                        }
+
+                    }
+                }
+
+                Intent intent = new Intent(Final.this,MatchActivity.class);
+                intent.putExtra("playerteamid",selectedTeamId);
+                intent.putExtra("opponentteamid",oponentID);
+                intent.putExtra("phase",4);
+                intent.putExtra("choosenCup",Cup);
+                intent.putExtra("matches",match_final_Pairs);
+
+                startActivity(intent);
+
+                Final.this.finish();
+
+            }
+        });
 
         startMatchButton.setVisibility(View.VISIBLE);
     }

@@ -67,9 +67,9 @@ public class PasheOf8 extends Activity {
 
         matchPairs = (ArrayList<ArrayList<Team>>) intent.getSerializableExtra("matches");
 
-        selectedTeamId = intent.getIntExtra("selected_team_id",0);
+        selectedTeamId = intent.getIntExtra("playerTeamId",0);
 
-        //Cup = intent.getIntExtra("choosenCup",0);
+        Cup = intent.getIntExtra("choosenCup",0);
 
         mAdapter = new MatchesAdapter(context,match_8_Pairs,selectedTeamId);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -130,11 +130,41 @@ public class PasheOf8 extends Activity {
         startMatchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PasheOf8.this,PhaseOf4.class);
-                intent.putExtra("selected_team_id",selectedTeamId);
+
+                int oponentID = 0;
+
+                for (int i = 0; i<match_8_Pairs.size(); i++){
+
+                    Team one = match_8_Pairs.get(i).get(0);
+
+                    Team two = match_8_Pairs.get(i).get(1);
+
+                    if(one.getId() == selectedTeamId || two.getId() == selectedTeamId){
+
+                        if(one.getId() == selectedTeamId){
+
+                            oponentID = two.getId();
+
+                        }else{
+
+                            oponentID = one.getId();
+                        }
+
+                    }
+                }
+
+                Intent intent = new Intent(PasheOf8.this,MatchActivity.class);
+
+                intent.putExtra("playerteamid",selectedTeamId);
+                intent.putExtra("opponentteamid",oponentID);
+                intent.putExtra("phase",2);
+                intent.putExtra("choosenCup",Cup);
                 intent.putExtra("matches",match_8_Pairs);
 
                 startActivity(intent);
+
+                PasheOf8.this.finish();
+
             }
         });
         startMatchButton.setVisibility(View.VISIBLE);

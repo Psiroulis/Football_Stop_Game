@@ -61,7 +61,7 @@ public class MatchActivity extends Activity {
 
     private int penaltySpeed = 100;
 
-    private RelativeLayout verpenlay,horpenlay;
+    private RelativeLayout verpenlay, horpenlay;
 
     private int timerSpeed = 1;
 
@@ -75,7 +75,11 @@ public class MatchActivity extends Activity {
 
     ArrayList<ArrayList<Team>> matches;
 
-    private float yval,xval;
+    private float yval, xval;
+
+    private int phase;
+
+    private int cup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,19 +101,21 @@ public class MatchActivity extends Activity {
 
         Intent intent = getIntent();
 
-        playerTeamId = intent.getIntExtra("playerteamid",0);
+        playerTeamId = intent.getIntExtra("playerteamid", 0);
 
-        opponentTeamId = intent.getIntExtra("opponentteamid",0);
+        opponentTeamId = intent.getIntExtra("opponentteamid", 0);
+
+        phase = intent.getIntExtra("phase", 0);
+
+        cup = intent.getIntExtra("choosenCup", 0);
 
         matches = new ArrayList<>();
 
         matches = (ArrayList<ArrayList<Team>>) intent.getSerializableExtra("matches");
 
-        LocalBroadcastManager.getInstance(context).registerReceiver(mMessageReceiver,new IntentFilter("gr.redpepper.footballrunningtime.Timenotification"));
+        LocalBroadcastManager.getInstance(context).registerReceiver(mMessageReceiver, new IntentFilter("gr.redpepper.footballrunningtime.Timenotification"));
 
     }
-
-
 
     @Override
     protected void onResume() {
@@ -145,23 +151,23 @@ public class MatchActivity extends Activity {
 
                     int goalChecker = match.Shoot();
 
-                    if(goalChecker == 0){
+                    if (goalChecker == 0) {
 
                         posts.setText(String.valueOf(match.getPosts()));
 
                         //Toast.makeText(context,"Hit The Post",Toast.LENGTH_SHORT).show();
 
-                    }else if(goalChecker == 1){
+                    } else if (goalChecker == 1) {
 
                         playerScore.setText(String.valueOf(match.getPlayerGoals()));
 
                         //Toast.makeText(context,"Gooooaall",Toast.LENGTH_SHORT).show();
 
-                    }else if(goalChecker == 2){
+                    } else if (goalChecker == 2) {
 
                         //Toast.makeText(context,"Missed",Toast.LENGTH_SHORT).show();
 
-                    }else if(goalChecker == 3){
+                    } else if (goalChecker == 3) {
 
                         opponentScore.setText(String.valueOf(match.getOpponentGoals()));
 
@@ -172,7 +178,7 @@ public class MatchActivity extends Activity {
                 //Restart the chronometer
                 else {
 
-                    if(match.getPosts() == 3){
+                    if (match.getPosts() == 3) {
 
                         match.setPosts(0);
 
@@ -188,7 +194,7 @@ public class MatchActivity extends Activity {
 
                         ver_animator.start();
 
-                    }else{
+                    } else {
 
                         match.RunTheTimer();
 
@@ -233,21 +239,20 @@ public class MatchActivity extends Activity {
 
 
                         }
-                    },1400);
+                    }, 1400);
 
-                    if(yval >= 80 && yval <=100 && xval >= 80 && xval <=100){
+                    if (yval >= 80 && yval <= 100 && xval >= 80 && xval <= 100) {
 
-                        Toast.makeText(context,"Goal From PEnalty",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Goal From Penalty", Toast.LENGTH_SHORT).show();
 
-                        match.setPlayerGoals(match.getPlayerGoals()+1);
+                        match.setPlayerGoals(match.getPlayerGoals() + 1);
 
                         playerScore.setText(String.valueOf(match.getPlayerGoals()));
 
 
+                    } else {
 
-                    }else{
-
-                        Toast.makeText(context,"Keeper Saves Penalty",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Keeper Saves Penalty", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -255,28 +260,12 @@ public class MatchActivity extends Activity {
             }
         });
 
-
-
-        //test Code
-        posts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(MatchActivity.this,PasheOf8.class);
-                intent.putExtra("playerteamid",playerTeamId);
-                intent.putExtra("matches",matches);
-                intent.putExtra("selected_team_id",playerTeamId);
-
-                startActivity(intent);
-
-            }
-        });
     }
 
 
-    private class GetTeamsInfo extends AsyncTask<String,String,String>{
+    private class GetTeamsInfo extends AsyncTask<String, String, String> {
 
-        Team playerTeam , opponentTeam;
+        Team playerTeam, opponentTeam;
 
         @Override
         protected void onPreExecute() {
@@ -294,9 +283,9 @@ public class MatchActivity extends Activity {
 
             TeamsEntity ot = tdao.findById(opponentTeamId);
 
-            playerTeam = new Team(pt.getUid(),pt.getName(),pt.getLocked(),pt.getCup(),pt.getOverall());
+            playerTeam = new Team(pt.getUid(), pt.getName(), pt.getLocked(), pt.getCup(), pt.getOverall());
 
-            opponentTeam = new Team(ot.getUid(),ot.getName(),ot.getLocked(),ot.getCup(),ot.getOverall());
+            opponentTeam = new Team(ot.getUid(), ot.getName(), ot.getLocked(), ot.getCup(), ot.getOverall());
 
             db.close();
 
@@ -311,29 +300,29 @@ public class MatchActivity extends Activity {
 
             opponentFlag.setBackgroundResource(GetTeamDrawable(opponentTeam.getName()));
 
-            MyChronometer chronometer = new MyChronometer(context,timerSpeed,clock,MatchActivity.this);
+            MyChronometer chronometer = new MyChronometer(context, timerSpeed, clock, MatchActivity.this);
 
-            match = new TheMatch(chronometer,0);
+            match = new TheMatch(chronometer, 0);
 
-            if(opponentTeam.getOveral() >= 50 && opponentTeam.getOveral() <= 60){
+            if (opponentTeam.getOveral() >= 50 && opponentTeam.getOveral() <= 60) {
+
+                match.setOpponentGoals(2);
+
+            } else if (opponentTeam.getOveral() > 60 && opponentTeam.getOveral() <= 70) {
 
                 match.setOpponentGoals(3);
 
-            }else if(opponentTeam.getOveral() > 60 && opponentTeam.getOveral() <= 70){
+            } else if (opponentTeam.getOveral() > 70 && opponentTeam.getOveral() <= 80) {
 
                 match.setOpponentGoals(4);
 
-            }else if(opponentTeam.getOveral() > 70 && opponentTeam.getOveral() <= 80){
+            } else if (opponentTeam.getOveral() > 80 && opponentTeam.getOveral() <= 90) {
 
                 match.setOpponentGoals(5);
 
-            }else if(opponentTeam.getOveral() > 80 && opponentTeam.getOveral() <= 90){
+            } else if (opponentTeam.getOveral() > 90 && opponentTeam.getOveral() <= 100) {
 
                 match.setOpponentGoals(6);
-
-            }else if(opponentTeam.getOveral() > 90 && opponentTeam.getOveral()<=100){
-
-                match.setOpponentGoals(7);
 
             }
 
@@ -342,17 +331,17 @@ public class MatchActivity extends Activity {
         }
     }
 
-    private Integer GetTeamDrawable(String teamName){
+    private Integer GetTeamDrawable(String teamName) {
 
         String name = teamName;
 
-        if(name.contains(" ")){
+        if (name.contains(" ")) {
 
-            name = name.replace(" ","_");
+            name = name.replace(" ", "_");
 
         }
 
-        return context.getResources().getIdentifier( name.toLowerCase() , "drawable", context.getPackageName());
+        return context.getResources().getIdentifier(name.toLowerCase(), "drawable", context.getPackageName());
 
     }
 
@@ -394,9 +383,9 @@ public class MatchActivity extends Activity {
                 //Log.d("blepo","Distance to Run The ball: "+ diff);
 
 
-                int diff2 = verpenlay.getHeight() -  vertical_abll.getHeight();
+                int diff2 = verpenlay.getHeight() - vertical_abll.getHeight();
 
-                ver_animator = ObjectAnimator.ofFloat(vertical_abll,"translationY",diff);
+                ver_animator = ObjectAnimator.ofFloat(vertical_abll, "translationY", diff);
 
 
                 ver_animator.setDuration((diff2 * 1000) / penaltySpeed);
@@ -419,7 +408,7 @@ public class MatchActivity extends Activity {
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
 
-                        yval = vertical_abll.getY()/getResources().getDisplayMetrics().density;
+                        yval = vertical_abll.getY() / getResources().getDisplayMetrics().density;
 
                         //Log.d("blepo","To teliko Y: "+ (vertical_abll.getY()/getResources().getDisplayMetrics().density) );
                     }
@@ -439,14 +428,14 @@ public class MatchActivity extends Activity {
 
                 //Log.d("blepo","BallHeight: "+horizontal_ball.getHeight());
 
-                float diff = Float.valueOf(horpenlay.getWidth() -  horizontal_ball.getWidth());
+                float diff = Float.valueOf(horpenlay.getWidth() - horizontal_ball.getWidth());
 
                 //Log.d("blepo","Distance to Run The ball: "+ diff);
 
 
-                int diff2 = horpenlay.getWidth() -  horizontal_ball.getWidth();
+                int diff2 = horpenlay.getWidth() - horizontal_ball.getWidth();
 
-                hor_animator = ObjectAnimator.ofFloat(horizontal_ball,"translationX",diff);
+                hor_animator = ObjectAnimator.ofFloat(horizontal_ball, "translationX", diff);
                 hor_animator.setDuration((diff2 * 1000) / penaltySpeed);
 
                 hor_animator.setRepeatMode(ValueAnimator.REVERSE);
@@ -467,7 +456,7 @@ public class MatchActivity extends Activity {
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
 
-                        xval = horizontal_ball.getX()/getResources().getDisplayMetrics().density;
+                        xval = horizontal_ball.getX() / getResources().getDisplayMetrics().density;
 
                         //Log.d("blepo","To teliko X: "+ (horizontal_ball.getX()/getResources().getDisplayMetrics().density) );
                     }
@@ -491,17 +480,59 @@ public class MatchActivity extends Activity {
 
             String message = intent.getStringExtra("data");
 
-            if(message.equalsIgnoreCase("halftime")){
+            if (message.equalsIgnoreCase("halftime")) {
 
                 startPlay.setVisibility(View.VISIBLE);
 
-                Toast.makeText(context,"imixrono",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "imixrono", Toast.LENGTH_SHORT).show();
 
-            }else if(message.equalsIgnoreCase("end")){
+            } else if (message.equalsIgnoreCase("end")) {
 
-                Toast.makeText(context,"telos",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "telos", Toast.LENGTH_SHORT).show();
 
-                //todo:check the final score and proceed
+                if (match.getPlayerGoals() > match.getOpponentGoals()) {
+                    //win
+                    Intent intentToProcced = null;
+
+                    switch (phase) {
+                        case 1:
+                            intentToProcced = new Intent(MatchActivity.this, PasheOf8.class);
+                            break;
+
+                        case 2:
+                            intentToProcced = new Intent(MatchActivity.this, PhaseOf4.class);
+                            break;
+
+                        case 3:
+                            intentToProcced = new Intent(MatchActivity.this, Final.class);
+                            break;
+
+                        case 4://intent to final win screen
+                            intentToProcced = new Intent(MatchActivity.this,SinglePlayerMenu.class);
+                        break;
+
+                        default:
+                            intentToProcced = new Intent(MatchActivity.this, SinglePlayerMenu.class);
+                            break;
+                    }
+
+                    if (intentToProcced != null) {
+
+                        intentToProcced.putExtra("choosenCup", cup);
+                        intentToProcced.putExtra("playerTeamId", playerTeamId);
+                        intentToProcced.putExtra("matches", matches);
+
+                        startActivity(intentToProcced);
+
+                        MatchActivity.this.finish();
+                    }
+
+
+                } else if (match.getPlayerGoals() == match.getOpponentGoals()) {
+                    //tie
+                } else {
+                    //lose
+                }
             }
 
         }
@@ -515,7 +546,8 @@ public class MatchActivity extends Activity {
     }
 
     @Override
-    public void onBackPressed() {}
+    public void onBackPressed() {
+    }
 }
 
 

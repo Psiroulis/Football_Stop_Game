@@ -105,9 +105,13 @@ public class PasheOf16 extends Activity {
                 Intent intent = new Intent(PasheOf16.this,MatchActivity.class);
                 intent.putExtra("playerteamid",selectedTeamId);
                 intent.putExtra("opponentteamid",oponentID);
+                intent.putExtra("phase",1);
+                intent.putExtra("choosenCup",Cup);
                 intent.putExtra("matches",matches);
 
                 startActivity(intent);
+
+                PasheOf16.this.finish();
             }
         });
 
