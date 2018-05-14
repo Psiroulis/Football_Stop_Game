@@ -32,7 +32,9 @@
             android:screenOrientation="portrait" />
         <activity android:name=".PasheOf8" />
         <activity android:name=".PhaseOf4" />
-        <activity android:name=".Final"></activity>
+        <activity android:name=".Final" />
+        <activity android:name=".LostTheCup" />
+        <activity android:name=".WinTheCup"></activity>
     </application>
 
 </manifest>

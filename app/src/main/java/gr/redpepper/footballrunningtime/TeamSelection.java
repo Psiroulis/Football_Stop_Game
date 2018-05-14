@@ -98,4 +98,15 @@ public class TeamSelection extends Activity {
             viewpager.setAdapter(adapter);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent = new Intent(TeamSelection.this,SinglePlayerMenu.class);
+
+        startActivity(intent);
+
+        TeamSelection.this.finish();
+    }
 }

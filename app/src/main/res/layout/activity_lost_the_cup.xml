@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/messageLose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Unfortunately you didn't make it to the final"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
+    <Button
+        android:id="@+id/loseRetryBtn"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:text="Rerty"
+        android:layout_alignParentBottom="true"/>
+
+    <Button
+        android:id="@+id/menuLoseBtn"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:text="Main MEnu"
+        android:layout_above="@id/loseRetryBtn"/>
+
+</RelativeLayout>

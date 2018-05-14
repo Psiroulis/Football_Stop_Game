@@ -95,6 +95,7 @@ public class PagerAdapter extends android.support.v4.view.PagerAdapter {
 
                     context.startActivity(intent);
 
+                    ((TeamSelection)context).finish();
                 }
             });
 

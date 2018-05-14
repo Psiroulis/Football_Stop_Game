@@ -81,6 +81,7 @@ public class MatchActivity extends Activity {
 
     private int cup;
 
+    private boolean tiePenalty;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -114,6 +115,8 @@ public class MatchActivity extends Activity {
         matches = (ArrayList<ArrayList<Team>>) intent.getSerializableExtra("matches");
 
         LocalBroadcastManager.getInstance(context).registerReceiver(mMessageReceiver, new IntentFilter("gr.redpepper.footballrunningtime.Timenotification"));
+
+        tiePenalty = false;
 
     }
 
@@ -220,7 +223,6 @@ public class MatchActivity extends Activity {
 
                     hor_animator.cancel();
 
-
                     Handler handler = new Handler();
 
                     handler.postDelayed(new Runnable() {
@@ -237,22 +239,31 @@ public class MatchActivity extends Activity {
 
                             horizontal_ball.setTranslationX(0);
 
-
                         }
                     }, 1400);
 
-                    if (yval >= 80 && yval <= 100 && xval >= 80 && xval <= 100) {
+                    if(tiePenalty){
 
-                        Toast.makeText(context, "Goal From Penalty", Toast.LENGTH_SHORT).show();
+                        finishTheMatch(phase);
 
-                        match.setPlayerGoals(match.getPlayerGoals() + 1);
+                        tiePenalty = false;
 
-                        playerScore.setText(String.valueOf(match.getPlayerGoals()));
+                    }else{
+
+                        if (yval >= 80 && yval <= 100 && xval >= 80 && xval <= 100) {
+
+                            Toast.makeText(context, "Goal From Penalty", Toast.LENGTH_SHORT).show();
+
+                            match.setPlayerGoals(match.getPlayerGoals() + 1);
+
+                            playerScore.setText(String.valueOf(match.getPlayerGoals()));
 
 
-                    } else {
+                        } else {
 
-                        Toast.makeText(context, "Keeper Saves Penalty", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Keeper Saves Penalty", Toast.LENGTH_SHORT).show();
+                        }
+
                     }
 
                 }
@@ -484,59 +495,90 @@ public class MatchActivity extends Activity {
 
                 startPlay.setVisibility(View.VISIBLE);
 
-                Toast.makeText(context, "imixrono", Toast.LENGTH_SHORT).show();
+                currentHalf.setText("2nd Half");
+
+                //Toast.makeText(context, "imixrono", Toast.LENGTH_SHORT).show();
 
             } else if (message.equalsIgnoreCase("end")) {
 
-                Toast.makeText(context, "telos", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "telos", Toast.LENGTH_SHORT).show();
 
-                if (match.getPlayerGoals() > match.getOpponentGoals()) {
-                    //win
-                    Intent intentToProcced = null;
-
-                    switch (phase) {
-                        case 1:
-                            intentToProcced = new Intent(MatchActivity.this, PasheOf8.class);
-                            break;
-
-                        case 2:
-                            intentToProcced = new Intent(MatchActivity.this, PhaseOf4.class);
-                            break;
-
-                        case 3:
-                            intentToProcced = new Intent(MatchActivity.this, Final.class);
-                            break;
-
-                        case 4://intent to final win screen
-                            intentToProcced = new Intent(MatchActivity.this,SinglePlayerMenu.class);
-                        break;
-
-                        default:
-                            intentToProcced = new Intent(MatchActivity.this, SinglePlayerMenu.class);
-                            break;
-                    }
-
-                    if (intentToProcced != null) {
-
-                        intentToProcced.putExtra("choosenCup", cup);
-                        intentToProcced.putExtra("playerTeamId", playerTeamId);
-                        intentToProcced.putExtra("matches", matches);
-
-                        startActivity(intentToProcced);
-
-                        MatchActivity.this.finish();
-                    }
-
-
-                } else if (match.getPlayerGoals() == match.getOpponentGoals()) {
-                    //tie
-                } else {
-                    //lose
-                }
+                finishTheMatch(phase);
             }
 
         }
     };
+
+    private void finishTheMatch(int phase){
+
+        Intent intentToProcced = null;
+
+        if (match.getPlayerGoals() > match.getOpponentGoals()) {
+            //win
+
+
+            switch (phase) {
+                case 1:
+                    intentToProcced = new Intent(MatchActivity.this, PasheOf8.class);
+                    break;
+
+                case 2:
+                    intentToProcced = new Intent(MatchActivity.this, PhaseOf4.class);
+                    break;
+
+                case 3:
+                    intentToProcced = new Intent(MatchActivity.this, Final.class);
+                    break;
+
+                case 4://intent to final win screen
+                    intentToProcced = new Intent(MatchActivity.this,SinglePlayerMenu.class);
+                    break;
+
+                default:
+                    intentToProcced = new Intent(MatchActivity.this, SinglePlayerMenu.class);
+                    break;
+            }
+
+            if (intentToProcced != null) {
+
+                intentToProcced.putExtra("choosenCup", cup);
+                intentToProcced.putExtra("playerTeamId", playerTeamId);
+                intentToProcced.putExtra("matches", matches);
+
+                startActivity(intentToProcced);
+
+                MatchActivity.this.finish();
+            }
+
+
+        } else if (match.getPlayerGoals() == match.getOpponentGoals()) {
+            //tie
+
+            tiePenalty = true;
+
+            clock.setVisibility(View.GONE);
+
+            shootBall.setVisibility(View.GONE);
+
+            penalty_Layout.setVisibility(View.VISIBLE);
+
+            shootBall.setChecked(true);
+
+            ver_animator.start();
+
+
+        } else {
+            //lose
+            intentToProcced = new Intent(MatchActivity.this, LostTheCup.class);
+
+            intentToProcced.putExtra("choosenCup",cup);
+
+            startActivity(intentToProcced);
+
+            MatchActivity.this.finish();
+        }
+
+    }
 
     @Override
     protected void onDestroy() {

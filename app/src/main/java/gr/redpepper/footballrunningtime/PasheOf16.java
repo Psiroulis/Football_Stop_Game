@@ -189,4 +189,19 @@ public class PasheOf16 extends Activity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent = new Intent(PasheOf16.this, TeamSelection.class);
+
+        intent.putExtra("choosenCup",Cup);
+
+        PasheOf16.this.finish();
+
+        startActivity(intent);
+
+
+
+    }
 }

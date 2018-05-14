@@ -123,4 +123,15 @@ public class SinglePlayerMenu extends Activity {
         startActivity(intent);
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent = new Intent(SinglePlayerMenu.this,MainActivity.class);
+
+        startActivity(intent);
+
+        SinglePlayerMenu.this.finish();
+    }
 }

@@ -46,6 +46,8 @@ public class MainActivity extends Activity {
 
                 startActivity(intent);
 
+                MainActivity.this.finish();
+
             }
         });
 
