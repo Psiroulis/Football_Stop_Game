@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <LinearLayout
+        android:id="@+id/linlay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="20dip">
+        <EditText
+            android:id="@+id/loginemail"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:hint="Email"
+            android:inputType="textEmailAddress"/>
+        <EditText
+            android:id="@+id/loginpassword"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:layout_marginTop="20dip"/>
+        <Button
+            android:id="@+id/loginLogButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:layout_marginTop="20dip"
+            android:text="Login"
+            android:background="#49ab7d"
+            android:textColor="#fff"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/sometxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:text="OR"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/linlay"/>
+
+    
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dip"
+        android:layout_below="@+id/sometxt"
+        android:padding="50dip"/>
+
+</RelativeLayout>
