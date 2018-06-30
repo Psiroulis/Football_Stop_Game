@@ -3,6 +3,7 @@ package gr.redpepper.footballrunningtime;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 
 public class EntryScreen extends Activity {
 
@@ -11,8 +12,20 @@ public class EntryScreen extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry_screen);
 
-        Intent intent = new Intent(EntryScreen.this,LoginActivity.class);
+        Handler handler = new Handler();
 
-        startActivity(intent);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(EntryScreen.this,LoginActivity.class);
+
+                startActivity(intent);
+
+                EntryScreen.this.finish();
+
+            }
+        }, 5000);
+
+
     }
 }

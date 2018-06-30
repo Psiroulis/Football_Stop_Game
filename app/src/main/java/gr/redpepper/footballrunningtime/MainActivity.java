@@ -3,6 +3,7 @@ package gr.redpepper.footballrunningtime;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,7 +15,9 @@ public class MainActivity extends Activity {
 
     private Button multyPlayer_Button;
 
-    private Button exit_Button;
+    private Button instruct_Button;
+
+    private Button options_Button;
 
 
     @Override
@@ -30,7 +33,6 @@ public class MainActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         findTheViews();
-
 
     }
 
@@ -58,14 +60,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        exit_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                MainActivity.this.finish();
-
-            }
-        });
 
         /*new Thread(new Runnable() {
             @Override
@@ -110,7 +105,19 @@ public class MainActivity extends Activity {
 
         multyPlayer_Button = findViewById(R.id.multyPlayerButton);
 
-        exit_Button = findViewById(R.id.exitButton);
+        instruct_Button = findViewById(R.id.instructBut);
+
+        options_Button = findViewById(R.id.optionBut);
+
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/digital_7.ttf");
+
+        singlePlayer_Button.setTypeface(typeface);
+
+        multyPlayer_Button.setTypeface(typeface);
+
+        instruct_Button.setTypeface(typeface);
+
+        options_Button.setTypeface(typeface);
 
     }
 }

@@ -1,26 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:background="@drawable/back_white">
 
-    <Button
-        android:id="@+id/singlePlayerButton"
+    <ImageView
+        android:id="@+id/mailgo"
+        android:layout_width="150dip"
+        android:layout_height="150dip"
+        android:src="@drawable/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dip"
+        android:padding="0dip"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dip"
-        android:text="Single Player"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/mailgo"
+        android:layout_marginTop="50dp">
 
-    <Button
-        android:id="@+id/multyPlayerButton"
-        android:layout_width="match_parent"
-        android:layout_height="50dip"
-        android:text="MultyPlayer"/>
+        <Button
+            android:id="@+id/singlePlayerButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:background="@drawable/black_button"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textColor="#FF0000"
+            android:text="SINGLE PLAYER"/>
 
-    <Button
-        android:id="@+id/exitButton"
-        android:layout_width="match_parent"
-        android:layout_height="50dip"
-        android:text="Exit"/>
+        <Button
+            android:id="@+id/multyPlayerButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:background="@drawable/black_button"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textColor="#FF0000"
+            android:layout_marginTop="12dp"
+            android:text="MULTYPLAYER" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/instructBut"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:background="@drawable/black_button"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textColor="#FF0000"
+            android:layout_marginTop="12dp"
+            android:text="INSTRUCTIONS" />
+
+        <Button
+            android:id="@+id/optionBut"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:background="@drawable/black_button"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textColor="#FF0000"
+            android:layout_marginTop="12dp"
+            android:text="OPTIONS" />
+    </LinearLayout>
+
+
+</RelativeLayout>
