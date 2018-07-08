@@ -3,10 +3,15 @@ package gr.redpepper.footballrunningtime;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +23,8 @@ public class TeamSelection extends Activity {
     private ViewPager viewpager;
 
     private Context context;
+
+    private Button pagerPreviousButton,pagerNextButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +51,39 @@ public class TeamSelection extends Activity {
 
         new GetAllTeamsOfCup().execute(Cup);
 
+        pagerPreviousButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewpager.setCurrentItem(getItem(-1), true);
+            }
+        });
+
+        pagerNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewpager.setCurrentItem(getItem(+1),true);
+            }
+        });
+
+    }
+
+    private int getItem(int i) {
+        return viewpager.getCurrentItem() + i;
     }
 
     private void FindTheViews() {
 
         viewpager = findViewById(R.id.viewpager);
 
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/digital_7.ttf");
+
+        TextView title = findViewById(R.id.tssometext);
+
+        title.setTypeface(typeface);
+
+        pagerPreviousButton = findViewById(R.id.pagerPreBtn);
+
+        pagerNextButton = findViewById(R.id.pagerNexBtn);
     }
 
     private class GetAllTeamsOfCup extends AsyncTask<Integer, String, String> {

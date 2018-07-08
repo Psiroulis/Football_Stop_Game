@@ -6,6 +6,7 @@
     tools:context=".LoginActivity"
     android:background="@drawable/back_white">
 
+
     <ImageView
         android:id="@+id/logoimg"
         android:layout_width="100dp"

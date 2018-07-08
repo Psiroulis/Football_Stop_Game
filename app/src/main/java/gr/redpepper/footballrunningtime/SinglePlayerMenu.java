@@ -2,16 +2,20 @@ package gr.redpepper.footballrunningtime;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class SinglePlayerMenu extends Activity {
 
-    private Button euro_Button,copaAmerica_Button,copaAfrica_Button,worldCup_Button;
+    private RelativeLayout euro_Button,copaAmerica_Button,copaAfrica_Button,worldCup_Button;
 
+    private TextView title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +80,12 @@ public class SinglePlayerMenu extends Activity {
         copaAmerica_Button = findViewById(R.id.CopaAmericaButton);
 
         worldCup_Button = findViewById(R.id.WorldCupButton);
+
+        title = findViewById(R.id.spmtitleTxt);
+
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/digital_7.ttf");
+
+        title.setTypeface(typeface);
     }
 
     private void ChooseCup(String Cup){

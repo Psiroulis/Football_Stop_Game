@@ -20,19 +20,22 @@
         android:id="@+id/flagImage"
         android:layout_width="250dip"
         android:layout_height="250dip"
+        android:layout_below="@+id/teamNametxt"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dip"
-        android:layout_below="@+id/teamNametxt"/>
+        android:layout_marginTop="20dip"/>
 
     <ImageView
         android:id="@+id/lock"
-        android:layout_width="250dip"
-        android:layout_height="250dip"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_below="@+id/teamNametxt"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dip"
-        android:layout_below="@+id/teamNametxt"
+        android:alpha="0.8"
+        android:background="@drawable/lock_back"
         android:src="@drawable/lock"
-        android:visibility="gone"/>
+        android:visibility="visible"
+        android:padding="20dp"/>
 
     <TextView
         android:id="@+id/overalText"
@@ -51,6 +54,8 @@
         android:layout_height="50dip"
         android:text="Select"
         android:layout_below="@+id/overalText"
-        android:layout_margin="20dip"/>
+        android:layout_margin="20dip"
+        android:background="@drawable/black_button"
+        android:textColor="#ff0000"/>
 
 </RelativeLayout>

@@ -1,34 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/menu_back">
+    android:background="@drawable/back_white">
 
     <Button
-        android:id="@+id/EuroCupButton"
+        android:id="@+id/spmbackBtn"
+        android:background="@drawable/arrowback"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dip"/>
+
+    <TextView
+        android:id="@+id/spmtitleTxt"
         android:layout_width="match_parent"
-        android:layout_height="50dip"
-        android:text="Euro"/>
+        android:layout_height="wrap_content"
+        android:text="CHOOSE CUP"
+        android:textAlignment="center"
+        android:textColor="#f62020"
+        android:textSize="25sp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="60dip"/>
 
-    <Button
-        android:id="@+id/CopaAmericaButton"
-        android:layout_width="match_parent"
-        android:layout_height="50dip"
-        android:text="Copa America"/>
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
 
-    <Button
-        android:id="@+id/CopaAfricaButton"
-        android:layout_width="match_parent"
-        android:layout_height="50dip"
-        android:text="Copa Africa"/>
+        <RelativeLayout
+            android:id="@+id/EuroCupButton"
+            android:layout_width="150dip"
+            android:layout_height="150dip"
+            android:background="@drawable/uefablues"
+            android:layout_margin="5dip">
 
-    <Button
-        android:id="@+id/WorldCupButton"
-        android:layout_width="match_parent"
-        android:layout_height="50dip"
-        android:text="World Cup"/>
+            <ImageView
+                android:layout_width="100dip"
+                android:layout_height="90dip"
+                android:src="@drawable/euro_cup"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="5dip"/>
+            <TextView
+                android:layout_width="100dip"
+                android:layout_height="wrap_content"
+                android:text="EURO"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="5dip"
+                android:textSize="20sp"
+                android:textAlignment="center"
+                android:textColor="#fff"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/CopaAmericaButton"
+            android:layout_width="150dip"
+            android:layout_height="150dip"
+            android:background="@drawable/uefablues"
+            android:layout_margin="5dip">
+
+            <ImageView
+                android:layout_width="100dip"
+                android:layout_height="90dip"
+                android:src="@drawable/america_cup"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="5dip"/>
+            <TextView
+                android:layout_width="100dip"
+                android:layout_height="wrap_content"
+                android:text="COPA AMERICA"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="5dip"
+                android:textSize="20sp"
+                android:textAlignment="center"
+                android:textColor="#fff"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.7"
+                android:background="@drawable/lock_back"
+                android:padding="20dp"
+                android:src="@drawable/lock" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/CopaAfricaButton"
+            android:layout_width="150dip"
+            android:layout_height="150dip"
+            android:background="@drawable/uefablues"
+            android:layout_margin="5dip">
+
+            <ImageView
+                android:layout_width="100dip"
+                android:layout_height="90dip"
+                android:src="@drawable/africa_cup"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="10dip"/>
+            <TextView
+                android:layout_width="100dip"
+                android:layout_height="wrap_content"
+                android:text="COPA AFRICA"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="5dip"
+                android:textSize="18sp"
+                android:textAlignment="center"
+                android:textColor="#fff"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.7"
+                android:background="@drawable/lock_back"
+                android:padding="20dp"
+                android:src="@drawable/lock" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/WorldCupButton"
+            android:layout_width="150dip"
+            android:layout_height="150dip"
+            android:background="@drawable/uefablues"
+            android:layout_margin="5dip">
+
+            <ImageView
+                android:layout_width="100dip"
+                android:layout_height="90dip"
+                android:src="@drawable/world_cup"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="5dip"/>
+            <TextView
+                android:layout_width="100dip"
+                android:layout_height="wrap_content"
+                android:text="WORLD CUP"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="5dip"
+                android:textSize="20sp"
+                android:textAlignment="center"
+                android:textColor="#fff"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.7"
+                android:background="@drawable/lock_back"
+                android:padding="20dp"
+                android:src="@drawable/lock" />
+        </RelativeLayout>
+    </GridLayout>
 
 
-</LinearLayout>
+</RelativeLayout>

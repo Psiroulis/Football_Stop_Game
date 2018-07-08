@@ -3,6 +3,7 @@ package gr.redpepper.footballrunningtime;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,6 +78,10 @@ public class PagerAdapter extends android.support.v4.view.PagerAdapter {
 
             button.setText("Select");
 
+            Typeface typeface = Typeface.createFromAsset(context.getAssets(), "fonts/digital_7.ttf");
+
+            button.setTypeface(typeface);
+
             lock.setVisibility(View.GONE);
 
             button.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +108,7 @@ public class PagerAdapter extends android.support.v4.view.PagerAdapter {
 
             button.setText("Unlock");
 
-            teamFlag.setAlpha(0.6f);
+            //teamFlag.setAlpha(0.6f);
 
             lock.setVisibility(View.VISIBLE);
 
