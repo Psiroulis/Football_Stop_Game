@@ -106,6 +106,10 @@ public class PagerAdapter extends android.support.v4.view.PagerAdapter {
 
         }else{
 
+            Typeface typeface = Typeface.createFromAsset(context.getAssets(), "fonts/digital_7.ttf");
+
+            button.setTypeface(typeface);
+
             button.setText("Unlock");
 
             //teamFlag.setAlpha(0.6f);
