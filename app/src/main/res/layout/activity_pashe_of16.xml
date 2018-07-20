@@ -25,14 +25,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_centerHorizontal="true"
-        android:background="#3b000000">
+        android:background="#3b000000"
+        android:padding="5dp">
 
         <ImageView
             android:id="@+id/cupImageInPhase"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:src="@drawable/euro_cup"
-            android:layout_alignParentTop="true"
             android:padding="0dp"
             android:scaleType="centerCrop"
             android:layout_gravity="center"/>
@@ -87,7 +87,7 @@
         android:layout_marginRight="20dp"
         android:textColor="#FF0000"
         android:text="START MATCH"
-        />
+        android:visibility="gone"/>
 
 
 </RelativeLayout>

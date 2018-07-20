@@ -104,21 +104,28 @@
         android:id="@+id/timerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ff6200"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="20dp"
-        android:visibility="gone">
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="40dip"
+            android:src="@drawable/matchball"
+            android:scaleType="centerInside"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
 
         <TextView
             android:id="@+id/timerText"
-            android:layout_width="wrap_content"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
             android:text="00:00:00"
-            android:textSize="50sp"
-            android:textColor="#fff"/>
+            android:textColor="#ffff00"
+            android:textSize="60sp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 
     <ToggleButton

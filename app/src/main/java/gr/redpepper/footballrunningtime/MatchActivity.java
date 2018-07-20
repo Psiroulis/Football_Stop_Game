@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -373,6 +374,10 @@ public class MatchActivity extends Activity {
         penalty_Layout = findViewById(R.id.penaltyLayout);
         verpenlay = findViewById(R.id.vertrel);
         horpenlay = findViewById(R.id.horrel);
+
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/clockfont.otf");
+
+        clock.setTypeface(typeface);
     }
 
     //initialize Penalty animations
