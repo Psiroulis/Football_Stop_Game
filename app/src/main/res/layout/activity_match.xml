@@ -1,306 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    android:id="@+id/mainlayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background">
+    android:background="@drawable/matcback_2">
 
     <RelativeLayout
-        android:id="@+id/scoreAndFlagsLayout"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/sillver_gradient_one"
-        android:layout_margin="10dp">
-
-        <ImageView
-            android:id="@+id/playerTeamFlag"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10dp"
-            android:layout_centerVertical="true"
-            android:background="@drawable/greece"/>
-
-        <ImageView
-            android:id="@+id/opponentTeamFlag"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/greece"/>
-
-        <LinearLayout
-            android:id="@+id/scoreLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true">
-
-            <TextView
-                android:id="@+id/playerScore"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textColor="#FFF"
-                android:text="0"
-                android:textSize="20sp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textColor="#fff"
-                android:text="-"
-                android:textSize="20sp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"/>
-
-            <TextView
-                android:id="@+id/opponentScore"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textColor="#fff"
-                android:text="0"
-                android:textSize="20sp"/>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/currentHalf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1st Half"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/scoreLayout"
-            android:textColor="#ffd900"/>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/messagesLayout"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="#ff0000"
-        android:layout_below="@id/scoreAndFlagsLayout"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/messagesText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:text="Goall!!!"
-            android:textSize="30sp"
-            android:textColor="#fff"/>
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/timerLayout"
+        android:id="@+id/flagsMatchLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <RelativeLayout
+            android:id="@+id/teamsNamesMatchLayout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/blue_grantient_back"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_centerVertical="true">
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/halfMatchLayout"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:background="@drawable/halfe_back"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:padding="5dp"
+                android:text=" 1st Half"
+                android:textColor="#222" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/halfMatchLayout"
+            android:text="0"
+            android:textColor="#fff"
+            android:textSize="25sp"
+            android:layout_marginRight="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/halfMatchLayout"
+            android:text="0"
+            android:textColor="#fff"
+            android:textSize="25sp"
+            android:layout_marginLeft="20dp"/>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/germany"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"/>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/ghana"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true">
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="40dip"
-            android:src="@drawable/matchball"
-            android:scaleType="centerInside"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"/>
-
-        <TextView
-            android:id="@+id/timerText"
-            android:textAlignment="center"
+            android:id="@+id/chronometerMatchImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="00:00:00"
-            android:textColor="#ffff00"
-            android:textSize="60sp"
+            android:src="@drawable/matchball"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"/>
+            android:layout_margin="50dp"/>
+
+        <TextView
+            android:id="@+id/chronometerMatchText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="50sp"
+            android:text="00:00:00"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textColor="#ff0"/>
+
+        <ToggleButton
+            android:id="@+id/shootButton"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_centerHorizontal="true"
+            android:checked="false"
+            android:background="@drawable/ball"
+            android:textOff=""
+            android:textOn=""
+            android:layout_below="@id/chronometerMatchText"
+            android:layout_marginTop="120dp"/>
+
     </RelativeLayout>
-
-    <ToggleButton
-        android:id="@+id/shootButton"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:checked="false"
-        android:background="@drawable/ball"
-        android:textOff=""
-        android:textOn=""
-        android:layout_below="@id/timerLayout"
-        android:visibility="gone"/>
-
-    <ToggleButton
-        android:id="@+id/startPlayingButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/play_button"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="20dp"
-        android:textOn=""
-        android:textOff=""/>
-    <TextView
-        android:id="@+id/posts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:textSize="30sp"
-        android:layout_margin="10dp"
-        android:textColor="#00d9ff"
-        android:background="#000"
-        android:padding="10dp"/>
 
     <RelativeLayout
-        android:id="@+id/penaltyLayout"
-        android:layout_width="250dp"
-        android:layout_height="300dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:background="#333333"
-        android:visibility="invisible"
-        >
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/postsback"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp">
 
-        <ToggleButton
-            android:id="@+id/penalty_stop"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:textOff="Stop Ver"
-            android:textOn="Stop Hor"/>
-
-        <RelativeLayout
-            android:id="@+id/horrel"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
-            android:background="#8000"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true">
-
-            <ImageView
-                android:id="@+id/hor_ball"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@drawable/circle"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="0dip"
-                />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/vertrel"
-            android:layout_width="30dp"
-            android:layout_height="200dp"
-            android:background="#8000"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true">
-
-            <ImageView
-                android:id="@+id/ver_ball"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@drawable/circle"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentTop="true"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerHorizontal="true"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#0015fa"
+            android:text="0"
+            android:textSize="30sp"
             android:layout_centerVertical="true"
-            android:background="#8eff0000"/>
+            android:layout_centerHorizontal="true"
+            />
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/play_buuton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="10dp">
 
 
 
-
-
-
-
-
-    <!--<RelativeLayout
-        android:id="@+id/penaltyLayout"
-        android:layout_width="250dp"
-        android:layout_height="300dp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:background="#ce008fbf"
-        android:visibility="gone">
-
-        <RelativeLayout
-            android:id="@+id/verticalPenaltyLine"
-            android:layout_width="30dip"
-            android:layout_height="200dip"
-            android:background="#8000"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true">
-
-            <ImageView
-                android:id="@+id/ver_ball"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@drawable/circle"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentTop="true"/>
-
-
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/horizontalPenaltyLine"
-            android:layout_width="200dip"
-            android:layout_height="30dip"
-            android:background="#8000"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true">
-
-            <ImageView
-                android:id="@+id/hor_ball"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@drawable/circle"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="0dip"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="#7000ff00" />
-
-        <ToggleButton
-            android:id="@+id/penalty_stop"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:textOff="Stop Ver"
-            android:textOn="Stop Hor"/>
-
-
-    </RelativeLayout>-->
-
+    </RelativeLayout>
 
 </RelativeLayout>
