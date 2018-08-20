@@ -1,4 +1,4 @@
-package gr.redpepper.footballrunningtime;
+package gr.redpepper.footballrunningtime.rounds;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,7 +15,12 @@ import android.widget.Button;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class PhaseOf4 extends Activity {
+import gr.redpepper.footballrunningtime.MatchScreen;
+import gr.redpepper.footballrunningtime.adapters.DrawAdapter;
+import gr.redpepper.footballrunningtime.R;
+import gr.redpepper.footballrunningtime.customClasses.Team;
+
+public class RoundOf8 extends Activity {
 
     private Context context;
 
@@ -25,20 +30,21 @@ public class PhaseOf4 extends Activity {
 
     private ArrayList<ArrayList<Team>> matchPairs;
 
-    private ArrayList<ArrayList<Team>> match_4_Pairs;
+    private ArrayList<ArrayList<Team>> match_8_Pairs;
 
     private ArrayList<Team> teamsToMakeCouples;
 
-    private MatchesAdapter mAdapter;
+    private DrawAdapter mAdapter;
 
     private int selectedTeamId;
 
     private int Cup;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_phase_of4);
+        setContentView(R.layout.activity_pashe_of8);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -47,23 +53,18 @@ public class PhaseOf4 extends Activity {
 
         context = this;
 
-        list = findViewById(R.id.pa4recview);
+        list = findViewById(R.id.pa8recview);
 
-        startMatchButton = findViewById(R.id.start4MatchBut);
-
-
-
+        startMatchButton = findViewById(R.id.start8MatchBut);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-
-
         matchPairs = new ArrayList<>();
 
-        match_4_Pairs = new ArrayList<>();
+        match_8_Pairs = new ArrayList<>();
 
         teamsToMakeCouples = new ArrayList<>();
 
@@ -75,7 +76,7 @@ public class PhaseOf4 extends Activity {
 
         Cup = intent.getIntExtra("choosenCup",0);
 
-        mAdapter = new MatchesAdapter(context,match_4_Pairs,selectedTeamId);
+        mAdapter = new DrawAdapter(context,match_8_Pairs,selectedTeamId);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         list.setLayoutManager(mLayoutManager);
         list.setItemAnimator(new DefaultItemAnimator());
@@ -101,9 +102,9 @@ public class PhaseOf4 extends Activity {
 
         Collections.shuffle(matchPairs);
 
-        for (int i = 0; i < matchPairs.size(); i++){
+        for (int i = 0; i < 7; i++){
 
-            teamsToMakeCouples.add(matchPairs.get(i).get(0));
+           teamsToMakeCouples.add(matchPairs.get(i).get(0));
 
         }
 
@@ -123,7 +124,7 @@ public class PhaseOf4 extends Activity {
 
                 twoTeamsArray.add(two);
 
-                match_4_Pairs.add(twoTeamsArray);
+                match_8_Pairs.add(twoTeamsArray);
 
             }
 
@@ -134,13 +135,14 @@ public class PhaseOf4 extends Activity {
         startMatchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 int oponentID = 0;
 
-                for (int i = 0; i<match_4_Pairs.size(); i++){
+                for (int i = 0; i<match_8_Pairs.size(); i++){
 
-                    Team one = match_4_Pairs.get(i).get(0);
+                    Team one = match_8_Pairs.get(i).get(0);
 
-                    Team two = match_4_Pairs.get(i).get(1);
+                    Team two = match_8_Pairs.get(i).get(1);
 
                     if(one.getId() == selectedTeamId || two.getId() == selectedTeamId){
 
@@ -156,22 +158,23 @@ public class PhaseOf4 extends Activity {
                     }
                 }
 
-                Intent intent = new Intent(PhaseOf4.this,MatchActivity.class);
+                Intent intent = new Intent(RoundOf8.this,MatchScreen.class);
+
                 intent.putExtra("playerteamid",selectedTeamId);
                 intent.putExtra("opponentteamid",oponentID);
-                intent.putExtra("phase",3);
+                intent.putExtra("phase",2);
                 intent.putExtra("choosenCup",Cup);
-                intent.putExtra("matches",match_4_Pairs);
+                intent.putExtra("matches",match_8_Pairs);
 
                 startActivity(intent);
 
-                PhaseOf4.this.finish();
+                RoundOf8.this.finish();
+
             }
         });
-
         startMatchButton.setVisibility(View.VISIBLE);
 
 
-
     }
+
 }

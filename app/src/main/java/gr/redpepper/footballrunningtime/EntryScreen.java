@@ -10,9 +10,16 @@ import android.util.Log;
 
 import java.util.List;
 
+import gr.redpepper.footballrunningtime.database.AppDataBase;
+import gr.redpepper.footballrunningtime.database.CupEntity;
+import gr.redpepper.footballrunningtime.database.DatabaseDao;
+import gr.redpepper.footballrunningtime.database.TeamEntity;
+import gr.redpepper.footballrunningtime.menus.LoginMenu;
+
 public class EntryScreen extends Activity {
 
     private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,23 +29,23 @@ public class EntryScreen extends Activity {
 
         new PublicateDb().execute();
 
-
-
     }
 
     private class PublicateDb extends AsyncTask<String,String,String>{
         @Override
         protected String doInBackground(String... strings) {
-            TeamsDatabase db = TeamsDatabase.getInstance(context);
 
-            TeamsDao tdao = db.teamsDao();
+            AppDataBase db = AppDataBase.getInstance(context);
 
+            DatabaseDao tdao = db.dbDao();
 
-            List<TeamsEntity> allTeams = tdao.getAll();
+            List<TeamEntity> allTeams = tdao.getAll();
+
+            Log.d("blepo","It runs one"+allTeams.get(0).getName());
 
             for (int i = 0; i< allTeams.size(); i++){
 
-                Log.d("blepo",""+allTeams.get(i).getName());
+                Log.d("blepo","It runs one"+allTeams.get(i).getName());
 
             }
 
@@ -46,11 +53,12 @@ public class EntryScreen extends Activity {
 
             for (int i = 0; i< allCups.size(); i++){
 
-                Log.d("blepo",""+allCups.get(i).getName());
+                Log.d("blepo","It runs two"+allCups.get(i).getName());
 
             }
 
             db.close();
+
             return null;
         }
 
@@ -62,7 +70,7 @@ public class EntryScreen extends Activity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent = new Intent(EntryScreen.this,LoginActivity.class);
+                    Intent intent = new Intent(EntryScreen.this,LoginMenu.class);
 
                     startActivity(intent);
 

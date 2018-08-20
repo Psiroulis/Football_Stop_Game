@@ -1,4 +1,4 @@
-package gr.redpepper.footballrunningtime;
+package gr.redpepper.footballrunningtime.menus;
 
 
 import android.app.Activity;
@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
-public class MainActivity extends Activity {
+import gr.redpepper.footballrunningtime.R;
+
+public class MainMenu extends Activity {
 
     private Button singlePlayer_Button;
 
@@ -44,11 +46,11 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(MainActivity.this, SinglePlayerMenu.class);
+                Intent intent = new Intent(MainMenu.this, SinglePlayerMenu.class);
 
                 startActivity(intent);
 
-                MainActivity.this.finish();
+                MainMenu.this.finish();
 
             }
         });
@@ -70,9 +72,9 @@ public class MainActivity extends Activity {
 
                 TeamsDatabase db = TeamsDatabase.getInstance(context);
 
-                TeamsDao tdao = db.teamsDao();
+                DatabaseDao tdao = db.teamsDao();
 
-                List<TeamsEntity> allTeams = tdao.getAll();
+                List<TeamEntity> allTeams = tdao.getAll();
 
                 for (int i = 0; i< allTeams.size(); i++){
 
@@ -125,13 +127,13 @@ public class MainActivity extends Activity {
 /*start.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               Intent intent = new Intent(MainActivity.this,MatchActivity.class);
+               Intent intent = new Intent(MainMenu.this,MatchScreen.class);
                intent.putExtra("opponentScore",3);
                intent.putExtra("penaltySpeed",300);
                intent.putExtra("playerFlag",R.drawable.greece);
                intent.putExtra("opponentFlag",R.drawable.germany);
                startActivity(intent);
-               MainActivity.this.finish();
+               MainMenu.this.finish();
 
            }
        });*/

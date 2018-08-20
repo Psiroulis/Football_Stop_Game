@@ -1,7 +1,9 @@
-package gr.redpepper.footballrunningtime;
+package gr.redpepper.footballrunningtime.menus;
 
 import android.app.Activity;
 import android.os.Bundle;
+
+import gr.redpepper.footballrunningtime.R;
 
 public class WinTheCup extends Activity {
 

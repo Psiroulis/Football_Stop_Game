@@ -1,4 +1,4 @@
-package gr.redpepper.footballrunningtime;
+package gr.redpepper.footballrunningtime.rounds;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,7 +15,12 @@ import android.widget.Button;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class PasheOf8 extends Activity {
+import gr.redpepper.footballrunningtime.MatchScreen;
+import gr.redpepper.footballrunningtime.adapters.DrawAdapter;
+import gr.redpepper.footballrunningtime.R;
+import gr.redpepper.footballrunningtime.customClasses.Team;
+
+public class Final extends Activity {
 
     private Context context;
 
@@ -25,21 +30,21 @@ public class PasheOf8 extends Activity {
 
     private ArrayList<ArrayList<Team>> matchPairs;
 
-    private ArrayList<ArrayList<Team>> match_8_Pairs;
+    private ArrayList<ArrayList<Team>> match_final_Pairs;
 
     private ArrayList<Team> teamsToMakeCouples;
 
-    private MatchesAdapter mAdapter;
+    private DrawAdapter mAdapter;
 
     private int selectedTeamId;
 
     private int Cup;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pashe_of8);
+        setContentView(R.layout.activity_final);
+
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -48,9 +53,9 @@ public class PasheOf8 extends Activity {
 
         context = this;
 
-        list = findViewById(R.id.pa8recview);
+        list = findViewById(R.id.pafinalrecview);
 
-        startMatchButton = findViewById(R.id.start8MatchBut);
+        startMatchButton = findViewById(R.id.startfinalMatchBut);
     }
 
     @Override
@@ -59,7 +64,7 @@ public class PasheOf8 extends Activity {
 
         matchPairs = new ArrayList<>();
 
-        match_8_Pairs = new ArrayList<>();
+        match_final_Pairs = new ArrayList<>();
 
         teamsToMakeCouples = new ArrayList<>();
 
@@ -71,7 +76,7 @@ public class PasheOf8 extends Activity {
 
         Cup = intent.getIntExtra("choosenCup",0);
 
-        mAdapter = new MatchesAdapter(context,match_8_Pairs,selectedTeamId);
+        mAdapter = new DrawAdapter(context,match_final_Pairs,selectedTeamId);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         list.setLayoutManager(mLayoutManager);
         list.setItemAnimator(new DefaultItemAnimator());
@@ -97,9 +102,9 @@ public class PasheOf8 extends Activity {
 
         Collections.shuffle(matchPairs);
 
-        for (int i = 0; i < 7; i++){
+        for (int i = 0; i < matchPairs.size(); i++){
 
-           teamsToMakeCouples.add(matchPairs.get(i).get(0));
+            teamsToMakeCouples.add(matchPairs.get(i).get(0));
 
         }
 
@@ -119,7 +124,7 @@ public class PasheOf8 extends Activity {
 
                 twoTeamsArray.add(two);
 
-                match_8_Pairs.add(twoTeamsArray);
+                match_final_Pairs.add(twoTeamsArray);
 
             }
 
@@ -133,11 +138,11 @@ public class PasheOf8 extends Activity {
 
                 int oponentID = 0;
 
-                for (int i = 0; i<match_8_Pairs.size(); i++){
+                for (int i = 0; i<match_final_Pairs.size(); i++){
 
-                    Team one = match_8_Pairs.get(i).get(0);
+                    Team one = match_final_Pairs.get(i).get(0);
 
-                    Team two = match_8_Pairs.get(i).get(1);
+                    Team two = match_final_Pairs.get(i).get(1);
 
                     if(one.getId() == selectedTeamId || two.getId() == selectedTeamId){
 
@@ -153,23 +158,20 @@ public class PasheOf8 extends Activity {
                     }
                 }
 
-                Intent intent = new Intent(PasheOf8.this,MatchActivity.class);
-
+                Intent intent = new Intent(Final.this,MatchScreen.class);
                 intent.putExtra("playerteamid",selectedTeamId);
                 intent.putExtra("opponentteamid",oponentID);
-                intent.putExtra("phase",2);
+                intent.putExtra("phase",4);
                 intent.putExtra("choosenCup",Cup);
-                intent.putExtra("matches",match_8_Pairs);
+                intent.putExtra("matches",match_final_Pairs);
 
                 startActivity(intent);
 
-                PasheOf8.this.finish();
+                Final.this.finish();
 
             }
         });
+
         startMatchButton.setVisibility(View.VISIBLE);
-
-
     }
-
 }

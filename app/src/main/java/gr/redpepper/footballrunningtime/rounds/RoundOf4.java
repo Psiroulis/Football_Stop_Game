@@ -1,4 +1,4 @@
-package gr.redpepper.footballrunningtime;
+package gr.redpepper.footballrunningtime.rounds;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,7 +15,12 @@ import android.widget.Button;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Final extends Activity {
+import gr.redpepper.footballrunningtime.MatchScreen;
+import gr.redpepper.footballrunningtime.adapters.DrawAdapter;
+import gr.redpepper.footballrunningtime.R;
+import gr.redpepper.footballrunningtime.customClasses.Team;
+
+public class RoundOf4 extends Activity {
 
     private Context context;
 
@@ -25,11 +30,11 @@ public class Final extends Activity {
 
     private ArrayList<ArrayList<Team>> matchPairs;
 
-    private ArrayList<ArrayList<Team>> match_final_Pairs;
+    private ArrayList<ArrayList<Team>> match_4_Pairs;
 
     private ArrayList<Team> teamsToMakeCouples;
 
-    private MatchesAdapter mAdapter;
+    private DrawAdapter mAdapter;
 
     private int selectedTeamId;
 
@@ -38,8 +43,7 @@ public class Final extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_final);
-
+        setContentView(R.layout.activity_phase_of4);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -48,18 +52,23 @@ public class Final extends Activity {
 
         context = this;
 
-        list = findViewById(R.id.pafinalrecview);
+        list = findViewById(R.id.pa4recview);
 
-        startMatchButton = findViewById(R.id.startfinalMatchBut);
+        startMatchButton = findViewById(R.id.start4MatchBut);
+
+
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
+
+
         matchPairs = new ArrayList<>();
 
-        match_final_Pairs = new ArrayList<>();
+        match_4_Pairs = new ArrayList<>();
 
         teamsToMakeCouples = new ArrayList<>();
 
@@ -71,7 +80,7 @@ public class Final extends Activity {
 
         Cup = intent.getIntExtra("choosenCup",0);
 
-        mAdapter = new MatchesAdapter(context,match_final_Pairs,selectedTeamId);
+        mAdapter = new DrawAdapter(context,match_4_Pairs,selectedTeamId);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         list.setLayoutManager(mLayoutManager);
         list.setItemAnimator(new DefaultItemAnimator());
@@ -119,7 +128,7 @@ public class Final extends Activity {
 
                 twoTeamsArray.add(two);
 
-                match_final_Pairs.add(twoTeamsArray);
+                match_4_Pairs.add(twoTeamsArray);
 
             }
 
@@ -130,14 +139,13 @@ public class Final extends Activity {
         startMatchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 int oponentID = 0;
 
-                for (int i = 0; i<match_final_Pairs.size(); i++){
+                for (int i = 0; i<match_4_Pairs.size(); i++){
 
-                    Team one = match_final_Pairs.get(i).get(0);
+                    Team one = match_4_Pairs.get(i).get(0);
 
-                    Team two = match_final_Pairs.get(i).get(1);
+                    Team two = match_4_Pairs.get(i).get(1);
 
                     if(one.getId() == selectedTeamId || two.getId() == selectedTeamId){
 
@@ -153,20 +161,22 @@ public class Final extends Activity {
                     }
                 }
 
-                Intent intent = new Intent(Final.this,MatchActivity.class);
+                Intent intent = new Intent(RoundOf4.this,MatchScreen.class);
                 intent.putExtra("playerteamid",selectedTeamId);
                 intent.putExtra("opponentteamid",oponentID);
-                intent.putExtra("phase",4);
+                intent.putExtra("phase",3);
                 intent.putExtra("choosenCup",Cup);
-                intent.putExtra("matches",match_final_Pairs);
+                intent.putExtra("matches",match_4_Pairs);
 
                 startActivity(intent);
 
-                Final.this.finish();
-
+                RoundOf4.this.finish();
             }
         });
 
         startMatchButton.setVisibility(View.VISIBLE);
+
+
+
     }
 }

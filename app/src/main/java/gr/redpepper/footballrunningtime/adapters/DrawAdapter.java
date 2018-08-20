@@ -1,4 +1,4 @@
-package gr.redpepper.footballrunningtime;
+package gr.redpepper.footballrunningtime.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -11,7 +11,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MyViewHolder>{
+import gr.redpepper.footballrunningtime.R;
+import gr.redpepper.footballrunningtime.customClasses.Team;
+
+public class DrawAdapter extends RecyclerView.Adapter<DrawAdapter.MyViewHolder>{
 
     private ArrayList<ArrayList<Team>> teams;
 
@@ -37,7 +40,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MyViewHo
         }
     }
 
-     MatchesAdapter(Context context, ArrayList<ArrayList<Team>> teams,int selectedTeamId) {
+     public DrawAdapter(Context context, ArrayList<ArrayList<Team>> teams, int selectedTeamId) {
         this.context = context;
         this.teams = teams;
         this.selectedTeamId = selectedTeamId;

@@ -1,4 +1,4 @@
-package gr.redpepper.footballrunningtime;
+package gr.redpepper.footballrunningtime.menus;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,9 +7,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import gr.redpepper.footballrunningtime.R;
 
 public class SinglePlayerMenu extends Activity {
 
@@ -138,7 +139,7 @@ public class SinglePlayerMenu extends Activity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(SinglePlayerMenu.this,MainActivity.class);
+        Intent intent = new Intent(SinglePlayerMenu.this,MainMenu.class);
 
         startActivity(intent);
 

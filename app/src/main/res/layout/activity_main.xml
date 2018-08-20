@@ -36,12 +36,12 @@
             android:id="@+id/multyPlayerButton"
             android:layout_width="match_parent"
             android:layout_height="50dip"
-            android:background="@drawable/black_button"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:textColor="#FF0000"
             android:layout_marginTop="12dp"
-            android:text="MULTYPLAYER" />
+            android:background="@drawable/black_button"
+            android:text="MULTIPLAYER"
+            android:textColor="#FF0000" />
 
         <Button
             android:id="@+id/instructBut"

@@ -1,4 +1,4 @@
-package gr.redpepper.footballrunningtime;
+package gr.redpepper.footballrunningtime.adapters;
 
 
 import android.content.Context;
@@ -14,6 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import gr.redpepper.footballrunningtime.R;
+import gr.redpepper.footballrunningtime.customClasses.Team;
+import gr.redpepper.footballrunningtime.menus.TeamSelection;
+import gr.redpepper.footballrunningtime.rounds.RoundOf16;
 
 public class PagerAdapter extends android.support.v4.view.PagerAdapter {
 
@@ -88,7 +93,7 @@ public class PagerAdapter extends android.support.v4.view.PagerAdapter {
                 @Override
                 public void onClick(View view) {
 
-                    Intent intent = new Intent(context,PasheOf16.class);
+                    Intent intent = new Intent(context,RoundOf16.class);
 
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 

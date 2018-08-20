@@ -1,4 +1,4 @@
-package gr.redpepper.footballrunningtime;
+package gr.redpepper.footballrunningtime.customClasses;
 
 import android.app.Activity;
 import android.content.Context;

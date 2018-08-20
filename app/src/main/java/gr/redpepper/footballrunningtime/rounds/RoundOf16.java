@@ -1,4 +1,4 @@
-package gr.redpepper.footballrunningtime;
+package gr.redpepper.footballrunningtime.rounds;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,7 +19,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PasheOf16 extends Activity {
+import gr.redpepper.footballrunningtime.MatchScreen;
+import gr.redpepper.footballrunningtime.adapters.DrawAdapter;
+import gr.redpepper.footballrunningtime.R;
+import gr.redpepper.footballrunningtime.customClasses.Team;
+import gr.redpepper.footballrunningtime.menus.TeamSelection;
+import gr.redpepper.footballrunningtime.database.AppDataBase;
+import gr.redpepper.footballrunningtime.database.DatabaseDao;
+import gr.redpepper.footballrunningtime.database.TeamEntity;
+
+public class RoundOf16 extends Activity {
 
     private int selectedTeamId;
 
@@ -33,7 +42,7 @@ public class PasheOf16 extends Activity {
 
     private RecyclerView list;
 
-    private MatchesAdapter mAdapter;
+    private DrawAdapter mAdapter;
 
     private Button startMatchButton;
 
@@ -73,7 +82,7 @@ public class PasheOf16 extends Activity {
 
         matches = new ArrayList<>();
 
-        mAdapter = new MatchesAdapter(context,matches,selectedTeamId);
+        mAdapter = new DrawAdapter(context,matches,selectedTeamId);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         list.setLayoutManager(mLayoutManager);
         list.setItemAnimator(new DefaultItemAnimator());
@@ -108,7 +117,7 @@ public class PasheOf16 extends Activity {
                     }
                 }
 
-                Intent intent = new Intent(PasheOf16.this,MatchActivity.class);
+                Intent intent = new Intent(RoundOf16.this,MatchScreen.class);
                 intent.putExtra("playerteamid",selectedTeamId);
                 intent.putExtra("opponentteamid",oponentID);
                 intent.putExtra("phase",1);
@@ -117,7 +126,7 @@ public class PasheOf16 extends Activity {
 
                 startActivity(intent);
 
-                PasheOf16.this.finish();
+                RoundOf16.this.finish();
             }
         });
 
@@ -129,11 +138,11 @@ public class PasheOf16 extends Activity {
         @Override
         protected String doInBackground(String... strings) {
 
-            TeamsDatabase db = TeamsDatabase.getInstance(context);
+            AppDataBase db = AppDataBase.getInstance(context);
 
-            TeamsDao tdao = db.teamsDao();
+            DatabaseDao tdao = db.dbDao();
 
-            List<TeamsEntity> teams;
+            List<TeamEntity> teams;
 
             if(Cup == 4){
 
@@ -149,7 +158,7 @@ public class PasheOf16 extends Activity {
 
             for (int i = 0; i< teams.size(); i++){
 
-                TeamsEntity entity = teams.get(i);
+                TeamEntity entity = teams.get(i);
 
                 Team oneteam = new Team(entity.getUid(),entity.getName(),entity.getLocked(),entity.getCup(),entity.getOverall());
 
@@ -199,11 +208,11 @@ public class PasheOf16 extends Activity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(PasheOf16.this, TeamSelection.class);
+        Intent intent = new Intent(RoundOf16.this, TeamSelection.class);
 
         intent.putExtra("choosenCup",Cup);
 
-        PasheOf16.this.finish();
+        RoundOf16.this.finish();
 
         startActivity(intent);
 

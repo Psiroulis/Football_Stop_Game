@@ -1,4 +1,4 @@
-package gr.redpepper.footballrunningtime;
+package gr.redpepper.footballrunningtime.menus;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,7 +16,9 @@ import com.facebook.login.widget.LoginButton;
 
 import java.util.Arrays;
 
-public class LoginActivity extends Activity {
+import gr.redpepper.footballrunningtime.R;
+
+public class LoginMenu extends Activity {
 
     LoginButton FbLoginButton;
 
@@ -58,9 +60,9 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View view) {
                 //FbLoginButton.performClick();
-                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                Intent intent = new Intent(LoginMenu.this,MainMenu.class);
                 startActivity(intent);
-                LoginActivity.this.finish();
+                LoginMenu.this.finish();
             }
         });
 

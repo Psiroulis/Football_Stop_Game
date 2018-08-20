@@ -21,23 +21,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MatchActivity"
+            android:name=".MatchScreen"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SinglePlayerMenu"
+            android:name=".menus.SinglePlayerMenu"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".TeamSelection"
+            android:name=".menus.TeamSelection"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PasheOf16"
+            android:name=".rounds.RoundOf16"
             android:screenOrientation="portrait" />
-        <activity android:name=".PasheOf8" />
-        <activity android:name=".PhaseOf4" />
-        <activity android:name=".Final" />
-        <activity android:name=".LostTheCup" />
-        <activity android:name=".WinTheCup" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".rounds.RoundOf8" />
+        <activity android:name=".rounds.RoundOf4" />
+        <activity android:name=".rounds.Final" />
+        <activity android:name=".menus.LostTheCup" />
+        <activity android:name=".menus.WinTheCup" />
+        <activity android:name=".menus.MainMenu" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -47,7 +47,7 @@
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".menus.LoginMenu"></activity>
     </application>
 
 </manifest>

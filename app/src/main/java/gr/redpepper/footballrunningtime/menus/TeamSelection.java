@@ -1,4 +1,4 @@
-package gr.redpepper.footballrunningtime;
+package gr.redpepper.footballrunningtime.menus;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -15,6 +14,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import gr.redpepper.footballrunningtime.R;
+import gr.redpepper.footballrunningtime.adapters.PagerAdapter;
+import gr.redpepper.footballrunningtime.customClasses.Team;
+import gr.redpepper.footballrunningtime.database.AppDataBase;
+import gr.redpepper.footballrunningtime.database.TeamEntity;
+import gr.redpepper.footballrunningtime.database.DatabaseDao;
 
 public class TeamSelection extends Activity {
 
@@ -93,11 +99,11 @@ public class TeamSelection extends Activity {
         @Override
         protected String doInBackground(Integer... integers) {
 
-            TeamsDatabase db = TeamsDatabase.getInstance(context);
+            AppDataBase db = AppDataBase.getInstance(context);
 
-            TeamsDao tdao = db.teamsDao();
+            DatabaseDao tdao = db.dbDao();
 
-            List<TeamsEntity> allTeams;
+            List<TeamEntity> allTeams;
 
             if (Cup == 4) {
 
@@ -111,7 +117,7 @@ public class TeamSelection extends Activity {
 
             for (int i = 0; i < allTeams.size(); i++) {
 
-                TeamsEntity entity = allTeams.get(i);
+                TeamEntity entity = allTeams.get(i);
 
                 Team oneteam = new Team(entity.getUid(), entity.getName(), entity.getLocked(), entity.getCup(), entity.getOverall());
 
