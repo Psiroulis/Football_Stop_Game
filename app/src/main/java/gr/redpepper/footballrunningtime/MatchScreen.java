@@ -14,6 +14,7 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.view.WindowManager;
@@ -116,7 +117,12 @@ public class MatchScreen extends Activity {
     private boolean tiePenalty;
 
     //Play sounds Variables
-    MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer;
+
+    private Vibrator vibrator;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -160,6 +166,8 @@ public class MatchScreen extends Activity {
 
         pauseMEnuChecker = false;
 
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
     }
 
     @Override
@@ -187,6 +195,8 @@ public class MatchScreen extends Activity {
 
                     match.RunTheTimer();
 
+                    pauseMEnuChecker = false;
+
                 }else{
 
                     if(mediaPlayer!= null){
@@ -198,11 +208,10 @@ public class MatchScreen extends Activity {
 
                     match.PauseTheTimer();
 
-                    if(pauseMEnuChecker == false) {
+                    if(!pauseMEnuChecker) {
 
                         pauseLayout.setVisibility(View.VISIBLE);
 
-                        pauseMEnuChecker = false;
                     }
 
 
@@ -230,12 +239,16 @@ public class MatchScreen extends Activity {
 
                         playerScore.setText(String.valueOf(match.getPlayerGoals()));
 
+                        long[] pattern = {0,1000,500,1000,500,1000};
+
+                        vibrator.vibrate(pattern,-1);
+
                         showMessage("Gooooaall !!!");
 
-                    } else if (goalChecker == 2) {
-
-//                        showMessage("Missed");
-
+//                    } else if (goalChecker == 2) {
+//
+////                        showMessage("Missed");
+//
                     } else if (goalChecker == 3) {
 
                         opponentScore.setText(String.valueOf(match.getOpponentGoals()));
@@ -317,6 +330,10 @@ public class MatchScreen extends Activity {
                                     match.setPlayerGoals(match.getPlayerGoals() + 1);
 
                                     playerScore.setText(String.valueOf(match.getPlayerGoals()));
+
+                                    long[] pattern = {0,1000,500,1000,500,1000};
+
+                                    vibrator.vibrate(pattern,-1);
 
 
                                 } else {
@@ -500,7 +517,7 @@ public class MatchScreen extends Activity {
 
                 //Log.d("blepo","BallHeight: "+vertical_abll.getHeight());
 
-                float diff = (float) (verpenlay.getHeight() - vertical_abll.getHeight());
+                float diff = verpenlay.getHeight() - vertical_abll.getHeight();
 
                 //Log.d("blepo","Distance to Run The ball: "+ diff);
 
@@ -550,7 +567,7 @@ public class MatchScreen extends Activity {
 
                 //Log.d("blepo","BallHeight: "+horizontal_ball.getHeight());
 
-                float diff = Float.valueOf(horpenlay.getWidth() - horizontal_ball.getWidth());
+                float diff = horpenlay.getWidth() - horizontal_ball.getWidth(); //->float.value
 
                 //Log.d("blepo","Distance to Run The ball: "+ diff);
 
