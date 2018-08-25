@@ -39,6 +39,12 @@ public class TheMatch {
 
     }
 
+    public void PauseTheTimer(){
+
+        chronometer.Pause();
+
+    }
+
     public int Shoot(){   //0->post, 1->goal, 2->missed, 3->own goal
 
         chronometer.Pause();

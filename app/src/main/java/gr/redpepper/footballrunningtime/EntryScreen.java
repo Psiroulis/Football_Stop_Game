@@ -41,7 +41,7 @@ public class EntryScreen extends Activity {
 
             List<TeamEntity> allTeams = tdao.getAll();
 
-            Log.d("blepo","It runs one"+allTeams.get(0).getName());
+//            Log.d("blepo","It runs one"+allTeams.get(0).getName());
 
             for (int i = 0; i< allTeams.size(); i++){
 
@@ -57,7 +57,7 @@ public class EntryScreen extends Activity {
 
             }
 
-            db.close();
+            //db.close();
 
             return null;
         }

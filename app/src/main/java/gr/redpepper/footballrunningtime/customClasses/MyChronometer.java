@@ -25,20 +25,17 @@ public class MyChronometer {
 
     private TextView textView;
 
-    private Activity activity;
-
     private boolean changeHalfe;
 
     private Context context;
 
-    public MyChronometer(Context context,int speed, TextView textView, Activity activity) {
+    public MyChronometer(Context context, int speed, TextView textView) {
         this.context = context;
         this.speed = speed;
         this.textView = textView;
-        this.activity = activity;
+
         this.changeHalfe = false;
     }
-
 
     public void StartFirstHalf() {
 
@@ -74,7 +71,6 @@ public class MyChronometer {
         }
 
     }
-
 
     public void StartSecondHalf() {
 
@@ -133,7 +129,7 @@ public class MyChronometer {
 
         seconds = 0;
 
-        activity.runOnUiThread(new Runnable() {
+        ((Activity)context).runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 textView.setText("00:00:00");
@@ -164,7 +160,7 @@ public class MyChronometer {
 
         }
 
-        activity.runOnUiThread(new Runnable() {
+        ((Activity)context).runOnUiThread(new Runnable() {
             @Override
             public void run() {
 
