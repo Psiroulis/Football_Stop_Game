@@ -23,7 +23,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
@@ -77,8 +76,6 @@ public class MatchScreen extends Activity {
 
     private Button exitGameButton;
 
-    private TextView pauseMenuTitleText;
-
     private boolean pauseMEnuChecker;
 
     //Penalty Variables and views
@@ -96,7 +93,7 @@ public class MatchScreen extends Activity {
 
     private RelativeLayout verpenlay, horpenlay;
 
-    private int timerSpeed = 1;
+
 
     private Context context;
 
@@ -185,9 +182,7 @@ public class MatchScreen extends Activity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if(checked){
 
-                    mediaPlayer = MediaPlayer.create(context, R.raw.crowd_sound);
-
-                    mediaPlayer.setLooping(true);
+                    mediaPlayer = MediaPlayer.create(context, R.raw.startofgame);
 
                     mediaPlayer.start();
 
@@ -245,6 +240,15 @@ public class MatchScreen extends Activity {
 
                         showMessage("Gooooaall !!!");
 
+                        if(mediaPlayer!=null){
+                            mediaPlayer.stop();
+                            mediaPlayer.release();
+                        }
+
+                        mediaPlayer = MediaPlayer.create(context, R.raw.goal1);
+
+                        mediaPlayer.start();
+
 //                    } else if (goalChecker == 2) {
 //
 ////                        showMessage("Missed");
@@ -255,6 +259,15 @@ public class MatchScreen extends Activity {
 
                         //Toast.makeText(context,"Own Goal :(",Toast.LENGTH_SHORT).show();
                         showMessage("Own Goal :(");
+
+                        if(mediaPlayer!=null){
+                            mediaPlayer.stop();
+                            mediaPlayer.release();
+                        }
+
+                        mediaPlayer = MediaPlayer.create(context, R.raw.owngoal);
+
+                        mediaPlayer.start();
                     }
 
                 }
@@ -262,6 +275,15 @@ public class MatchScreen extends Activity {
                 else {
 
                     if (match.getPosts() == 3) {
+
+                        if(mediaPlayer!=null){
+                            mediaPlayer.stop();
+                            mediaPlayer.release();
+                        }
+
+                        mediaPlayer = MediaPlayer.create(context, R.raw.penalty);
+
+                        mediaPlayer.start();
 
                         match.setPosts(0);
 
@@ -420,6 +442,8 @@ public class MatchScreen extends Activity {
 
             opponentFlag.setBackgroundResource(GetTeamDrawable(opponentTeam.getName()));
 
+            int timerSpeed = 1;
+
             MyChronometer chronometer = new MyChronometer(context, timerSpeed, clock);
 
             match = new TheMatch(chronometer, 0);
@@ -451,7 +475,7 @@ public class MatchScreen extends Activity {
         }
     }
 
-    private Integer GetTeamDrawable(String teamName) {
+    private  Integer GetTeamDrawable(String teamName) {
 
         String name = teamName;
 
@@ -466,6 +490,8 @@ public class MatchScreen extends Activity {
     }
 
     private void FindTheViews() {
+        TextView pauseMenuTitleText;
+
         playerFlag = findViewById(R.id.playerTeamFlag);
         opponentFlag = findViewById(R.id.opponentTeamFlag);
         playerScore = findViewById(R.id.playerScore);
@@ -613,6 +639,15 @@ public class MatchScreen extends Activity {
         public void onReceive(Context context, Intent intent) {
             // Get extra data included in the Intent
 
+            if(mediaPlayer!=null){
+                mediaPlayer.stop();
+                mediaPlayer.release();
+            }
+
+            mediaPlayer = MediaPlayer.create(context, R.raw.halftime);
+
+            mediaPlayer.start();
+
             shootBall.setChecked(false);
 
             pauseMEnuChecker = true;
@@ -638,7 +673,16 @@ public class MatchScreen extends Activity {
 
     private void finishTheMatch(int phase){
 
-        Intent intentToProcced = null;
+        if(mediaPlayer!=null){
+            mediaPlayer.stop();
+            mediaPlayer.release();
+        }
+
+        mediaPlayer = MediaPlayer.create(context, R.raw.endofgame);
+
+        mediaPlayer.start();
+
+        Intent intentToProcced;
 
         if (match.getPlayerGoals() > match.getOpponentGoals()) {
             //win
@@ -666,16 +710,14 @@ public class MatchScreen extends Activity {
                     break;
             }
 
-            if (intentToProcced != null) {
+            intentToProcced.putExtra("choosenCup", cup);
+            intentToProcced.putExtra("playerTeamId", playerTeamId);
+            intentToProcced.putExtra("matches", matches);
 
-                intentToProcced.putExtra("choosenCup", cup);
-                intentToProcced.putExtra("playerTeamId", playerTeamId);
-                intentToProcced.putExtra("matches", matches);
+            startActivity(intentToProcced);
 
-                startActivity(intentToProcced);
+            MatchScreen.this.finish();
 
-                MatchScreen.this.finish();
-            }
 
 
         } else if (match.getPlayerGoals() == match.getOpponentGoals()) {
