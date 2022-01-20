@@ -4,7 +4,7 @@ package gr.redpepper.footballrunningtime.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.v4.view.ViewPager;
+import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +20,7 @@ import gr.redpepper.footballrunningtime.customClasses.Team;
 import gr.redpepper.footballrunningtime.menus.TeamSelection;
 import gr.redpepper.footballrunningtime.rounds.RoundOf16;
 
-public class PagerAdapter extends android.support.v4.view.PagerAdapter {
+public class PagerAdapter extends androidx.viewpager.widget.PagerAdapter {
 
     private Context context;
 
